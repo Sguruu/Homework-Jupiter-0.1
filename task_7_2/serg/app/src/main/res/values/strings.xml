@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="action_1">Элемент 1</string>
+    <string name="action_2">Элемент 2</string>
+    <string name="action_3">Элемент 3</string>
+    <string name="action_search">Элемент поиска</string>
+    <string name="long_content">Строчка</string>
+    <string name="text_arrow_button_click">Нажата стрелка назад</string>
+    <string name="search">Поиск</string>
+</resources>

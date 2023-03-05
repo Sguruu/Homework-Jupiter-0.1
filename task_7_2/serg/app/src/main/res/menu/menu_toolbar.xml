@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_1"
+        android:actionMenuTextColor="@color/black"
+
+        android:title="@string/action_1" />
+    <item
+        android:id="@+id/action_2"
+        android:title="@string/action_2" />
+    <item
+        android:tooltipText="3443"
+        android:actionMenuTextColor="@color/black"
+        android:id="@+id/action_3"
+        android:icon="@drawable/ic_attribution_24"
+        android:iconTint="@color/white"
+        android:title="@string/action_3"
+        app:iconTint="@color/white"
+        app:showAsAction="ifRoom" />
+    <item
+        android:actionMenuTextColor="@color/black"
+        android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_24"
+        android:iconTint="@color/white"
+        android:title="@string/action_search"
+        app:actionViewClass="android.widget.SearchView"
+        app:iconTint="@color/white"
+        app:showAsAction="ifRoom|collapseActionView" />
+</menu>
