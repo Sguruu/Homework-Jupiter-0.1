@@ -39,12 +39,14 @@ android {
             dimension "payment"
             applicationIdSuffix ".paid"
             versionNameSuffix "paid"
+            manifestPlaceholders = [appName: "@string/paid_name"]
         }
 
         free {
             dimension "payment"
             applicationIdSuffix ".free"
             versionNameSuffix "free"
+            manifestPlaceholders = [appName: "@string/free_name"]
         }
     }
 
