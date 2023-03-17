@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="free_name">Бесплатное приложение</string>
+    <string name="paid_name">Платное приложение</string>
+</resources>
