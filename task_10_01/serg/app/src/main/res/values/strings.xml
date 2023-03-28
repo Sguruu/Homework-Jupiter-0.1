@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">H_10_1</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_email">Введите email</string>
+    <string name="login">Войти в приложение</string>
+    <string name="error_email_and_password">Ошибка ! Поле Логина или Пароля не заполнены !</string>
+    <string name="error_email">Ошибка ! Введена некорркетная почта !</string>
+    <string name="error_phone">Ошибка ! Неверный формат номера !</string>
+    <string name="enter_phone">Введите номер телефона</string>
+    <string name="button_phone">Открыть мобильный справочник</string>
+</resources>
