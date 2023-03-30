@@ -87,3 +87,6 @@ lint/tmp/
 
 #macOS
 .DS_Store
+
+# настройки моего проекта
+copy/
