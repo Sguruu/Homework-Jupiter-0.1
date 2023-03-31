@@ -17,24 +17,18 @@ import android.widget.Toast
 class MainActivity : AppCompatActivity() {
 
 
-    lateinit var editTextLogin:EditText
-    lateinit var editTextPassword:EditText
-    lateinit var accept:CheckBox
-    lateinit var buttonLogin:Button
-    lateinit var wheel:ProgressBar
-    var check1 = false
-    var check2 = false
+    private lateinit var editTextLogin:EditText
+    private lateinit var editTextPassword:EditText
+    private lateinit var accept:CheckBox
+    private lateinit var buttonLogin:Button
+    private lateinit var wheel:ProgressBar
+    private var check1 = false
+    private var check2 = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        editTextLogin = findViewById(R.id.edit_login)
-        editTextPassword = findViewById(R.id.edit_password)
-        accept = findViewById(R.id.accept)
-        buttonLogin = findViewById(R.id.button_login)
-        wheel = findViewById(R.id.wheel)
-
+        initView()
 
         editTextLogin.addTextChangedListener(object : TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -67,6 +61,14 @@ class MainActivity : AppCompatActivity() {
         buttonLogin.setOnClickListener{
             startWheel()
         }
+    }
+
+    private fun initView(){
+        editTextLogin = findViewById(R.id.edit_login)
+        editTextPassword = findViewById(R.id.edit_password)
+        accept = findViewById(R.id.accept)
+        buttonLogin = findViewById(R.id.button_login)
+        wheel = findViewById(R.id.wheel)
     }
 
     private fun startWheel(){
