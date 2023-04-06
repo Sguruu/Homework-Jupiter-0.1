@@ -9,11 +9,12 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:adjustViewBounds="true"
         android:src="@drawable/photo"
-        app:layout_constraintEnd_toEndOf="@+id/guideline_for_image_right"
-        app:layout_constraintStart_toStartOf="@+id/guideline_for_image_left"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_left"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -26,7 +27,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintBottom_toTopOf="@+id/edit_login" />
 
     <EditText
         android:id="@+id/edit_login"
@@ -38,7 +39,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintBottom_toTopOf="@+id/edit_password" />
 
     <EditText
         android:id="@+id/edit_password"
@@ -50,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_right"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edit_login" />
+        app:layout_constraintBottom_toTopOf="@+id/accept" />
 
     <CheckBox
         android:id="@+id/accept"
@@ -59,7 +60,7 @@
         android:text="@string/accept"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@id/guideline_left"
-        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/button_login"
@@ -68,7 +69,7 @@
         android:enabled="false"
         android:text="@string/login"
         app:layout_constraintBaseline_toBaselineOf="@+id/accept"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guideline_right"
         app:layout_constraintStart_toEndOf="@+id/accept" />
 
     <ProgressBar
