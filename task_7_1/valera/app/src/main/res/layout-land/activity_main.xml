@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:src="@drawable/photo"
-        app:layout_constraintEnd_toEndOf="@+id/textView"
-        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_for_image_right"
+        app:layout_constraintStart_toStartOf="@+id/guideline_for_image_left"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -95,6 +95,20 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_end="16dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_for_image_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="300dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_for_image_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="300dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
