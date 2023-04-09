@@ -1,18 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:orientation="vertical">
+
+    <ImageView
+        android:scaleType="centerCrop"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@drawable/way"
+        >
+
+
+    </ImageView>
 
     <TextView
+        android:id="@+id/TextView"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="ghghrgher"
+        android:textColor="@color/black"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@color/white"
+        android:textSize="15sp"
+        >
+    </TextView>
+
+    <EditText
+        android:id="@+id/EditTextMail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:inputType="textEmailAddress"
+        android:hint="efwef"
+        >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/EditTextPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:hint="wjffwjif"
+        android:inputType="textPassword">
+
+    </EditText>
+
+    <CheckBox
+        android:id="@+id/CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_margin="10dp"
+        android:text="jjhk"
+        android:textSize="13sp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </CheckBox>
+
+    <Button
+        android:id="@+id/Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="lejvkejv"
+        android:layout_gravity="center"
+        android:enabled="false"
+        >
+
+    </Button>
+
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        >
+
+    </ProgressBar>
+
+</LinearLayout>
+
