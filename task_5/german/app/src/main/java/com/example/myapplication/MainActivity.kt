@@ -7,9 +7,6 @@ import android.os.Looper
 import android.text.Editable
 import android.view.View
 import android.widget.*
-
-
-
 class MainActivity : AppCompatActivity() {
 
     lateinit var textView: TextView
@@ -56,16 +53,14 @@ class MainActivity : AppCompatActivity() {
         buttonOk = findViewById(R.id.Button)
         progressBar = findViewById(R.id.ProgressBar)
     }
-
     abstract class overTextWatch : android.text.TextWatcher {
         override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
         override fun afterTextChanged(p0: Editable?) {}
     }
     private fun emptyOrNo(){
         buttonOk.isEnabled =
-        checkEmailEmptyorNo && checkPasswordEmptyorNo && checkBoxAgree.isChecked
+            checkEmailEmptyorNo && checkPasswordEmptyorNo && checkBoxAgree.isChecked
     }
-
     private fun starting() {
         progressBar.visibility = View.VISIBLE
         inputEmail.isEnabled = false
@@ -81,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             buttonOk.isEnabled = true
             Toast.makeText(
                 this,
-                resources.getString(R.string.jjj),
+                resources.getString(R.string.progress_load),
                 Toast.LENGTH_LONG
             ).show()
         },2000)

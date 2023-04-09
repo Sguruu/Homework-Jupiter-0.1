@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="jjj">Gtgtgt</string>
+    <string name="button_name">Готово</string>
+    <string name="check_name">Я согласен с пользовательским соглашением.</string>
+    <string name="text_view">Приветсвую тебя, пользователЪ!</string>
+    <string name="edit_email">Введите e-mail...</string>
+    <string name="edit_password">Введите пароль...</string>
+    <string name="progress_load">Данные загружены</string>
 </resources>
