@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="registration">Write your login and password</string>
+    <string name="login">login</string>
+    <string name="password">password</string>
+    <string name="accept">I am agree with user agreement</string>
+    <string name="successfully">Login is successfully</string>
+</resources>
