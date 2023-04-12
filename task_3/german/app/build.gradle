@@ -20,13 +20,10 @@ android {
 
     buildTypes {
         debug{
-
         }
         qa{
             initWith debug
         }
-
-
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
@@ -43,8 +40,8 @@ android {
         }
         paid {
             dimension "payment"
-            applicationIdSuffix ".free"
-            versionNameSuffix "free"
+            applicationIdSuffix ".paid"
+            versionNameSuffix "paid"
             manifestPlaceholders = [appName: "@app_name_paid"]
         }
     }
