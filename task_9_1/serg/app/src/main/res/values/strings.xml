@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="enter_password">Введите пароль</string>
+    <string name="enter_email">Введите email</string>
+    <string name="validation_email_and_login">Проверка ввода почты и пароля</string>
+    <string name="error_email_and_password">Ошибка ! Поле Логина или Пароля не заполнены !</string>
+    <string name="error_email">Ошибка ! Введена некорркетная почта !</string>
+</resources>
