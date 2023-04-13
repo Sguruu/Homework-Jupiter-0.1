@@ -13,7 +13,6 @@
         android:id="@+id/actionSearch"
         android:actionMenuTextColor="@color/white"
         android:icon="@drawable/ic_search_24"
-        android:iconTint="@color/white"
         android:title="@string/action_search"
         app:actionViewClass="android.widget.SearchView"
         app:iconTint="@color/white"
