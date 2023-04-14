@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
        >
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:title="@string/app_name"
+            style="@style/style_for_toolbar"
+            app:navigationIcon="@drawable/chevron_left"
+            app:menu="@menu/menu_toolbar"
+            />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,6 +34,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_one"
@@ -49,6 +60,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_two"
@@ -74,6 +86,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_three"
@@ -99,6 +112,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news4"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_four"
@@ -124,6 +138,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_five"
@@ -149,6 +164,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news6"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_six"
@@ -174,6 +190,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news7"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_seven"
@@ -199,6 +216,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news8"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_eight"
@@ -224,6 +242,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_nine"
@@ -249,6 +268,7 @@ android:layout_height="match_parent">
                 />
 
             <TextView
+                android:id="@+id/news10"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@string/news_ten"
