@@ -15,13 +15,40 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 
     buildTypes {
+        debug {
+
+        }
+        qa {
+            initWith debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+        flavorDimensions "payment"
+
+        productFlavors{
+            paid {
+                applicationIdSuffix ".paid"
+                manifestPlaceholders = [appName: "@strings/app_name_paid"]
+                versionNameSuffix "paid"
+                versionCode 1
+
+                minSdk 28
+
+            }
+            free {
+                applicationIdSuffix ".free"
+                manifestPlaceholders = [appName: "@strings/app_name_free"]
+                versionNameSuffix "free"
+                versionCode 1
+            }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
