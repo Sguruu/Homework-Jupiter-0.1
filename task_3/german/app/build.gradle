@@ -36,7 +36,7 @@ android {
         productFlavors{
             paid {
                 applicationIdSuffix ".paid"
-                manifestPlaceholders = [appName: "@strings/app_name_paid"]
+                manifestPlaceholders = [appName: "@string/app_name_paid"]
                 versionNameSuffix "paid"
                 versionCode 1
 
@@ -45,7 +45,7 @@ android {
             }
             free {
                 applicationIdSuffix ".free"
-                manifestPlaceholders = [appName: "@strings/app_name_free"]
+                manifestPlaceholders = [appName: "@string/app_name_free"]
                 versionNameSuffix "free"
                 versionCode 1
             }
