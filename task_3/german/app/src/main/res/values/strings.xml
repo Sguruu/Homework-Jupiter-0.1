@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">My Application 3</string>
+    <string name="app_name_paid">My app paid</string>
+    <string name="app_name_free">My app free</string>
 </resources>
