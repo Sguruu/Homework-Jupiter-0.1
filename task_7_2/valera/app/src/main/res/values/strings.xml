@@ -10,9 +10,13 @@
     <string name="news_eight">Пока Франция не стала частью России, всё же не стоит называть меня её президентом - Путин В.В. </string>
     <string name="news_nine">Каждое уважающее себя информ издание просто обязано хоть в одной новости упомянуть Северную Корею хотя бы дважды. Таковы тенденции - лидер Северной Кореи Ким Чен Ын </string>
     <string name="news_ten">Новость, на которую у меня уже не хватило фантазии, да я и не старался уже</string>
-   <string name="empty_request">Пустой поисковый запрос</string>
+    <string name="empty_request">Пустой поисковый запрос</string>
     <string name="del_dis">Вылечить болезнь</string>
     <string name="del_phob">Устранить фобию</string>
     <string name="add_power">Получить заряд</string>
-    <string name="seacher">Поиск</string>
+    <string name="del_dis_comp">Болезнь вылечена</string>
+    <string name="del_phob_comp">Фобия устранена</string>
+    <string name="add_power_comp">Заряд получен</string>
+    <string name="searcher">Поиск</string>
+    <string name="null_search_query">Пустой поисковый запрос</string>
 </resources>

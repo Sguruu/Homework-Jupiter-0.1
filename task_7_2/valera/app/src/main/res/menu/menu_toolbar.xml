@@ -16,7 +16,7 @@
     <item
         android:id="@+id/search"
         android:icon="@drawable/searcher"
-        android:title="@string/seacher"
+        android:title="@string/searcher"
         app:showAsAction="ifRoom|collapseActionView"
         app:iconTint="@color/white"
         android:iconTint="@color/white"

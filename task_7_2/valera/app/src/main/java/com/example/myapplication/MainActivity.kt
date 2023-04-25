@@ -28,27 +28,27 @@ class MainActivity : AppCompatActivity() {
         binding= ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initToolbar()
-        Searching()
+        searching()
     }
 
     private fun initToolbar(){
         binding.toolbar.setNavigationOnClickListener{
-            onBackPressed()
+            onBackPressedDispatcher.onBackPressed()
         }
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
-                R.id.del_phob -> { toastShowShort("Фобия устранена")
+                R.id.del_phob -> { toastShowShort(R.string.del_phob_comp)
                     true}
-                R.id.del_dis -> { toastShowShort("Болезнь вылечена")
+                R.id.del_dis -> { toastShowShort(R.string.del_dis_comp)
                     true}
-                R.id.add_pow -> { toastShowShort("Заряд получен")
+                R.id.add_pow -> { toastShowShort(R.string.add_power_comp)
                     true}
                 else -> false
             }
         }
     }
 
-    private fun Searching(){
+    private fun searching(){
         val searchItem = binding.toolbar.menu.findItem(R.id.search)
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener{
             override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                 binding.textSearch.visibility = View.GONE
                 binding.newsLine.visibility = View.VISIBLE
-                binding.textSearch.text = "Пустой поисковый запрос"
+                binding.textSearch.text = R.string.null_search_query.toString()
                 return true
             }
         })
@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         binding.textSearch.visibility = View.VISIBLE
     }
 
-    private fun toastShowShort(text:String){
+    private fun toastShowShort(text: Int){
         Toast.makeText(this,text, Toast.LENGTH_SHORT).show()
     }
 }
