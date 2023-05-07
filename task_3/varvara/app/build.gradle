@@ -1,0 +1,90 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.a03_01_02'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "com.example.a03_01_02"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
+
+        buildTypes {
+        debug{
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [appName: "debug"]
+            versionCode 1
+            versionName = "1.1"
+            applicationId = "my.app.debug"
+
+        }
+        qa{
+            initWith debug
+            applicationIdSuffix ".qa"
+            manifestPlaceholders = [appName: "qa"]
+
+            versionCode  1
+            versionName = "1.2"
+            applicationId = "my.app.qa"
+
+        }
+        release {
+            versionCode 1
+            versionName = "2.0"
+            applicationIdSuffix ".release"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            manifestPlaceholders = [appName: "release"]
+            applicationId = "my.app.release"
+
+        }
+    }
+
+    flavorDimensions "payment"
+    productFlavors{
+        paid{
+            dimension "payment"
+            applicationIdSuffix ".paid"
+            versionNameSuffix "paid"
+            manifestPlaceholders = [appName: "@string/paid_app"]
+
+            minSdk 28
+        }
+
+        free{
+            dimension "payment"
+            applicationIdSuffix ".free"
+            versionNameSuffix "free"
+            versionCode = android.defaultConfig.versionCode + 100
+            manifestPlaceholders = [appName: "@string/free_app"]
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+}
