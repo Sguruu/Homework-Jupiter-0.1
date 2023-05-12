@@ -5,14 +5,13 @@
 
     Со мной вы можете:
     - Добавить друга
+    - Посмотреть список своих друзей
     - Удалить друга
-    - Рассказать интересный анекдот
 
     Я никого не создаю и никого не убиваю (хотя иногда очень хочется ^^)"""</string>
     <string name="menu_searcher">Поиск</string>
     <string name="menu_adder">Добавить нового друга</string>
     <string name="menu_shower">Показать список друзей</string>
-    <string name="menu_joke_listener">Рассказать анекдот</string>
     <string name="name">Введите имя</string>
     <string name="surname">Введите фамилию</string>
     <string name="phone_number">Введите номер телефона</string>

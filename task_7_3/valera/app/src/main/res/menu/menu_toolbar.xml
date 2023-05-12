@@ -15,7 +15,4 @@
         android:id="@+id/shower"
         android:title="@string/menu_shower"
         />
-    <item
-        android:id="@+id/joke_listener"
-        android:title="@string/menu_joke_listener"/>
 </menu>
