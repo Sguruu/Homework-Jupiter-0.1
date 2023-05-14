@@ -23,6 +23,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         toast = Toast(this)
 
+        initListener()
+    }
+
+    private fun initListener() {
         binding.buttonAddContact.setOnClickListener {
             val name = binding.editTextName.text.toString()
             val lastName = binding.editTextLastName.text.toString()
@@ -79,9 +83,9 @@ class MainActivity : AppCompatActivity() {
                     binding.linearLayoutContent.removeAllViews()
                     // простой поиск по имени по нажатию кнопки
                     listContact.filter { it.name.contains(p0 ?: "", ignoreCase = true) }
-                        .let {
-                            it.forEach {
-                                createViewContent(it)
+                        .let { filterList ->
+                            filterList.forEach { contact ->
+                                createViewContent(contact)
                             }
                         }
                     return true
