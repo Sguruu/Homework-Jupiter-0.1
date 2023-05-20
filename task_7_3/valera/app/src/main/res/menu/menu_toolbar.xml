@@ -5,7 +5,8 @@
         android:id="@+id/searcher"
         android:title="@string/menu_searcher"
         android:icon="@drawable/icon_searcher"
-        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="ifRoom|collapseActionView"
         />
     <item
         android:id="@+id/adder"

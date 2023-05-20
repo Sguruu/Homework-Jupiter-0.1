@@ -20,7 +20,6 @@
             android:background="@color/dark_pink"
             app:title="@string/app_name"
             app:titleTextColor="@color/turquoise"
-            app:navigationIcon="@drawable/ic_arrow_back"
             app:menu="@menu/menu_toolbar"/>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -93,6 +92,13 @@
 
             <LinearLayout
                 android:id="@+id/shower_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                />
+            <LinearLayout
+                android:id="@+id/searcher_liner_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
