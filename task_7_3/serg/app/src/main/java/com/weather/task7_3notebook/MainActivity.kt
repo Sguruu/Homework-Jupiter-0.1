@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.appbar.AppBarLayout.LayoutParams.*
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
 import com.weather.task7_3notebook.databinding.ItemContactBinding
 
@@ -138,6 +139,20 @@ class MainActivity : AppCompatActivity() {
             toast(text)
         }, 2000)
     }
+
+    // пример изменение флага через Toolbar
+//    private fun renderScrollFlagsToolbar(isActiveScroll: Boolean) {
+//        val params = (binding.toolbar.layoutParams as AppBarLayout.LayoutParams)
+//
+//        when (isActiveScroll) {
+//            true -> {
+//                params.scrollFlags = SCROLL_FLAG_SCROLL + SCROLL_FLAG_ENTER_ALWAYS
+//            }
+//            false -> {
+//                params.scrollFlags = SCROLL_FLAG_NO_SCROLL
+//            }
+//        }
+//    }
 
     private fun toast(text: String) {
         toast.cancel()
