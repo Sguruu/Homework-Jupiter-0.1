@@ -3,13 +3,18 @@ package com.example.myapplication
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
+import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     val tag = "Логирование ЖЦ Activity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         Log.println(Log.VERBOSE, tag, message("onCreate"))
+        initButton()
     }
 
     override fun onStart() {
@@ -42,7 +47,20 @@ class MainActivity : AppCompatActivity() {
         Log.println(Log.DEBUG, tag, message("onDestroy"))
     }
 
-    fun message(funName:String):String{
+    private fun message(funName:String):String{
         return "Запущен метод $funName"
+    }
+
+    private fun initButton(){
+        binding.loginButton.setOnClickListener {
+            if (binding.editLogin.text.isEmpty() &&
+                binding.editPassword.text.isEmpty()
+            ){binding.errorMessage.text = "Ошибка. Не введён логин, либо пароль"}
+            else if(Patterns.EMAIL_ADDRESS.matcher(binding.editLogin.text.toString()).matches()){
+                binding.errorMessage.text = " "
+            }
+            else {
+                binding.errorMessage.text = "Ошибка. Введён некорректный адрес электронной почты"}
+        }
     }
 }
