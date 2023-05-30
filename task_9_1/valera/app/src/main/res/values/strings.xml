@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="edit_login">Введите почту</string>
+    <string name="edit_password">Введите пароль</string>
+    <string name="button_text">Кнопка логина</string>
+    <string name="error_text">Какая-либо ошибка</string>
 </resources>
