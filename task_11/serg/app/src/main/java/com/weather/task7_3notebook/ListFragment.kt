@@ -57,7 +57,11 @@ class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
      * Создание View из объекта Contact
      */
     private fun createViewContent(contact: Contact) {
-        val view = ItemContactBinding.inflate(layoutInflater, binding.rootFragmentList, false)
+        val view = ItemContactBinding.inflate(
+            layoutInflater,
+            binding.rootFragmentList,
+            false
+        )
         view.textViewName.text = contact.name
         view.textViewLastName.text = contact.lastName
         view.textViewNumberPhone.text = contact.number.toString()
