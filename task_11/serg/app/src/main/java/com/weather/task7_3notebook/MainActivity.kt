@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.material.appbar.AppBarLayout.LayoutParams.*
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
 import com.weather.task7_3notebook.databinding.ItemContactBinding
@@ -20,6 +21,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // отключение темной темы
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         toast = Toast(this)
