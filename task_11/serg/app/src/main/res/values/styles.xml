@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="ToolbarStyle">
+        <item name="android:background">@color/balance</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:theme">@style/ToolbarTheme</item>
+        <item name="elevation">8dp</item>
+    </style>
+
+    <!--
+    android:editTextColor - изменение цвета вводимого текста
+    android:textColorSecondary - изменение цвета занчка (три точки) меню
+
+    Позволяет изменить цвет фона :
+    parent="Theme.AppCompat.Light.DarkActionBar"
+    <item name="android:itemBackground">@color/balance_light</item>
+
+    Изменить цвет курсора в наследуемой теме parent="Theme.AppCompat.Light.DarkActionBar"
+    <item name="colorAccent">@color/white</item>
+    -->
+    <style name="ToolbarTheme"  parent="Theme.AppCompat.Light.DarkActionBar" >
+        <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:editTextColor">@color/white</item>
+        <item name="android:itemTextAppearance">@style/myCustomMenuTextAppearance</item>
+        <item name="android:itemBackground">@color/balance_light</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <!-- Изменение цвета текста для элементов меню -->
+    <style name="myCustomMenuTextAppearance" parent="@android:style/TextAppearance.Widget.IconMenu.Item">
+        <item name="android:textColor">@color/balance</item>
+    </style>
+
+    <style name="EditTextStyle">
+        <item name="android:theme">@style/EditTextTheme</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLength">34</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="EditTextTheme">
+        <item name="colorSecondary">@color/balance</item>
+    </style>
+
+</resources>
