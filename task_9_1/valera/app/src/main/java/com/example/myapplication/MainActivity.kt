@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import android.os.Build
+import android.os.Build.VERSION
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +11,7 @@ import com.example.myapplication.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val tag = "Логирование ЖЦ Activity"
-    private lateinit var errorLoginCondition: String
+    private var errorLoginCondition = ErrorLoginCondition("")
     private val keyState = "KEY_STATE"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,8 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         Log.println(Log.VERBOSE, tag, message("onCreate"))
         initButton()
-        errorLoginCondition = savedInstanceState?.getString(keyState)?: ""
-        binding.errorMessage.text = errorLoginCondition
+        createErrorMessageOnScreenRotation(savedInstanceState)
     }
 
     override fun onStart() {
@@ -61,21 +62,34 @@ class MainActivity : AppCompatActivity() {
             if (binding.editLogin.text.isEmpty() ||
                 binding.editPassword.text.isEmpty()
             ){
-                binding.errorMessage.text = ErrorLogin.EMPTYINPUT.text
-                errorLoginCondition = ErrorLogin.EMPTYINPUT.text
+                errorLoginCondition = errorLoginCondition.emptyInput()
+                binding.errorMessage.text = errorLoginCondition.message
             }
             else if(Patterns.EMAIL_ADDRESS.matcher(binding.editLogin.text.toString()).matches()){
-                binding.errorMessage.text = ""
-                errorLoginCondition = ""
+                errorLoginCondition = errorLoginCondition.noError()
+                binding.errorMessage.text = errorLoginCondition.message
             }
             else {
-                binding.errorMessage.text = ErrorLogin.INVALIDEMAIL.text
-                errorLoginCondition = ErrorLogin.INVALIDEMAIL.text
+                errorLoginCondition = errorLoginCondition.invalidEmail()
+                binding.errorMessage.text = errorLoginCondition.message
             }
         }
     }
+
+    private fun createErrorMessageOnScreenRotation(savedInstanceState: Bundle?){
+        errorLoginCondition =
+            if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+                savedInstanceState?.getParcelable(keyState, ErrorLoginCondition::class.java)?:
+                ErrorLoginCondition("")
+            } else {
+                savedInstanceState?.getParcelable<ErrorLoginCondition>(keyState)?:
+                ErrorLoginCondition("")
+            }
+        binding.errorMessage.text = errorLoginCondition.message
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(keyState, errorLoginCondition)
+        outState.putParcelable(keyState, errorLoginCondition)
     }
 }
