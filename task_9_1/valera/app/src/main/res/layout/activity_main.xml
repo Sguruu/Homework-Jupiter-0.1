@@ -14,7 +14,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:gravity="center"
-        android:textSize="50sp"
+        android:textSize="40sp"
         android:textColor="@color/red"
         tools:text="@string/error_text"
         />
