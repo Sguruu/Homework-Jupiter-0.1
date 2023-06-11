@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">This is ma app</string>
+    <string name="Hi">Dream on!</string>
+    <string name="hint1">Enter your e-mail...</string>
+    <string name="hint2">Enter your password...</string>
+    <string name="agreement">I agree with the user agreement</string>
+    <string name="button">Done</string>
+    <string name="load">Load is finished</string>
+</resources>
