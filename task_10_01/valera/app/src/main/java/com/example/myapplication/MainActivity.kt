@@ -1,10 +1,12 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
@@ -20,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var acceptCheckBox: CheckBox
     private lateinit var buttonLogin: Button
     private lateinit var wheel: ProgressBar
+    private var invalidEmailMessage = "Некорректный ввод почты"
     private var checkEditTextLoginNoEmpty = false
     private var checkEditTextPasswordNoEmpty = false
 
@@ -54,7 +57,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         buttonLogin.setOnClickListener {
-            startWheel()
+            if (Patterns.EMAIL_ADDRESS.matcher(editTextLogin.text.toString()).matches()){
+                startWheel()
+                val profileActivityIntent = Intent(
+                    this, ProfileActivity::class.java
+                )
+                startActivity(profileActivityIntent)
+                finish()
+            } else {
+                Toast.makeText(this,invalidEmailMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -72,19 +84,6 @@ class MainActivity : AppCompatActivity() {
         editTextPassword.isEnabled = false
         acceptCheckBox.isEnabled = false
         buttonLogin.isEnabled = false
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            wheel.visibility = View.GONE
-            editTextLogin.isEnabled = true
-            editTextPassword.isEnabled = true
-            acceptCheckBox.isEnabled = true
-            buttonLogin.isEnabled = true
-            Toast.makeText(
-                this,
-                resources.getString(R.string.successfully),
-                Toast.LENGTH_SHORT
-            ).show()
-        }, 2000)
     }
 
     private fun renderButtonEnabled() {
