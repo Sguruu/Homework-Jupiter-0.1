@@ -5,6 +5,7 @@ import android.view.MenuItem
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.navigation.fragment.NavHostFragment
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
 
 interface IMainActivity {
@@ -27,15 +28,17 @@ interface IMainActivity {
 class MainActivity : AppCompatActivity(), IMainActivity {
 
     private lateinit var binding: ActivityMainBinding
+    private val navController by lazy {
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentContainerView1) as NavHostFragment
+        navHostFragment.navController
+    }
     private val listContact = mutableListOf<Contact>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState == null) {
-            showAddPersonFragment()
-        }
         // отключение темной темы
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         initListener()
@@ -57,18 +60,17 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         binding.toolbar.setOnMenuItemClickListener { itemMenu ->
             when (itemMenu.itemId) {
                 R.id.actionAddContact -> {
-                    replaceAddPersonFragment()
+                    showAddPersonFragment()
                     true
                 }
 
                 R.id.actionShowContent -> {
-                    replaceListFragment()
+                    showListFragment()
                     true
                 }
 
                 R.id.actionSearch -> {
-                    replaceListFragment()
-                    // renderActionSearch()
+                    showListFragment()
                     true
                 }
 
@@ -97,6 +99,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 }
 
                 override fun onQueryTextChange(p0: String?): Boolean {
+                    showListFragment()
                     // простой поиск по имени по нажатию кнопки
                     listContact.filter { it.name.contains(p0 ?: "", ignoreCase = true) }
                         .let { filterList ->
@@ -116,39 +119,15 @@ class MainActivity : AppCompatActivity(), IMainActivity {
             })
     }
 
-    private fun replaceListFragment() {
-        supportFragmentManager.beginTransaction()
-            .setReorderingAllowed(true)
-            .replace(
-                binding.fragmentContainerView1.id,
-                ListFragment(),
-                ListFragment.FRAGMENT_TAG
-            )
-            .commit()
+    private fun showListFragment() {
+        if (navController.currentDestination != navController.findDestination(R.id.listFragment)) {
+            navController.navigate(R.id.action_addPersonFragment_to_listFragment)
+        }
     }
 
     private fun showAddPersonFragment() {
-        supportFragmentManager.beginTransaction()
-            .add(
-                binding.fragmentContainerView1.id,
-                AddPersonFragment(),
-                AddPersonFragment.FRAGMENT_TAG
-            )
-            .setReorderingAllowed(true)
-            .commit()
-    }
-
-    private fun replaceAddPersonFragment() {
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView1)
-        if (currentFragment != null && currentFragment.tag != AddPersonFragment.FRAGMENT_TAG) {
-            supportFragmentManager.beginTransaction()
-                .setReorderingAllowed(true)
-                .replace(
-                    binding.fragmentContainerView1.id,
-                    AddPersonFragment(),
-                    AddPersonFragment.FRAGMENT_TAG
-                )
-                .commit()
+        if (navController.currentDestination != navController.findDestination(R.id.addPersonFragment)) {
+            navController.navigate(R.id.action_global_addPersonFragment)
         }
     }
 }
