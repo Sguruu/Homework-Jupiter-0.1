@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">My text</string>
+    <string name="nameToolbar">Tubik</string>
+    <string name="naviBut">Back click</string>
+
+    <string name="name_string">Ты лучший</string>
+
+    <string name="action1">Ученье свет</string>
+    <string name="action2">Просто действуй</string>
+    <string name="action3">Ты чемпион</string>
+
+    <string name="action_1">Ты успешный</string>
+    <string name="action_2">Ты уверенный в себе</string>
+    <string name="action_3">Ты счастлив</string>
+
+    <string name="searchWindow">Поиск</string>
+
+    <string name="ActionExpand">Нажата onMenuItemActionExpand</string>
+    <string name="ActionCollapse">Нажата onMenuItemActionCollapse</string>
+</resources>
