@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/del_dis"
+        android:id="@+id/del_dis"
+        />
+    <item android:title="@string/del_phob"
+        android:id="@+id/del_phob"/>
+    <item android:title="@string/add_power"
+        android:id="@+id/add_pow"
+        android:icon="@drawable/burger"
+        app:showAsAction="ifRoom"
+        app:iconTint="@color/white"
+        android:iconTint="@color/white"
+        />
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/searcher"
+        android:title="@string/searcher"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:iconTint="@color/white"
+        android:iconTint="@color/white"
+        app:actionViewClass="android.widget.SearchView"
+        />
+</menu>

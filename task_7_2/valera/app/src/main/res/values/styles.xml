@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="style_for_toolbar">
+        <item name="android:background">@color/teal_200</item>
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:elevation">8dp</item>
+        <item name="android:theme">@style/ToolbarTheme</item>
+    </style>
+    <style name="ToolbarTheme">
+        <item name="toolbarNavigationButtonStyle">@style/toolbarNavigationStyle</item>
+        <item name="android:textColorSecondary">@color/white</item>
+    </style>
+    <style name="toolbarNavigationStyle">
+        <item name="tint">@color/white</item>
+    </style>
+    
+</resources>
