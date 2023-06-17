@@ -4,4 +4,5 @@
     <string name="login">login</string>
     <string name="password">password</string>
     <string name="accept">I am agree with user agreement</string>
+    <string name="phone_number">Enter phone number and press on handset</string>
 </resources>
