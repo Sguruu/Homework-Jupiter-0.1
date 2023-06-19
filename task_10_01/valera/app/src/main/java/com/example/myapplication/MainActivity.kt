@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var acceptCheckBox: CheckBox
     private lateinit var buttonLogin: Button
     private lateinit var wheel: ProgressBar
-    private var invalidEmailMessage = "Некорректный ввод почты"
+    private var invalidEmailMessage = "Incorrect mail input"
     private var checkEditTextLoginNoEmpty = false
     private var checkEditTextPasswordNoEmpty = false
 
