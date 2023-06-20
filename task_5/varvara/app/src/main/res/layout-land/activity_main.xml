@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-
     <ImageView
 
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_weight="1"
         android:src="@drawable/user_login_svgrepo_com" />
 
@@ -31,8 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="13dp"
         android:hint="@string/login"
-        android:inputType="text"
-        android:minHeight="48dp" />
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edit_email"
@@ -41,7 +41,7 @@
         android:layout_margin="13dp"
         android:hint="@string/mail"
         android:inputType="textEmailAddress"
-        android:minHeight="48dp" />
+        />
 
     <EditText
         android:id="@+id/edit_password"
@@ -50,7 +50,7 @@
         android:layout_margin="13dp"
         android:hint="@string/password"
         android:inputType="textPassword"
-        android:minHeight="48dp" />
+        />
 
     <CheckBox
         android:id="@+id/accept"
@@ -76,5 +76,5 @@
         android:layout_gravity="center"
         android:visibility="gone"
         />
-</LinearLayout>
- 
+    </LinearLayout>
+</ScrollView>

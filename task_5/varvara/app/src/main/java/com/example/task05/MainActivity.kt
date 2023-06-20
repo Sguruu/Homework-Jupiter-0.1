@@ -16,11 +16,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var editTextLogin: EditText
     private lateinit var editTextPassword: EditText
+    private lateinit var editTextEmailAdress: EditText
     private lateinit var acceptCheckBox: CheckBox
     private lateinit var buttonLogin: Button
     private lateinit var wheel: ProgressBar
     private var checkEditTextLoginNoEmpty = false
     private var checkEditTextPasswordNoEmpty = false
+    private var checkEditTextEmailAdressNoEmpty = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +32,16 @@ class MainActivity : AppCompatActivity() {
 
 
         editTextLogin.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                checkEditTextLoginNoEmpty = p0?.isNotEmpty() ?: false
+                renderButtonEnabled()
+            }
+
+            override fun afterTextChanged(p0: Editable?) {}
+        })
+
+        editTextEmailAdress.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 checkEditTextLoginNoEmpty = p0?.isNotEmpty() ?: false
@@ -61,6 +73,7 @@ class MainActivity : AppCompatActivity() {
     private fun initView(){
         editTextLogin = findViewById(R.id.edit_login)
         editTextPassword = findViewById(R.id.edit_password)
+        editTextEmailAdress = findViewById(R.id.edit_email)
         acceptCheckBox = findViewById(R.id.accept)
         buttonLogin = findViewById(R.id.enter)
         wheel = findViewById(R.id.wheel)
@@ -70,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         wheel.visibility = View.VISIBLE
         editTextLogin.isEnabled = false
         editTextPassword.isEnabled = false
+        editTextEmailAdress.isEnabled = false
         acceptCheckBox.isEnabled = false
         buttonLogin.isEnabled = false
 
@@ -77,6 +91,7 @@ class MainActivity : AppCompatActivity() {
             wheel.visibility = View.GONE
             editTextLogin.isEnabled = true
             editTextPassword.isEnabled = true
+            editTextEmailAdress.isEnabled = true
             acceptCheckBox.isEnabled = true
             buttonLogin.isEnabled = true
             Toast.makeText(
@@ -89,7 +104,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun renderButtonEnabled() {
         buttonLogin.isEnabled =
-            checkEditTextLoginNoEmpty && checkEditTextPasswordNoEmpty && acceptCheckBox.isChecked
+            checkEditTextLoginNoEmpty &&  checkEditTextPasswordNoEmpty && acceptCheckBox.isChecked
     }
 
 }
