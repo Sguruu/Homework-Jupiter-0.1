@@ -15,11 +15,8 @@ import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ShowerListBinding
 
 class MainActivity : AppCompatActivity() {
-    private var checkEditTextNameNoEmpty = false
-    private var checkEditTextSurnameNoEmpty = false
-    private var checkEditTextPhoneNumberNoEmpty = false
     private lateinit var binding: ActivityMainBinding
-    private val friendList = mutableListOf<Friend>()
+    private val friendList = ArrayList<Friend>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +30,14 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.searcher -> {
-                    binding.welcomeWords.visibility = View.GONE
-                    binding.adderFriend.visibility = View.GONE
-                    binding.showerList.visibility = View.GONE
+
+//                    binding.welcomeWords.visibility = View.GONE
+//                    binding.showerList.visibility = View.GONE
                     binding.searcherLinerLayout.visibility = View.VISIBLE
+//                  binding.adderFriend.visibility = View.GONE
+                    supportFragmentManager.beginTransaction()
+                        .remove(FragmentAdderFriends())
+                        .commit()
 
                     true
                 }
@@ -59,45 +60,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initListener() {
-        binding.editName.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextNameNoEmpty = p0?.isNotEmpty() ?: false
-                renderButtonEnabled()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {}
-        })
-
-        binding.edinSurname.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextSurnameNoEmpty = p0?.isNotEmpty() ?: false
-                renderButtonEnabled()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
-        binding.editPhoneNumber.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextPhoneNumberNoEmpty = p0?.isNotEmpty() ?: false
-                renderButtonEnabled()
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        })
-
-        binding.adderButtom.setOnClickListener {
-            startProgressBar()
-            addFriendOnList()
-            createItemsView()
-            finishProgressBar()
-        }
-
         val searchViewOnMenu = binding.toolbar.menu.findItem(R.id.searcher)
 
         searchViewOnMenu.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
@@ -108,7 +70,10 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                 binding.searcherLinerLayout.visibility = View.GONE
                 binding.searcherLinerLayout.removeAllViews()
-                binding.showerList.visibility = View.VISIBLE
+//                binding.showerList.visibility = View.VISIBLE
+                supportFragmentManager.beginTransaction()
+                    .replace(binding.fragmentContainer.id, FragmentShowerListFriends.newInstance(friendList))
+                    .commit()
                 return true
             }
         })
@@ -128,83 +93,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun renderAdderFriend() {
-        binding.welcomeWords.visibility = View.GONE
-        binding.showerList.visibility = View.GONE
+//        binding.welcomeWords.visibility = View.GONE
+
+//        binding.showerList.visibility = View.GONE
         binding.searcherLinerLayout.visibility = View.GONE
-        binding.adderFriend.visibility = View.VISIBLE
+
+//      binding.adderFriend.visibility = View.VISIBLE
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, FragmentAdderFriends.newInstance(friendList))
+            .commit()
     }
-
-    private fun startProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.editName.isEnabled = false
-        binding.edinSurname.isEnabled = false
-        binding.editPhoneNumber.isEnabled = false
-        binding.adderButtom.isEnabled = false
-    }
-
-    private fun addFriendOnList() {
-        friendList.add(
-            Friend(
-                binding.editName.text.toString(),
-                binding.edinSurname.text.toString(),
-                binding.editPhoneNumber.text.toString()
-            )
-        )
-    }
-
-    private fun createItemsView() {
-        val view = ShowerListBinding.inflate(layoutInflater, binding.showerList, false)
-
-        view.apply {
-            view.friendName.text = binding.editName.text.toString()
-            view.friendSurname.text = binding.edinSurname.text.toString()
-            view.friendPhoneNumber.text = binding.editPhoneNumber.text.toString()
-
-            view.buttomDellFriend.setOnClickListener {
-                for (i in 0 until friendList.size) {
-                    if (friendList[i].name == view.friendName.text &&
-                        friendList[i].surname == view.friendSurname.text &&
-                        friendList[i].phoneNumber == view.friendPhoneNumber.text
-                    ) {
-                        friendList.remove(friendList[i])
-                        break
-                    }
-                }
-                binding.showerList.removeView(view.root)
-            }
-        }
-        binding.showerList.addView(view.root)
-    }
-
-    private fun finishProgressBar() {
-        Handler(Looper.getMainLooper()).postDelayed({
-            binding.progressBar.visibility = View.GONE
-            binding.editName.isEnabled = true
-            binding.editName.text = null
-            binding.edinSurname.isEnabled = true
-            binding.edinSurname.text = null
-            binding.editPhoneNumber.isEnabled = true
-            binding.editPhoneNumber.text = null
-
-            Log.d("MyTest", "Thread ${Thread.currentThread().name}")
-            Toast.makeText(
-                this,
-                resources.getString(R.string.successfully),
-                Toast.LENGTH_SHORT
-            ).show()
-        }, 2000)
-    }
-
-    private fun renderButtonEnabled() {
-        binding.adderButtom.isEnabled =
-            checkEditTextNameNoEmpty && checkEditTextSurnameNoEmpty && checkEditTextPhoneNumberNoEmpty
-    }
-
     private fun showerList() {
-        binding.welcomeWords.visibility = View.GONE
-        binding.adderFriend.visibility = View.GONE
+//        binding.welcomeWords.visibility = View.GONE
         binding.searcherLinerLayout.visibility = View.GONE
-        binding.showerList.visibility = View.VISIBLE
+//        binding.showerList.visibility = View.VISIBLE
+//      binding.adderFriend.visibility = View.GONE
+        supportFragmentManager.beginTransaction()
+            .replace(binding.fragmentContainer.id, FragmentShowerListFriends.newInstance(friendList))
+            .commit()
     }
 
     private fun searcher(valueSearch: String?) {
