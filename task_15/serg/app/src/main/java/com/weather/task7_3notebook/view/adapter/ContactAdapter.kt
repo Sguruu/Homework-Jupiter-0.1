@@ -1,12 +1,13 @@
-package com.weather.task7_3notebook
+package com.weather.task7_3notebook.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.weather.task7_3notebook.databinding.ItemContactBinding
+import com.weather.task7_3notebook.model.Contact
 
 class ContactAdapter(
-    private val onItemDeleteClickListener: (position: Int, contact: Contact) -> Unit
+    private val onItemDeleteClickListener: (contact: Contact) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.Holder>() {
 
     var contactList: List<Contact> = emptyList()
@@ -33,19 +34,9 @@ class ContactAdapter(
         contactList = list
     }
 
-    /**
-     * Удалить элемент из списка адаптера
-     */
-    fun deleteContactList(contact: Contact) {
-        val listContact = contactList.filter { currentContact ->
-            currentContact != contact
-        }
-        contactList = listContact
-    }
-
     class Holder(
         private val binding: ItemContactBinding,
-        private val onItemDeleteClickListener: (position: Int, contact: Contact) -> Unit
+        private val onItemDeleteClickListener: (contact: Contact) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
         fun bind(contact: Contact) {
             with(binding) {
@@ -53,7 +44,7 @@ class ContactAdapter(
                 textViewLastName.text = contact.lastName
                 textViewNumberPhone.text = contact.number.toString()
                 binding.buttonDelete.setOnClickListener {
-                    onItemDeleteClickListener.invoke(adapterPosition, contact)
+                    onItemDeleteClickListener.invoke(contact)
                 }
             }
         }

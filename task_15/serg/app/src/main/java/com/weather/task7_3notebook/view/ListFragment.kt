@@ -1,24 +1,26 @@
-package com.weather.task7_3notebook
+package com.weather.task7_3notebook.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.FragmentListBinding
+import com.weather.task7_3notebook.model.Contact
+import com.weather.task7_3notebook.view.adapter.ContactAdapter
+import com.weather.task7_3notebook.view.adapter.CustomDuffCallback
+import com.weather.task7_3notebook.view.decoration.VerticalSpaceItemDecoration
+import com.weather.task7_3notebook.viewmodel.MainViewModel
 
-interface IListFragment {
-    /**
-     * Обработать результат поиска
-     */
-    fun processSearchResult(listContact: List<Contact>)
-}
-
-class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
+class ListFragment : Fragment(R.layout.fragment_list) {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     private var adapter: ContactAdapter? = null
 
@@ -34,6 +36,7 @@ class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerView()
+        initObserve()
     }
 
     override fun onDestroyView() {
@@ -41,31 +44,31 @@ class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
         _binding = null
     }
 
-    override fun processSearchResult(listContact: List<Contact>) {
-        updateRecyclerView(listContact)
-    }
-
     /**
      * Инициализация RecyclerView
      */
     private fun initRecyclerView() {
         // создание адаптера
-        adapter = ContactAdapter { position, contact ->
+        adapter = ContactAdapter { contact ->
             adapter?.let {
-                deleteContact(position, contact)
+                deleteContact(contact)
             }
         }
-        // получение списка из MainActivity
-        val listContact = (activity as IMainActivity).getListContact()
         binding.rootFragmentList.adapter = adapter
         binding.rootFragmentList.layoutManager =
             LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
         // добавляем отступ между элементами
         binding.rootFragmentList.addItemDecoration(VerticalSpaceItemDecoration(VERTICAL_SPACE_HEIGHT))
+    }
 
-        // обновляем данные в адаптере
-        updateRecyclerView(listContact)
+    private fun initObserve() {
+        mainViewModel.contactLiveData.observe(requireActivity()) {
+            updateRecyclerView(it)
+        }
+        mainViewModel.filterListLiveData.observe(requireActivity()) {
+            updateRecyclerView(it)
+        }
     }
 
     /**
@@ -73,11 +76,9 @@ class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
      * @param position - позиция удаляемого контакта
      * @param contact - экземпляр удаляемого объекта
      */
-    private fun deleteContact(position: Int, contact: Contact) {
+    private fun deleteContact(contact: Contact) {
         adapter?.let {
-            (activity as IMainActivity).removeContact(contact)
-            it.deleteContactList(contact)
-            it.notifyItemRemoved(position)
+            mainViewModel.removeContact(contact)
         }
     }
 
@@ -86,14 +87,15 @@ class ListFragment : Fragment(R.layout.fragment_list), IListFragment {
      * @param newList новый список данных
      */
     private fun updateRecyclerView(newList: List<Contact>) {
+        val customDuffCallback = CustomDuffCallback(adapter?.contactList.orEmpty(), newList)
+        val diffResult = DiffUtil.calculateDiff(customDuffCallback)
         adapter?.let {
             it.updateList(newList)
-            it.notifyDataSetChanged()
+            diffResult.dispatchUpdatesTo(it)
         }
     }
 
     companion object {
-        const val FRAGMENT_TAG = "ListFragment"
         private const val VERTICAL_SPACE_HEIGHT = 20
     }
 }

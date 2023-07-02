@@ -1,39 +1,26 @@
-package com.weather.task7_3notebook
+package com.weather.task7_3notebook.view
 
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SearchView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
+import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
+import com.weather.task7_3notebook.viewmodel.MainViewModel
 
-interface IMainActivity {
-    /**
-     * Добавить контакт в список MainActivity
-     */
-    fun addContact(contact: Contact)
-
-    /**
-     * Добавить удаление контактка из списка MainActivity
-     */
-    fun removeContact(contact: Contact)
-
-    /**
-     * Получить список контактов из MainActivity
-     */
-    fun getListContact(): List<Contact>
-}
-
-class MainActivity : AppCompatActivity(), IMainActivity {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private val viewModel: MainViewModel by viewModels()
     private val navController by lazy {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView1) as NavHostFragment
         navHostFragment.navController
     }
-    private val listContact = mutableListOf<Contact>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,18 +29,6 @@ class MainActivity : AppCompatActivity(), IMainActivity {
         // отключение темной темы
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         initListener()
-    }
-
-    override fun addContact(contact: Contact) {
-        listContact.add(contact)
-    }
-
-    override fun removeContact(contact: Contact) {
-        listContact.remove(contact)
-    }
-
-    override fun getListContact(): List<Contact> {
-        return listContact
     }
 
     private fun initListener() {
@@ -101,19 +76,7 @@ class MainActivity : AppCompatActivity(), IMainActivity {
                 override fun onQueryTextChange(p0: String?): Boolean {
                     showListFragment()
                     // простой поиск по имени по нажатию кнопки
-                    listContact.filter { it.name.contains(p0 ?: "", ignoreCase = true) }
-                        .let { filterList ->
-                            // проверка что сейчас показывается нужный фрагмент
-                            val currentFragment =
-                                supportFragmentManager.findFragmentById(
-                                    R.id.fragmentContainerView1
-                                )
-                            if (currentFragment != null &&
-                                currentFragment.tag == ListFragment.FRAGMENT_TAG
-                            ) {
-                                (currentFragment as IListFragment).processSearchResult(filterList)
-                            }
-                        }
+                    viewModel.search(p0)
                     return true
                 }
             })

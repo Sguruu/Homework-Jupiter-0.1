@@ -1,4 +1,4 @@
-package com.weather.task7_3notebook
+package com.weather.task7_3notebook.view
 
 import android.os.Bundle
 import android.os.Handler
@@ -8,12 +8,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.FragmentAddPersonBinding
+import com.weather.task7_3notebook.model.Contact
+import com.weather.task7_3notebook.viewmodel.MainViewModel
 
-class AddPersonFragment : Fragment() {
+class AddContactFragment : Fragment() {
     private var _binding: FragmentAddPersonBinding? = null
     private val binding get() = _binding!!
     private lateinit var toast: Toast
+    private val mainViewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +50,7 @@ class AddPersonFragment : Fragment() {
             binding.editTextLastName.setText("")
             binding.editTextNumber.setText("")
 
-            (activity as IMainActivity).addContact(Contact(name, lastName, numberPhone))
+            mainViewModel.addContact(Contact(name, lastName, numberPhone))
             renderProgressBar(resources.getString(R.string.save_contact))
         }
     }
@@ -64,9 +69,5 @@ class AddPersonFragment : Fragment() {
         toast.cancel()
         toast = Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT)
         toast.show()
-    }
-
-    companion object {
-        const val FRAGMENT_TAG = "AddPersonFragment"
     }
 }

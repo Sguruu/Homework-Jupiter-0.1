@@ -1,4 +1,4 @@
-package com.weather.task7_3notebook
+package com.weather.task7_3notebook.model
 
 data class Contact(
     val name: String,
