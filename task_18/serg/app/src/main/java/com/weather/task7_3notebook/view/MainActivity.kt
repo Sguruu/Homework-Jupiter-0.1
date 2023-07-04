@@ -39,7 +39,15 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
 
-                R.id.actionShowContent -> {
+                R.id.actionAddCity -> {
+                    true
+                }
+
+                R.id.actionShowCity -> {
+                    true
+                }
+
+                R.id.actionShowContact -> {
                     showListFragment()
                     true
                 }
