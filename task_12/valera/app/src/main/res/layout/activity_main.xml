@@ -44,14 +44,6 @@
                 tools:layout="@layout/fragment_adder_friends">
             </androidx.fragment.app.FragmentContainerView>
 
-            <LinearLayout
-                android:id="@+id/searcher_liner_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone"
-                />
-
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

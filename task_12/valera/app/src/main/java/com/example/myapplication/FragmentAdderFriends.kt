@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -38,18 +39,20 @@ class FragmentAdderFriends : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAdderFriendsBinding.inflate(inflater, container, false)
-        val view = binding.root
-        return view
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
         friendList =
-        if (arguments!=null) arguments?.getParcelableArrayList(KEY_TEXT)!!
-        else ArrayList<Friend>()
+        if (arguments!=null && Build.VERSION.SDK_INT >= 33){
+            arguments?.getParcelableArrayList(KEY_TEXT, Friend::class.java)!!
+        } else if (arguments!=null && Build.VERSION.SDK_INT < 33){
+            arguments?.getParcelableArrayList(KEY_TEXT)!!
+        } else ArrayList()
     }
 
     override fun onDestroyView() {
