@@ -12,8 +12,11 @@
     <string name="enter_phone_number">Введите номер телефона</string>
     <string name="save">Сохранить</string>
     <string name="save_contact">Контакт сохранен</string>
+    <string name="save_city">Город сохранен</string>
     <string name="enter_name_city">Введите название города</string>
     <string name="enter_lat">Широта</string>
     <string name="enter_lon">Долгота</string>
+    <string name="error_empty_edit_text">Поле не может быть пустое</string>
+    <string name="error_empty_edit_text_toast">Все поля должны быть заполнены</string>
 
 </resources>

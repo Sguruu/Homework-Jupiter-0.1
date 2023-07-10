@@ -17,7 +17,7 @@ import com.weather.task7_3notebook.view.adapter.CustomDuffCallback
 import com.weather.task7_3notebook.view.decoration.VerticalSpaceItemDecoration
 import com.weather.task7_3notebook.viewmodel.MainViewModel
 
-class ListFragment : Fragment(R.layout.fragment_list) {
+class ListContactFragment : Fragment(R.layout.fragment_list) {
     private var _binding: FragmentListBinding? = null
     private val binding get() = _binding!!
     private val mainViewModel: MainViewModel by activityViewModels()

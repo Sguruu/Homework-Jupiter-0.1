@@ -4,7 +4,7 @@
     android:id="@+id/rootFragmentList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:listitem="@layout/item_contact"
+    tools:listitem="@layout/item_city"
     android:orientation="vertical">
 
 </androidx.recyclerview.widget.RecyclerView>

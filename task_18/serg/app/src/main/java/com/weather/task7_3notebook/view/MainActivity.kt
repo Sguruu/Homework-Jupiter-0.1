@@ -40,20 +40,22 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.actionAddCity -> {
+                    showAddCityFragment()
                     true
                 }
 
                 R.id.actionShowCity -> {
+                    showListCityFragment()
                     true
                 }
 
                 R.id.actionShowContact -> {
-                    showListFragment()
+                    showListContactFragment()
                     true
                 }
 
                 R.id.actionSearch -> {
-                    showListFragment()
+                    showListContactFragment()
                     true
                 }
 
@@ -82,7 +84,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 override fun onQueryTextChange(p0: String?): Boolean {
-                    showListFragment()
+                    showListContactFragment()
                     // простой поиск по имени по нажатию кнопки
                     viewModel.search(p0)
                     return true
@@ -90,15 +92,27 @@ class MainActivity : AppCompatActivity() {
             })
     }
 
-    private fun showListFragment() {
-        if (navController.currentDestination != navController.findDestination(R.id.listFragment)) {
-            navController.navigate(R.id.action_addPersonFragment_to_listFragment)
+    private fun showListContactFragment() {
+        if (navController.currentDestination != navController.findDestination(R.id.listContactFragment)) {
+            navController.navigate(R.id.action_global_listFragment)
         }
     }
 
     private fun showAddPersonFragment() {
         if (navController.currentDestination != navController.findDestination(R.id.addPersonFragment)) {
             navController.navigate(R.id.action_global_addPersonFragment)
+        }
+    }
+
+    private fun showAddCityFragment() {
+        if (navController.currentDestination != navController.findDestination(R.id.addCityFragment)) {
+            navController.navigate(R.id.action_global_addCityFragment)
+        }
+    }
+
+    private fun showListCityFragment() {
+        if (navController.currentDestination != navController.findDestination(R.id.listCityFragment)) {
+            navController.navigate(R.id.action_global_listCityFragment)
         }
     }
 }
