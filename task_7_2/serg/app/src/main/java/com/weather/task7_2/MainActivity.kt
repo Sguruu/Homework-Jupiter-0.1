@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         // генерация и присвоение текста контента
         binding.TextView.text =
-            generateСontent(NUMBER_LINES_LONG_CONTENT).joinToString(separator = "")
+            generateContent(NUMBER_LINES_LONG_CONTENT).joinToString(separator = "")
 
         initListener()
     }
@@ -34,27 +34,31 @@ class MainActivity : AppCompatActivity() {
      */
     private fun initListener() {
         binding.toolbar.setNavigationOnClickListener {
-            toast(resources.getString(R.string.text_arrow_button_click))
+            showToast(resources.getString(R.string.text_arrow_button_click))
         }
 
         binding.toolbar.setOnMenuItemClickListener { itemMenu ->
             when (itemMenu.itemId) {
                 R.id.action_1 -> {
-                    toast("Нажат action_1")
+                    showToast("Нажат action_1")
                     true
                 }
+
                 R.id.action_2 -> {
-                    toast("Нажат action_2")
+                    showToast("Нажат action_2")
                     true
                 }
+
                 R.id.action_3 -> {
-                    toast("Нажат action_3")
+                    showToast("Нажат action_3")
                     true
                 }
+
                 R.id.action_search -> {
-                    toast("Нажат action_search")
+                    showToast("Нажат action_search")
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -65,12 +69,12 @@ class MainActivity : AppCompatActivity() {
 
         searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
-                toast("Нажат onMenuItemActionExpand")
+                showToast("Нажат onMenuItemActionExpand")
                 return true
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                toast("Нажат onMenuItemActionCollapse")
+                showToast("Нажат onMenuItemActionCollapse")
                 return true
             }
         })
@@ -94,14 +98,14 @@ class MainActivity : AppCompatActivity() {
      * @param text поисковый текст/фраза
      */
     private fun searchToast(text: String?) {
-        text?.let { toast("${resources.getString(R.string.search)} $text") }
+        text?.let { showToast("${resources.getString(R.string.search)} $text") }
     }
 
     /**
      * Закрытие и показ уведомления
      * @param text текст уведомления
      */
-    private fun toast(text: String) {
+    private fun showToast(text: String) {
         // Закрытие текущего уведомления при вызове нового
         toast.cancel()
         // Создание нового уведомления
@@ -114,7 +118,7 @@ class MainActivity : AppCompatActivity() {
      * Генерация контента для тестирования
      * @param numberLines количество строк конетнта
      */
-    private fun generateСontent(numberLines: Int = 20): List<String> {
+    private fun generateContent(numberLines: Int): List<String> {
         val list: MutableList<String> = MutableList(size = numberLines) {
             "${resources.getString(R.string.long_content)} ${it.inc()}\n"
         }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/addPersonFragment">
+
+    <fragment
+        android:id="@+id/addPersonFragment"
+        android:name="com.weather.task7_3notebook.view.AddContactFragment"
+        android:label="AddPersonFragment"
+        tools:layout="@layout/fragment_add_person">
+        <action
+            android:id="@+id/action_addPersonFragment_to_listFragment"
+            app:destination="@id/listFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listFragment"
+        android:name="com.weather.task7_3notebook.view.ListFragment"
+        android:label="ListFragment"
+        tools:layout="@layout/fragment_list" />
+    <action
+        android:id="@+id/action_global_addPersonFragment"
+        app:destination="@id/addPersonFragment" />
+</navigation>
