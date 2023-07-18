@@ -43,6 +43,9 @@ class ContactAdapter(
                 textViewName.text = contact.name
                 textViewLastName.text = contact.lastName
                 textViewNumberPhone.text = contact.number.toString()
+                contact.city?.let {
+                    binding.textViewCityName.text = it.nameCity
+                }
                 binding.buttonDelete.setOnClickListener {
                     onItemDeleteClickListener.invoke(contact)
                 }
