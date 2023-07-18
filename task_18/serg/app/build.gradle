@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -47,4 +48,29 @@ dependencies {
 
     //Navigation
     implementation 'androidx.navigation:navigation-fragment-ktx:2.6.0'
+
+    //Okhttp
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+    //Moshi
+    def moshiVersion = '1.14.0'
+    implementation "com.squareup.moshi:moshi:$moshiVersion"
+    // позволяет более удобно работать с котлином
+    implementation "com.squareup.moshi:moshi-kotlin:$moshiVersion"
+    // позволяет нам автоматически генерировать классы парсера
+    /*
+    Kapt - это плагин компилятора для Kotlin, который используется для запуска обработчиков
+    аннотаций. Он позволяет передавать произвольные параметры в javac и управлять процессом
+    компиляции.
+     */
+    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshiVersion"
+
+    //Retrofit
+    def retrofitVersion = '2.9.0'
+    // подключение самой библиотеки
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    // подключение возможности работы с библиотекой moshi
+    implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
 }
