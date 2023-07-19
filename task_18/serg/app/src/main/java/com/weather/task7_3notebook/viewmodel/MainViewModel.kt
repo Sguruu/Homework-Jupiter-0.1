@@ -3,16 +3,22 @@ package com.weather.task7_3notebook.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.weather.task7_3notebook.base.Result
 import com.weather.task7_3notebook.model.City
 import com.weather.task7_3notebook.model.Contact
+import com.weather.task7_3notebook.model.ResponseWeather
+import com.weather.task7_3notebook.model.Weather
 import com.weather.task7_3notebook.repository.CityRepository
 import com.weather.task7_3notebook.repository.SearchRepository
+import com.weather.task7_3notebook.repository.WeatherRepository
 import com.weather.task7_3notebook.utils.SingleLiveEvent
 
 class MainViewModel : ViewModel() {
 
     private val searchRepository = SearchRepository()
     private val cityRepository = CityRepository()
+    private val weatherRepository = WeatherRepository()
+    private var currentCall: retrofit2.Call<ResponseWeather>? = null
 
     private val _contactLiveData = MutableLiveData<List<Contact>>(emptyList())
     private val _cityLiveData =
@@ -29,6 +35,20 @@ class MainViewModel : ViewModel() {
     val cityLiveData: LiveData<List<City>>
         get() = _cityLiveData
 
+    init {
+        cityLiveData.value?.forEachIndexed { indexOne, cityOne ->
+            requestWeather(cityOne.latitude, cityOne.longitude) { weather ->
+                val newList = cityLiveData.value?.mapIndexed { indexTwo, cityTwo ->
+                    if (indexOne == indexTwo) {
+                        return@mapIndexed cityOne.copy(weather = weather)
+                    }
+                    return@mapIndexed cityTwo
+                }
+                updateCityLiveData(newList.orEmpty())
+            }
+        }
+    }
+
     fun addContact(contact: Contact) {
         val newList = _contactLiveData.value?.plus(contact) ?: listOf(contact)
         updateContactLiveData(newList)
@@ -42,8 +62,11 @@ class MainViewModel : ViewModel() {
     }
 
     fun addCity(city: City) {
-        val newList = _cityLiveData.value?.plus(city) ?: listOf(city)
-        updateCityLiveData(newList)
+        requestWeather(city.latitude, city.longitude) {
+            val newCity = city.copy(weather = it)
+            val newList = _cityLiveData.value?.plus(newCity) ?: listOf(newCity)
+            updateCityLiveData(newList)
+        }
     }
 
     fun removeCity(city: City) {
@@ -57,6 +80,21 @@ class MainViewModel : ViewModel() {
         _contactLiveData.value?.let {
             val filterList = searchRepository.getResultSearch(searchValue, it)
             updateFilterLiveData(filterList)
+        }
+    }
+
+    private fun requestWeather(lat: String, lon: String, callback: (weather: Weather) -> Unit) {
+        currentCall = weatherRepository.requestWeather(lat, lon) {
+            when (it) {
+                is Result.Success<Weather> -> {
+                    // при успехе
+                    callback.invoke(it.data)
+                }
+
+                is Result.Error -> {
+                    // тут обрабатываем ошибку
+                }
+            }
         }
     }
 

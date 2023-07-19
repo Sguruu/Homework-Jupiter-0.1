@@ -16,6 +16,17 @@
     <string name="enter_name_city">Введите название города</string>
     <string name="enter_lat">Широта</string>
     <string name="enter_lon">Долгота</string>
+    <!--
+    Статья про форматы
+    https://docs.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html
+    -->
+    <string name="min_c">Мин : %1$s °C</string>
+    <string name="max_c">Макс : %1$s °C</string>
+    <string name="forecast">Прогноз : %1$s</string>
+    <string name="weather_average">Средняя температура сейчас %1$s °C \nПрогноз : %2$s  </string>
+    <!-- Сообщения об ошибках -->
+    <string name="parsing_error">Ошибка парсинга</string>
+    <string name="incorrect_code_status">Некорректный статус кода</string>
     <string name="error_empty_edit_text">Поле не может быть пустое</string>
     <string name="error_empty_edit_text_toast">Все поля должны быть заполнены</string>
 

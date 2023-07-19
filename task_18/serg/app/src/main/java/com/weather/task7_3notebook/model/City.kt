@@ -10,4 +10,8 @@ data class City(
      * Долгота
      */
     val longitude: String,
+    /**
+     * Прогноз погоды
+     */
+    val weather: Weather? = null
 )

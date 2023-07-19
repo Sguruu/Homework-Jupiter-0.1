@@ -3,6 +3,7 @@ package com.weather.task7_3notebook.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ItemContactBinding
 import com.weather.task7_3notebook.model.Contact
 
@@ -43,10 +44,17 @@ class ContactAdapter(
                 textViewName.text = contact.name
                 textViewLastName.text = contact.lastName
                 textViewNumberPhone.text = contact.number.toString()
-                contact.city?.let {
-                    binding.textViewCityName.text = it.nameCity
+                contact.city?.weather?.let {
+                    textViewWeather.text = itemView.resources.getString(
+                        R.string.weather_average,
+                        it.getAverageTemperature().toString(),
+                        it.descriptionWeather
+                    )
                 }
-                binding.buttonDelete.setOnClickListener {
+                contact.city?.let {
+                    textViewCityName.text = it.nameCity
+                }
+                buttonDelete.setOnClickListener {
                     onItemDeleteClickListener.invoke(contact)
                 }
             }
