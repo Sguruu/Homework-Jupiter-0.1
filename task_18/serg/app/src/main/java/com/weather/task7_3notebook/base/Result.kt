@@ -8,5 +8,5 @@ sealed class Result<out T> {
      * которого никогда не существует»: например, если функция имеет возвращаемый тип Nothing,
      * это означает, что она никогда не возвращает значение (всегда выдает исключение).
      */
-    data class Error(val error: Throwable) : Result<Nothing>()
+    data class Error(val error: Throwable, val errorValue: String? = null) : Result<Nothing>()
 }

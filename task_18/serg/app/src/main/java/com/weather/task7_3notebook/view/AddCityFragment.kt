@@ -7,12 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.FragmentAddCityBinding
 import com.weather.task7_3notebook.model.City
+import com.weather.task7_3notebook.model.StateStatusSaveCity
 import com.weather.task7_3notebook.view.extensions.checkShowError
+import com.weather.task7_3notebook.view.extensions.showError
 import com.weather.task7_3notebook.viewmodel.MainViewModel
 
 class AddCityFragment : Fragment() {
@@ -34,11 +37,34 @@ class AddCityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         toast = Toast(requireContext())
         initListener()
+        initObserve()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun initObserve() {
+        mainViewModel.stateStatusSaveCity.observe(viewLifecycleOwner) {
+            when (it) {
+                is StateStatusSaveCity.Success -> {
+                    clearEditText()
+                    toast(resources.getString(R.string.save_city))
+                }
+
+                is StateStatusSaveCity.Error -> {
+                    binding.editTextLat.showError(it.message)
+                    binding.editTextLon.showError(it.message)
+                    toast(it.message)
+                }
+
+                is StateStatusSaveCity.NoInternet -> {
+                    clearEditText()
+                    toast(resources.getString(R.string.error_no_internet))
+                }
+            }
+        }
     }
 
     private fun initListener() {
@@ -60,21 +86,27 @@ class AddCityFragment : Fragment() {
                             nameCity = nameCity,
                             latitude = lat,
                             longitude = lon
-                        )
+                        ),
+                        requireContext()
                     )
-                    renderProgressBar(resources.getString(R.string.save_city))
+                    renderProgressBar()
                 }
             }
         }
     }
 
-    private fun renderProgressBar(text: String) {
+    private fun clearEditText() {
+        binding.editTextNameCity.setText("")
+        binding.editTextLat.setText("")
+        binding.editTextLon.setText("")
+    }
+
+    private fun renderProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
         binding.buttonAddCity.isEnabled = false
         Handler(Looper.getMainLooper()).postDelayed({
             binding.progressBar.visibility = View.GONE
             binding.buttonAddCity.isEnabled = true
-            toast(text)
         }, 2000)
     }
 

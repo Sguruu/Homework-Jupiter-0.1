@@ -13,10 +13,14 @@ fun EditText.checkShowError() {
     }
 }
 
+fun EditText.showError(textError: String) {
+    this.error = textError
+}
+
 fun AppCompatSpinner.setSpinnerFocusable() {
     isFocusableInTouchMode = true
 
-    onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+    onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
         if (hasFocus) {
             if (windowToken != null) {
                 performClick()
