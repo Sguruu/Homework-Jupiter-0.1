@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.databinding.FragmentShowerListFriendsBinding
 import com.example.myapplication.databinding.ShowerListBinding
 
@@ -29,6 +30,7 @@ class FragmentShowerListFriends : Fragment() {
     private val binding get() = _binding!!
     private lateinit var friendList : ArrayList<Friend>
     private lateinit var filterFriendList : ArrayList<Friend>
+    private var adapter: FriendAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,7 +56,8 @@ class FragmentShowerListFriends : Fragment() {
                 friendList = ArrayList()
                 filterFriendList = ArrayList()
             }
-        createItemsView()
+//        createItemsView()
+        initList()
     }
 
     override fun onDestroyView() {
@@ -75,7 +78,7 @@ class FragmentShowerListFriends : Fragment() {
                     view.friendSurname.text = friendList[i].surname
                     view.friendPhoneNumber.text = friendList[i].phoneNumber
 
-                    view.buttomDellFriend.setOnClickListener {
+                    view.buttonDellFriend.setOnClickListener {
                         for (i in 0 until friendList.size) {
                             if (friendList[i].name == view.friendName.text &&
                                 friendList[i].surname == view.friendSurname.text &&
@@ -101,7 +104,7 @@ class FragmentShowerListFriends : Fragment() {
                     view.friendSurname.text = filterFriendList[i].surname
                     view.friendPhoneNumber.text = filterFriendList[i].phoneNumber
 
-                    view.buttomDellFriend.setOnClickListener {
+                    view.buttonDellFriend.setOnClickListener {
                         for (i in 0 until friendList.size) {
                             if (friendList[i].name == view.friendName.text &&
                                 friendList[i].surname == view.friendSurname.text &&
@@ -117,5 +120,15 @@ class FragmentShowerListFriends : Fragment() {
                 binding.showerListLinearLayout.addView(view.root)
             }
         }
+    }
+    private fun initList(){
+        if (filterFriendList.isEmpty()){
+            adapter = FriendAdapter(friendList)
+            binding.recyclerView.adapter = FriendAdapter(friendList)
+        }else{
+            adapter = FriendAdapter(filterFriendList)
+            binding.recyclerView.adapter = FriendAdapter(filterFriendList)
+        }
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 }
