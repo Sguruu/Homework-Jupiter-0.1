@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.weather.task7_3notebook.base.Result
 import com.weather.task7_3notebook.model.City
 import com.weather.task7_3notebook.model.Contact
@@ -15,6 +16,7 @@ import com.weather.task7_3notebook.repository.CityRepository
 import com.weather.task7_3notebook.repository.SearchRepository
 import com.weather.task7_3notebook.repository.WeatherRepository
 import com.weather.task7_3notebook.utils.SingleLiveEvent
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
@@ -111,21 +113,29 @@ class MainViewModel : ViewModel() {
     }
 
     private fun requestWeather(lat: String, lon: String, callback: (weather: Weather) -> Unit) {
-        currentCall = weatherRepository.requestWeather(lat, lon) {
-            when (it) {
-                is Result.Success<Weather> -> {
-                    // при успехе
-                    callback.invoke(it.data)
-                    updateStateStatusSaveCity(StateStatusSaveCity.Success)
-                }
+        viewModelScope.launch {
+            weatherRepository.requestWeather(lat, lon).apply {
+                when (this) {
+                    is Result.Success<ResponseWeather> -> {
+                        callback.invoke(
+                            Weather(
+                                tempMin = this.data.main.tempMin,
+                                tempMax = this.data.main.tempMax,
+                                descriptionWeather = this.data.weatherCurrent[0].description
+                            )
+                        )
+                        updateStateStatusSaveCity(StateStatusSaveCity.Success)
+                    }
 
-                is Result.Error -> {
-                    // тут обрабатываем ошибку
-                    updateStateStatusSaveCity(StateStatusSaveCity.Error(it.errorValue.orEmpty()))
+                    is Result.Error -> {
+                        updateStateStatusSaveCity(
+                            StateStatusSaveCity.Error(
+                                this.errorValue.orEmpty()
+                            )
+                        )
+                    }
                 }
             }
-            // очищаем запрос
-            currentCall = null
         }
     }
 
