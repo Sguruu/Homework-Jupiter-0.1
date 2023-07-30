@@ -9,13 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 
 class FriendAdapter (
     private var friendList: ArrayList<Friend>,
-    private val callbackDellFriend: ((position: Int) -> Unit)? = null
+    private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit
         ): RecyclerView.Adapter<FriendAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflate = LayoutInflater.from(parent.context)
         val view = inflate.inflate(R.layout.shower_list, parent, false)
-        return Holder(view)
+        return Holder(view, onButtonDeleteClickListener)
     }
 
     override fun getItemCount(): Int {
@@ -27,12 +27,15 @@ class FriendAdapter (
         holder.bind(friend)
     }
 
-    fun updateFriends(newList: ArrayList<Friend>){
-        friendList = newList
-        notifyDataSetChanged()
+    fun dellFriend (friend: Friend){
+        val newFriendList = friendList.filter {
+            it != friend
+        }
+        friendList = newFriendList as ArrayList<Friend>
     }
 
-    class Holder (view: View, callbackDellFriend: ((position: Int) -> Unit)? = null)
+    class Holder (view: View,
+                  private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit)
         : RecyclerView.ViewHolder (view){
         private val friendName: TextView = view.findViewById(R.id.friend_name)
         private val friendSurname: TextView = view.findViewById(R.id.friend_surname)
@@ -44,7 +47,7 @@ class FriendAdapter (
             friendSurname.text = friend.surname
             friendPhoneNumber.text = friend.phoneNumber
             dellFriendButton.setOnClickListener {
-
+                onButtonDeleteClickListener.invoke(adapterPosition, friend)
             }
         }
     }

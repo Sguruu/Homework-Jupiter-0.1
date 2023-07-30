@@ -5,9 +5,9 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), MainInterface {
     private lateinit var binding: ActivityMainBinding
-    private val friendList = ArrayList<Friend>()
+    private var friendList = ArrayList<Friend>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,5 +102,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         return filterFriendList
+    }
+
+    override fun dellFriend(friend: Friend) {
+        friendList.remove(friend)
     }
 }
