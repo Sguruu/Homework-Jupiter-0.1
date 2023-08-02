@@ -77,4 +77,13 @@ dependencies {
     def coroutinesVersion = '1.6.4'
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+    //RoomDao
+    def room_version = "2.5.2"
+    // библиотека room
+    implementation "androidx.room:room-runtime:$room_version"
+    // позволяет автоматически сгенерировать реализации для DAO и БД
+    kapt "androidx.room:room-compiler:$room_version"
+    // позволяет использовать Room с корутинами
+    implementation "androidx.room:room-ktx:$room_version"
 }
