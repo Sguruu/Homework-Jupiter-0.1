@@ -7,6 +7,7 @@ import androidx.room.Query
 import androidx.room.Update
 import com.weather.task7_3notebook.base.db.contract.CityContract
 import com.weather.task7_3notebook.base.db.model.CityEntity
+import com.weather.task7_3notebook.model.City
 
 @Dao
 interface CityDao {
@@ -26,7 +27,7 @@ interface CityDao {
      * Получение города по id
      */
     @Query("SELECT * FROM ${CityContract.TABLE_NAME} WHERE ${CityContract.Columns.ID} = :id")
-    suspend fun getCityById(id: Long)
+    suspend fun getCityById(id: Long): CityEntity
 
     /**
      * Удаление города
@@ -39,6 +40,17 @@ interface CityDao {
      */
     @Query("DELETE FROM ${CityContract.TABLE_NAME} WHERE ${CityContract.Columns.ID} = :cityID")
     suspend fun deleteCityById(cityID: Long)
+
+    /**
+     * Удаление города по : широте и долготе и имени города
+     */
+    @Query(
+        "DELETE FROM ${CityContract.TABLE_NAME} WHERE " +
+            "${CityContract.Columns.City.NAME_CITY} = :nameCity AND " +
+            "${CityContract.Columns.City.LATITUDE} = :latitude AND " +
+            "${CityContract.Columns.City.LONGITUDE} = :longitude"
+    )
+    suspend fun deleteCity(nameCity: String, latitude: String, longitude: String)
 
     /**
      * Обновление города

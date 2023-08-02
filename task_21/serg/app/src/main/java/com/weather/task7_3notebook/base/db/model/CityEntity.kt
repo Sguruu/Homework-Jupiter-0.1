@@ -15,7 +15,7 @@ data class CityEntity(
     val city: City,
     @Embedded
     @ColumnInfo(CityContract.Columns.WEATHER)
-    val weather: Weather
+    val weather: Weather?
 ) {
     data class City(
         @ColumnInfo(CityContract.Columns.City.NAME_CITY)
