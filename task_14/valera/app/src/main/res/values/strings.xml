@@ -17,4 +17,5 @@
     <string name="phone_number">Введите номер телефона</string>
     <string name="buttom_adder">Сохранить</string>
     <string name="successfully">Новый друг успешно добавлен</string>
+    <string name="dell_message">удален(а) из списка Ваших друзей</string>
 </resources>

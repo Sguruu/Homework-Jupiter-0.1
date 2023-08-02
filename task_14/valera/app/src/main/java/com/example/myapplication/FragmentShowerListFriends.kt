@@ -80,11 +80,12 @@ class FragmentShowerListFriends : Fragment() {
     }
 
     private fun dellFriend (position: Int, friend: Friend){
-        val toastText = "${friend.name} ${friend.surname} удален(а) из списка Ваших друзей"
+        val toastText = "${friend.name} ${friend.surname} ${getString(R.string.dell_message)}"
         adapter?.let {
             (activity as MainInterface).dellFriend(friend)
             it.dellFriend(friend)
             it.notifyItemRemoved(position)
+            it.notifyDataSetChanged()
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         }
     }
