@@ -16,6 +16,8 @@ import com.weather.task7_3notebook.repository.CityRepository
 import com.weather.task7_3notebook.repository.SearchRepository
 import com.weather.task7_3notebook.repository.WeatherRepository
 import com.weather.task7_3notebook.utils.SingleLiveEvent
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
@@ -24,11 +26,9 @@ class MainViewModel : ViewModel() {
     private val cityRepository = CityRepository()
     private val weatherRepository = WeatherRepository()
     private val baseRepository = BaseRepository()
-    private var currentCall: retrofit2.Call<ResponseWeather>? = null
 
     private val _contactLiveData = MutableLiveData<List<Contact>>(emptyList())
-    private val _cityLiveData =
-        MutableLiveData<List<City>>(cityRepository.createDefaultListCities())
+    private val _cityLiveData = MutableLiveData<List<City>>(emptyList())
     private val _filterLiveData = SingleLiveEvent<List<Contact>>()
     private val _stateStatusSaveCity =
         SingleLiveEvent<StateStatusSaveCity>()
@@ -40,29 +40,41 @@ class MainViewModel : ViewModel() {
     val filterListLiveData: LiveData<List<Contact>>
         get() = _filterLiveData
 
-    val cityLiveData: LiveData<List<City>>
+    val cityListLiveData: LiveData<List<City>>
         get() = _cityLiveData
 
     val stateStatusSaveCity: LiveData<StateStatusSaveCity>
         get() = _stateStatusSaveCity
 
     init {
-        cityLiveData.value?.forEachIndexed { indexOne, cityOne ->
-            requestWeather(cityOne.latitude, cityOne.longitude) { weather ->
-                val newList = cityLiveData.value?.mapIndexed { indexTwo, cityTwo ->
-                    if (indexOne == indexTwo) {
-                        return@mapIndexed cityOne.copy(weather = weather)
-                    }
-                    return@mapIndexed cityTwo
-                }
-                updateCityLiveData(newList.orEmpty())
-            }
+        viewModelScope.launch {
+            updateCityLiveData(cityRepository.getAllCity())
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        currentCall?.cancel()
+    fun updateWeatherDataCities(context: Context) {
+        if (baseRepository.checkIsInternet(context)) {
+            viewModelScope.launch {
+                val newList: MutableList<City>? = cityListLiveData.value?.toMutableList()
+                val jobsArray = arrayListOf<Job>()
+                newList?.let {
+                    // создаю массив jobs
+                    cityListLiveData.value?.forEachIndexed { index, city ->
+                        jobsArray.add(
+                            launch {
+                                requestWeather(city.latitude, city.longitude) { weather ->
+                                    newList[index] = city.copy(weather = weather)
+                                }
+                            }
+                        )
+                    }
+                    // дожидаюсь завершение всех jobs
+                    jobsArray.joinAll()
+                    updateCityLiveData(newList)
+                    cityRepository.updateCites(newList)
+                }
+            }
+        }
     }
 
     fun addContact(contact: Contact) {
@@ -78,26 +90,32 @@ class MainViewModel : ViewModel() {
     }
 
     fun addCity(city: City, context: Context) {
-        when (baseRepository.checkIsInternet(context)) {
-            true -> {
-                requestWeather(city.latitude, city.longitude) {
-                    val newCity = city.copy(weather = it)
-                    saveCity(newCity)
+        viewModelScope.launch {
+            when (baseRepository.checkIsInternet(context)) {
+                true -> {
+                    requestWeather(city.latitude, city.longitude) {
+                        val newCity = city.copy(weather = it)
+                        saveCity(newCity)
+                    }
                 }
-            }
-            // если интернета нет, сохраняем город без погоды
-            false -> {
-                updateStateStatusSaveCity(StateStatusSaveCity.NoInternet)
-                saveCity(city.copy(latitude = "", longitude = ""))
+
+                // если интернета нет, сохраняем город без погоды
+                false -> {
+                    updateStateStatusSaveCity(StateStatusSaveCity.NoInternet)
+                    saveCity(city.copy(latitude = "", longitude = ""))
+                }
             }
         }
     }
 
     fun removeCity(city: City) {
-        val newList = _cityLiveData.value?.filter {
-            city != it
-        } ?: emptyList()
-        updateCityLiveData(newList)
+        viewModelScope.launch {
+            val newList = _cityLiveData.value?.filter {
+                city != it
+            } ?: emptyList()
+            cityRepository.deleteCity(city)
+            updateCityLiveData(newList)
+        }
     }
 
     fun search(searchValue: String?) {
@@ -107,33 +125,36 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    private fun saveCity(city: City) {
+    private suspend fun saveCity(city: City) {
         val newList = _cityLiveData.value?.plus(city) ?: listOf(city)
+        cityRepository.insertCity(city)
         updateCityLiveData(newList)
     }
 
-    private fun requestWeather(lat: String, lon: String, callback: (weather: Weather) -> Unit) {
-        viewModelScope.launch {
-            weatherRepository.requestWeather(lat, lon).apply {
-                when (this) {
-                    is Result.Success<ResponseWeather> -> {
-                        callback.invoke(
-                            Weather(
-                                tempMin = this.data.main.tempMin,
-                                tempMax = this.data.main.tempMax,
-                                descriptionWeather = this.data.weatherCurrent[0].description
-                            )
+    private suspend fun requestWeather(
+        lat: String,
+        lon: String,
+        callback: suspend (weather: Weather) -> Unit
+    ) {
+        weatherRepository.requestWeather(lat, lon).apply {
+            when (this) {
+                is Result.Success<ResponseWeather> -> {
+                    callback.invoke(
+                        Weather(
+                            tempMin = this.data.main.tempMin,
+                            tempMax = this.data.main.tempMax,
+                            descriptionWeather = this.data.weatherCurrent[0].description
                         )
-                        updateStateStatusSaveCity(StateStatusSaveCity.Success)
-                    }
+                    )
+                    updateStateStatusSaveCity(StateStatusSaveCity.Success)
+                }
 
-                    is Result.Error -> {
-                        updateStateStatusSaveCity(
-                            StateStatusSaveCity.Error(
-                                this.errorValue.orEmpty()
-                            )
+                is Result.Error -> {
+                    updateStateStatusSaveCity(
+                        StateStatusSaveCity.Error(
+                            this.errorValue.orEmpty()
                         )
-                    }
+                    )
                 }
             }
         }

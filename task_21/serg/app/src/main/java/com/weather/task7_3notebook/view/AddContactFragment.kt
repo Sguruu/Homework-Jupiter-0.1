@@ -65,7 +65,7 @@ class AddContactFragment : Fragment() {
                     name,
                     lastName,
                     numberPhone,
-                    mainViewModel.cityLiveData.value?.get(binding.spinner.selectedItemPosition)
+                    mainViewModel.cityListLiveData.value?.get(binding.spinner.selectedItemPosition)
                 )
             )
             renderProgressBar(resources.getString(R.string.save_contact))
@@ -73,7 +73,7 @@ class AddContactFragment : Fragment() {
     }
 
     private fun initObserve() {
-        mainViewModel.cityLiveData.observe(viewLifecycleOwner) {
+        mainViewModel.cityListLiveData.observe(viewLifecycleOwner) {
             updateAdapterSpinner(it)
         }
     }

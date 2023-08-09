@@ -19,25 +19,46 @@ class CityRepository {
         }
     }
 
-    suspend fun insertCity(list: List<City>) {
-        db.insertCity(
-            list.map {
-                CityEntity(
-                    city = CityEntity.City(
-                        nameCity = it.nameCity,
-                        latitude = it.latitude,
-                        longitude = it.longitude
-                    ),
-                    weather = if (it.weather == null) null else {
-                        CityEntity.Weather(
-                            tempMin = it.weather.tempMin.toString(),
-                            tempMax = it.weather.tempMax.toString(),
-                            descriptionWeather = it.weather.descriptionWeather
-                        )
-                    }
-                )
-            }
+    suspend fun insertCity(city: City) {
+        val cityEntity = CityEntity(
+            city = CityEntity.City(
+                nameCity = city.nameCity,
+                latitude = city.latitude,
+                longitude = city.longitude
+            ),
+            weather =
+            CityEntity.Weather(
+                tempMin = city.weather?.tempMin.toString(),
+                tempMax = city.weather?.tempMax.toString(),
+                descriptionWeather = city.weather?.descriptionWeather ?: ""
+            )
         )
+        db.insertCity(cityEntity)
+    }
+
+    suspend fun updateCites(list: List<City>) {
+        list.forEach {
+            val cityEntity = CityEntity(
+                city = CityEntity.City(
+                    nameCity = it.nameCity,
+                    latitude = it.latitude,
+                    longitude = it.longitude
+                ),
+                weather = CityEntity.Weather(
+                    tempMax = it.weather?.tempMax.toString(),
+                    tempMin = it.weather?.tempMin.toString(),
+                    descriptionWeather = it.weather?.descriptionWeather ?: ""
+                )
+            )
+            db.updateCities(
+                newTempMin = cityEntity.weather.tempMin,
+                newTempMax = cityEntity.weather.tempMax,
+                newDescriptionWeather = cityEntity.weather.descriptionWeather,
+                nameCity = cityEntity.city.nameCity,
+                latitude = cityEntity.city.latitude,
+                longitude = cityEntity.city.longitude
+            )
+        }
     }
 
     suspend fun deleteCity(city: City) {
@@ -45,6 +66,26 @@ class CityRepository {
             nameCity = city.nameCity,
             latitude = city.latitude,
             longitude = city.longitude
+        )
+    }
+
+    private suspend fun insertCities(list: List<City>) {
+        db.insertCities(
+            list.map {
+                CityEntity(
+                    city = CityEntity.City(
+                        nameCity = it.nameCity,
+                        latitude = it.latitude,
+                        longitude = it.longitude
+                    ),
+                    weather =
+                    CityEntity.Weather(
+                        tempMin = it.weather?.tempMin.toString(),
+                        tempMax = it.weather?.tempMax.toString(),
+                        descriptionWeather = it.weather?.descriptionWeather ?: ""
+                    )
+                )
+            }
         )
     }
 
@@ -67,7 +108,7 @@ class CityRepository {
      * Добавить города по умолчанию в БД
      */
     private suspend fun createDefaultListCities() {
-        insertCity(getDefaultListCities())
+        insertCities(getDefaultListCities())
     }
 
     /**

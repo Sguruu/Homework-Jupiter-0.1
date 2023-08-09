@@ -26,7 +26,7 @@ interface ContactDao {
      * Получение контакта по id
      */
     @Query("SELECT * FROM ${ContactContract.TABLE_NAME} WHERE ${ContactContract.Columns.ID} = :id")
-    suspend fun getContactById(id: Long)
+    suspend fun getContactById(id: Long): ContactEntity
 
     /**
      * Удаление контакта
@@ -37,7 +37,10 @@ interface ContactDao {
     /**
      * Удаление контакта по id
      */
-    @Query("DELETE FROM ${ContactContract.TABLE_NAME} WHERE ${ContactContract.Columns.ID} = :cityID")
+    @Query(
+        "DELETE FROM ${ContactContract.TABLE_NAME} WHERE ${ContactContract.Columns.ID} = " +
+            ":contactID"
+    )
     suspend fun deleteContactById(contactID: Long)
 
     /**

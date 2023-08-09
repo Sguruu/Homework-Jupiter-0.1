@@ -3,11 +3,11 @@ package com.weather.task7_3notebook.base.db.dao
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import com.weather.task7_3notebook.base.db.contract.CityContract
 import com.weather.task7_3notebook.base.db.model.CityEntity
-import com.weather.task7_3notebook.model.City
 
 @Dao
 interface CityDao {
@@ -21,7 +21,13 @@ interface CityDao {
      * Метод добавления городов
      */
     @Insert
-    suspend fun insertCity(cites: List<CityEntity>)
+    suspend fun insertCities(cites: List<CityEntity>)
+
+    /**
+     * Метод добавления города
+     */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertCity(city: CityEntity)
 
     /**
      * Получение города по id
@@ -57,4 +63,25 @@ interface CityDao {
      */
     @Update
     suspend fun updateCity(city: CityEntity)
+
+    /**
+     * Обновление города
+     */
+    @Query(
+        "UPDATE ${CityContract.TABLE_NAME} SET " +
+            "${CityContract.Columns.Weather.TEMP_MIN} = :newTempMin," +
+            "${CityContract.Columns.Weather.TEMP_MAX} = :newTempMax," +
+            "${CityContract.Columns.Weather.DESCRIPTION_WEATHER} = :newDescriptionWeather " +
+            "WHERE ${CityContract.Columns.City.NAME_CITY} IN (:nameCity) AND " +
+            "${CityContract.Columns.City.LATITUDE} IN (:latitude) AND " +
+            "${CityContract.Columns.City.LONGITUDE} IN (:longitude) "
+    )
+    suspend fun updateCities(
+        newTempMin: String,
+        newTempMax: String,
+        newDescriptionWeather: String,
+        nameCity: String,
+        latitude: String,
+        longitude: String
+    )
 }

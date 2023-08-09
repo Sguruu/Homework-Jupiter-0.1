@@ -15,7 +15,6 @@ data class ContactEntity(
     @ColumnInfo(ContactContract.Columns.ID)
     val id: Long = 0,
     @Embedded
-    @ColumnInfo(ContactContract.Columns.CONTACT)
     val contact: Contact
 ) {
     data class Contact(

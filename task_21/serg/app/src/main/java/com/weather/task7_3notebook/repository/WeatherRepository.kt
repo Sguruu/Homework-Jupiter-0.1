@@ -8,6 +8,7 @@ import com.weather.task7_3notebook.model.ResponseErrorWeather
 import com.weather.task7_3notebook.model.ResponseWeather
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okio.IOException
 import retrofit2.HttpException
 
 class WeatherRepository {
@@ -33,6 +34,9 @@ class WeatherRepository {
                 } else {
                     Result.Error(e)
                 }
+            } catch (e: IOException) {
+                // handle no internet connection
+                Result.Error(e, "Нет интернета")
             }
         }
     }

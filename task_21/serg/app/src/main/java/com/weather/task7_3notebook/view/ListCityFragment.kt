@@ -39,6 +39,12 @@ class ListCityFragment : Fragment(R.layout.fragment_list) {
         initObserve()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // обновление погоды
+        mainViewModel.updateWeatherDataCities(requireContext())
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -63,7 +69,7 @@ class ListCityFragment : Fragment(R.layout.fragment_list) {
     }
 
     private fun initObserve() {
-        mainViewModel.cityLiveData.observe(requireActivity()) {
+        mainViewModel.cityListLiveData.observe(requireActivity()) {
             updateRecyclerView(it)
         }
     }

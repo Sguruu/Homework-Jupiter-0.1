@@ -11,11 +11,10 @@ data class CityEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(CityContract.Columns.ID)
     val id: Long = 0,
-    @ColumnInfo(CityContract.Columns.CITY)
+    @Embedded
     val city: City,
     @Embedded
-    @ColumnInfo(CityContract.Columns.WEATHER)
-    val weather: Weather?
+    val weather: Weather
 ) {
     data class City(
         @ColumnInfo(CityContract.Columns.City.NAME_CITY)
@@ -27,11 +26,11 @@ data class CityEntity(
     )
 
     data class Weather(
-        @ColumnInfo(CityContract.Columns.Weather.TEMP_MIN)
+        @ColumnInfo(name = CityContract.Columns.Weather.TEMP_MIN, defaultValue = "")
         val tempMin: String,
-        @ColumnInfo(CityContract.Columns.Weather.TEMP_MAX)
+        @ColumnInfo(name = CityContract.Columns.Weather.TEMP_MAX, defaultValue = "")
         val tempMax: String,
-        @ColumnInfo(CityContract.Columns.Weather.DESCRIPTION_WEATHER)
+        @ColumnInfo(name = CityContract.Columns.Weather.DESCRIPTION_WEATHER, defaultValue = "")
         val descriptionWeather: String
     )
 }
