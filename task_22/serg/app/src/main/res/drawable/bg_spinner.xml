@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <layer-list>
+            <item android:drawable="@drawable/baseline_arrow_drop_up_24" android:gravity="center_vertical|right" android:right="5dp" />
+        </layer-list>
+    </item>
+    <item>
+        <layer-list>
+            <item android:drawable="@drawable/baseline_arrow_drop_down_24" android:gravity="center_vertical|right" android:right="5dp" />
+        </layer-list>
+    </item>
+</selector>

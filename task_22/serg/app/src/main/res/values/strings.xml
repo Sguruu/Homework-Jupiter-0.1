@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">H_22</string>
+    <string name="name_task">Список контактов</string>
+    <string name="actionAddContact">Добавить контакт</string>
+    <string name="actionAddCity">Добавить город</string>
+    <string name="actionShowCity">Показать список городов</string>
+    <string name="actionShowContact">Показать список контактов</string>
+    <string name="action_search">Элемент поиска</string>
+    <string name="search">Поиск</string>
+    <string name="enter_your_name">Введите имя</string>
+    <string name="enter_last_name">Введите фамилию</string>
+    <string name="enter_phone_number">Введите номер телефона</string>
+    <string name="save">Сохранить</string>
+    <string name="save_contact">Контакт сохранен</string>
+    <string name="save_city">Город сохранен</string>
+    <string name="enter_name_city">Введите название города</string>
+    <string name="enter_lat">Широта</string>
+    <string name="enter_lon">Долгота</string>
+    <!--
+    Статья про форматы
+    https://docs.oracle.com/javase/1.5.0/docs/api/java/util/Formatter.html
+    -->
+    <string name="min_c">Мин : %1$s °C</string>
+    <string name="max_c">Макс : %1$s °C</string>
+    <string name="forecast">Прогноз : %1$s</string>
+    <string name="weather_average">Средняя температура сейчас %1$s °C \nПрогноз : %2$s  </string>
+    <!-- Сообщения об ошибках -->
+    <string name="parsing_error">Ошибка парсинга</string>
+    <string name="incorrect_code_status">Некорректный статус кода</string>
+    <string name="error_empty_edit_text">Поле не может быть пустое</string>
+    <string name="error_empty_edit_text_toast">Все поля должны быть заполнены</string>
+    <string name="error_no_internet">Нет интернета\nГород сохранен без координат</string>
+
+</resources>
