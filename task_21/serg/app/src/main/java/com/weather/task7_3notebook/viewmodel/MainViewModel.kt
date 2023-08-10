@@ -105,6 +105,7 @@ class MainViewModel : ViewModel() {
                     requestWeather(city.latitude, city.longitude) {
                         val newCity = city.copy(weather = it)
                         saveCity(newCity)
+                        updateStateStatusSaveCity(StateStatusSaveCity.Success)
                     }
                 }
 
@@ -155,7 +156,6 @@ class MainViewModel : ViewModel() {
                             descriptionWeather = this.data.weatherCurrent[0].description
                         )
                     )
-                    updateStateStatusSaveCity(StateStatusSaveCity.Success)
                 }
 
                 is Result.Error -> {
