@@ -1,7 +1,6 @@
 package com.weather.task7_3notebook.base.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -10,17 +9,12 @@ import com.weather.task7_3notebook.base.db.model.ContactEntity
 
 @Dao
 interface ContactDao {
-    /**
-     * Получение всех контактов
-     */
-    @Query("SELECT * FROM ${ContactContract.TABLE_NAME}")
-    suspend fun getAllContact(): List<ContactEntity>
 
     /**
      * Метод добавления контакта
      */
     @Insert
-    suspend fun insertContact(contact: List<ContactEntity>)
+    suspend fun insertContact(contact: ContactEntity)
 
     /**
      * Получение контакта по id
@@ -29,19 +23,15 @@ interface ContactDao {
     suspend fun getContactById(id: Long): ContactEntity
 
     /**
-     * Удаление контакта
-     */
-    @Delete
-    suspend fun delete(contactEntity: ContactEntity)
-
-    /**
-     * Удаление контакта по id
+     * Удаление контакта по : имени и фамилии и номера телефона
      */
     @Query(
-        "DELETE FROM ${ContactContract.TABLE_NAME} WHERE ${ContactContract.Columns.ID} = " +
-            ":contactID"
+        "DELETE FROM ${ContactContract.TABLE_NAME} WHERE " +
+            "${ContactContract.Columns.Contact.NAME} = :name AND " +
+            "${ContactContract.Columns.Contact.LAST_NAME} = :lastName AND " +
+            "${ContactContract.Columns.Contact.NUMBER} = :number"
     )
-    suspend fun deleteContactById(contactID: Long)
+    suspend fun deleteContact(name: String, lastName: String, number: String)
 
     /**
      * Обновление контакта

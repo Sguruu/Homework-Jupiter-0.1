@@ -6,7 +6,6 @@ import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.NavHostFragment
 import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
@@ -25,6 +24,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
+        viewModel.updateWeatherDataCities(this)
         setContentView(binding.root)
         // отключение темной темы
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)

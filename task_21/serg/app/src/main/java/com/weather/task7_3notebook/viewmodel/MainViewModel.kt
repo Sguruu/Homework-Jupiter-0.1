@@ -13,6 +13,7 @@ import com.weather.task7_3notebook.model.StateStatusSaveCity
 import com.weather.task7_3notebook.model.Weather
 import com.weather.task7_3notebook.repository.BaseRepository
 import com.weather.task7_3notebook.repository.CityRepository
+import com.weather.task7_3notebook.repository.ContactRepository
 import com.weather.task7_3notebook.repository.SearchRepository
 import com.weather.task7_3notebook.repository.WeatherRepository
 import com.weather.task7_3notebook.utils.SingleLiveEvent
@@ -26,6 +27,7 @@ class MainViewModel : ViewModel() {
     private val cityRepository = CityRepository()
     private val weatherRepository = WeatherRepository()
     private val baseRepository = BaseRepository()
+    private val contactRepository = ContactRepository()
 
     private val _contactLiveData = MutableLiveData<List<Contact>>(emptyList())
     private val _cityLiveData = MutableLiveData<List<City>>(emptyList())
@@ -49,6 +51,7 @@ class MainViewModel : ViewModel() {
     init {
         viewModelScope.launch {
             updateCityLiveData(cityRepository.getAllCity())
+            updateContactLiveData(contactRepository.getAllContact())
         }
     }
 
@@ -78,15 +81,21 @@ class MainViewModel : ViewModel() {
     }
 
     fun addContact(contact: Contact) {
-        val newList = _contactLiveData.value?.plus(contact) ?: listOf(contact)
-        updateContactLiveData(newList)
+        viewModelScope.launch {
+            contactRepository.addContact(contact)
+            val newList = _contactLiveData.value?.plus(contact) ?: listOf(contact)
+            updateContactLiveData(newList)
+        }
     }
 
     fun removeContact(contact: Contact) {
-        val newList = _contactLiveData.value?.filter {
-            contact != it
-        } ?: emptyList()
-        updateContactLiveData(newList)
+        viewModelScope.launch {
+            val newList = _contactLiveData.value?.filter {
+                contact != it
+            } ?: emptyList()
+            updateContactLiveData(newList)
+            contactRepository.deleteContact(contact)
+        }
     }
 
     fun addCity(city: City, context: Context) {

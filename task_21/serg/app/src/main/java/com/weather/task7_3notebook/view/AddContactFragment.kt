@@ -53,7 +53,7 @@ class AddContactFragment : Fragment() {
         binding.buttonAddContact.setOnClickListener {
             val name = binding.editTextName.text.toString()
             val lastName = binding.editTextLastName.text.toString()
-            val numberPhone = binding.editTextNumber.text.toString().toIntOrNull() ?: 0
+            val numberPhone = binding.editTextNumber.text.toString().toLongOrNull() ?: 0
 
             binding.editTextName.setText("")
             binding.editTextLastName.setText("")
