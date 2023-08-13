@@ -7,9 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.text.set
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.FragmentAddCityBinding
 import com.weather.task7_3notebook.model.City
@@ -17,6 +17,9 @@ import com.weather.task7_3notebook.model.StateStatusSaveCity
 import com.weather.task7_3notebook.view.extensions.checkShowError
 import com.weather.task7_3notebook.view.extensions.showError
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class AddCityFragment : Fragment() {
     private var _binding: FragmentAddCityBinding? = null
@@ -46,24 +49,26 @@ class AddCityFragment : Fragment() {
     }
 
     private fun initObserve() {
-        mainViewModel.stateStatusSaveCity.observe(viewLifecycleOwner) {
-            when (it) {
-                is StateStatusSaveCity.Success -> {
-                    clearEditText()
-                    toast(resources.getString(R.string.save_city))
-                }
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.stateStatusSaveCity.onEach {
+                when (it) {
+                    is StateStatusSaveCity.Success -> {
+                        clearEditText()
+                        toast(resources.getString(R.string.save_city))
+                    }
 
-                is StateStatusSaveCity.Error -> {
-                    binding.editTextLat.showError(it.message)
-                    binding.editTextLon.showError(it.message)
-                    toast(it.message)
-                }
+                    is StateStatusSaveCity.Error -> {
+                        binding.editTextLat.showError(it.message)
+                        binding.editTextLon.showError(it.message)
+                        toast(it.message)
+                    }
 
-                is StateStatusSaveCity.NoInternet -> {
-                    clearEditText()
-                    toast(resources.getString(R.string.error_no_internet))
+                    is StateStatusSaveCity.NoInternet -> {
+                        clearEditText()
+                        toast(resources.getString(R.string.error_no_internet))
+                    }
                 }
-            }
+            }.collect()
         }
     }
 

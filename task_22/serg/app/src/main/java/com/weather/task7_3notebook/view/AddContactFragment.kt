@@ -10,12 +10,17 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.FragmentAddPersonBinding
 import com.weather.task7_3notebook.model.City
 import com.weather.task7_3notebook.model.Contact
 import com.weather.task7_3notebook.view.extensions.setSpinnerFocusable
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class AddContactFragment : Fragment() {
     private var _binding: FragmentAddPersonBinding? = null
@@ -59,22 +64,28 @@ class AddContactFragment : Fragment() {
             binding.editTextLastName.setText("")
             binding.editTextNumber.setText("")
 
-            binding.spinner.selectedItemPosition
-            mainViewModel.addContact(
-                Contact(
-                    name,
-                    lastName,
-                    numberPhone,
-                    mainViewModel.cityListLiveData.value?.get(binding.spinner.selectedItemPosition)
-                )
-            )
-            renderProgressBar(resources.getString(R.string.save_contact))
+            viewLifecycleOwner.lifecycleScope.launch {
+                val jobAddContact = launch {
+                    mainViewModel.addContact(
+                        Contact(
+                            name,
+                            lastName,
+                            numberPhone,
+                            mainViewModel.cityListLiveData.first()[binding.spinner.selectedItemPosition]
+                        )
+                    )
+                }
+                jobAddContact.join()
+                renderProgressBar(resources.getString(R.string.save_contact))
+            }
         }
     }
 
     private fun initObserve() {
-        mainViewModel.cityListLiveData.observe(viewLifecycleOwner) {
-            updateAdapterSpinner(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.cityListLiveData.onEach {
+                updateAdapterSpinner(it)
+            }.collect()
         }
     }
 

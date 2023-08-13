@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,6 +17,9 @@ import com.weather.task7_3notebook.view.adapter.ContactAdapter
 import com.weather.task7_3notebook.view.adapter.CustomDuffCallback
 import com.weather.task7_3notebook.view.decoration.VerticalSpaceItemDecoration
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 class ListContactFragment : Fragment(R.layout.fragment_list) {
     private var _binding: FragmentListBinding? = null
@@ -63,11 +67,16 @@ class ListContactFragment : Fragment(R.layout.fragment_list) {
     }
 
     private fun initObserve() {
-        mainViewModel.contactLiveData.observe(requireActivity()) {
-            updateRecyclerView(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.contactLiveData.onEach {
+                updateRecyclerView(it)
+            }.collect()
         }
-        mainViewModel.filterListLiveData.observe(requireActivity()) {
-            updateRecyclerView(it)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            mainViewModel.filterListLiveData.onEach {
+                updateRecyclerView(it)
+            }.collect()
         }
     }
 

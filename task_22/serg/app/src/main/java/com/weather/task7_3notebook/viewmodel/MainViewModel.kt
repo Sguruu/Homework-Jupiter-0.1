@@ -1,8 +1,6 @@
 package com.weather.task7_3notebook.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.weather.task7_3notebook.base.Result
@@ -16,8 +14,10 @@ import com.weather.task7_3notebook.repository.CityRepository
 import com.weather.task7_3notebook.repository.ContactRepository
 import com.weather.task7_3notebook.repository.SearchRepository
 import com.weather.task7_3notebook.repository.WeatherRepository
-import com.weather.task7_3notebook.utils.SingleLiveEvent
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
 
@@ -29,24 +29,20 @@ class MainViewModel : ViewModel() {
     private val baseRepository = BaseRepository()
     private val contactRepository = ContactRepository()
 
-    private val _contactLiveData = MutableLiveData<List<Contact>>(emptyList())
-    private val _cityLiveData = MutableLiveData<List<City>>(emptyList())
-    private val _filterLiveData = SingleLiveEvent<List<Contact>>()
-    private val _stateStatusSaveCity =
-        SingleLiveEvent<StateStatusSaveCity>()
+    private val _contactLiveData = MutableStateFlow<List<Contact>>(emptyList())
+    private val _cityLiveData = MutableStateFlow<List<City>>(emptyList())
 
-    // для получения значения из вне и для подписки
-    val contactLiveData: LiveData<List<Contact>>
-        get() = _contactLiveData
+    private val _filterLiveData = MutableSharedFlow<List<Contact>>(replay = 1)
 
-    val filterListLiveData: LiveData<List<Contact>>
-        get() = _filterLiveData
+    private val _stateStatusSaveCity = MutableSharedFlow<StateStatusSaveCity>(replay = 1)
 
-    val cityListLiveData: LiveData<List<City>>
-        get() = _cityLiveData
+    val contactLiveData: Flow<List<Contact>> = _contactLiveData
 
-    val stateStatusSaveCity: LiveData<StateStatusSaveCity>
-        get() = _stateStatusSaveCity
+    val cityListLiveData: Flow<List<City>> = _cityLiveData
+
+    val filterListLiveData: Flow<List<Contact>> = _filterLiveData
+
+    val stateStatusSaveCity: Flow<StateStatusSaveCity> = _stateStatusSaveCity
 
     init {
         viewModelScope.launch {
@@ -58,11 +54,11 @@ class MainViewModel : ViewModel() {
     fun updateWeatherDataCities(context: Context) {
         if (baseRepository.checkIsInternet(context)) {
             viewModelScope.launch {
-                val newList: MutableList<City>? = cityListLiveData.value?.toMutableList()
+                val newList: MutableList<City> = _cityLiveData.value.toMutableList()
                 val jobsArray = arrayListOf<Job>()
-                newList?.let {
+                newList.let {
                     // создаю массив jobs
-                    cityListLiveData.value?.forEachIndexed { index, city ->
+                    _cityLiveData.value.forEachIndexed { index, city ->
                         jobsArray.add(
                             launch {
                                 requestWeather(city.latitude, city.longitude) { weather ->
@@ -83,16 +79,16 @@ class MainViewModel : ViewModel() {
     fun addContact(contact: Contact) {
         viewModelScope.launch {
             contactRepository.addContact(contact)
-            val newList = _contactLiveData.value?.plus(contact) ?: listOf(contact)
+            val newList = _contactLiveData.value.plus(contact) ?: listOf(contact)
             updateContactLiveData(newList)
         }
     }
 
     fun removeContact(contact: Contact) {
         viewModelScope.launch {
-            val newList = _contactLiveData.value?.filter {
+            val newList = _contactLiveData.value.filter {
                 contact != it
-            } ?: emptyList()
+            }
             updateContactLiveData(newList)
             contactRepository.deleteContact(contact)
         }
@@ -120,23 +116,25 @@ class MainViewModel : ViewModel() {
 
     fun removeCity(city: City) {
         viewModelScope.launch {
-            val newList = _cityLiveData.value?.filter {
+            val newList = _cityLiveData.value.filter {
                 city != it
-            } ?: emptyList()
+            }
             cityRepository.deleteCity(city)
             updateCityLiveData(newList)
         }
     }
 
     fun search(searchValue: String?) {
-        _contactLiveData.value?.let {
-            val filterList = searchRepository.getResultSearch(searchValue, it)
-            updateFilterLiveData(filterList)
+        viewModelScope.launch {
+            _contactLiveData.value.let {
+                val filterList = searchRepository.getResultSearch(searchValue, it)
+                updateFilterLiveData(filterList)
+            }
         }
     }
 
     private suspend fun saveCity(city: City) {
-        val newList = _cityLiveData.value?.plus(city) ?: listOf(city)
+        val newList = _cityLiveData.value.plus(city)
         cityRepository.insertCity(city)
         updateCityLiveData(newList)
     }
@@ -173,15 +171,15 @@ class MainViewModel : ViewModel() {
         _contactLiveData.value = newValue
     }
 
-    private fun updateFilterLiveData(newValue: List<Contact>) {
-        _filterLiveData.value = newValue
+    private suspend fun updateFilterLiveData(newValue: List<Contact>) {
+        _filterLiveData.emit(newValue)
     }
 
     private fun updateCityLiveData(newValue: List<City>) {
         _cityLiveData.value = newValue
     }
 
-    private fun updateStateStatusSaveCity(newValue: StateStatusSaveCity) {
-        _stateStatusSaveCity.value = newValue
+    private suspend fun updateStateStatusSaveCity(newValue: StateStatusSaveCity) {
+        _stateStatusSaveCity.emit(newValue)
     }
 }
