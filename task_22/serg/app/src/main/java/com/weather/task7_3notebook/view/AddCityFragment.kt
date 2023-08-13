@@ -50,7 +50,7 @@ class AddCityFragment : Fragment() {
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.stateStatusSaveCity.onEach {
+            mainViewModel.stateStatusSaveCityFlow.onEach {
                 when (it) {
                     is StateStatusSaveCity.Success -> {
                         clearEditText()

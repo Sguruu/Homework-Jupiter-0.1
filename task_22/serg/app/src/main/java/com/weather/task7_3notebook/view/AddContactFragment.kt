@@ -71,7 +71,7 @@ class AddContactFragment : Fragment() {
                             name,
                             lastName,
                             numberPhone,
-                            mainViewModel.cityListLiveData.first()[binding.spinner.selectedItemPosition]
+                            mainViewModel.citiesFlow.first()[binding.spinner.selectedItemPosition]
                         )
                     )
                 }
@@ -83,7 +83,7 @@ class AddContactFragment : Fragment() {
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.cityListLiveData.onEach {
+            mainViewModel.citiesFlow.onEach {
                 updateAdapterSpinner(it)
             }.collect()
         }

@@ -74,7 +74,7 @@ class ListCityFragment : Fragment(R.layout.fragment_list) {
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.cityListLiveData.onEach {
+            mainViewModel.citiesFlow.onEach {
                 updateRecyclerView(it)
             }.collect()
         }

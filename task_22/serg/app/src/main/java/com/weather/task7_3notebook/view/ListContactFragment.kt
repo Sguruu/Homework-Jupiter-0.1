@@ -68,13 +68,13 @@ class ListContactFragment : Fragment(R.layout.fragment_list) {
 
     private fun initObserve() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.contactLiveData.onEach {
+            mainViewModel.contactsFlow.onEach {
                 updateRecyclerView(it)
             }.collect()
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            mainViewModel.filterListLiveData.onEach {
+            mainViewModel.filterContactsFlow.onEach {
                 updateRecyclerView(it)
             }.collect()
         }
