@@ -11,10 +11,12 @@ import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
 import com.weather.task7_3notebook.utils.textChangedFlow
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
@@ -82,6 +84,7 @@ class MainActivity : AppCompatActivity() {
                 .mapLatest {
                     viewModel.search(it)
                 }
+                .flowOn(Dispatchers.IO)
                 .collect()
         }
     }
