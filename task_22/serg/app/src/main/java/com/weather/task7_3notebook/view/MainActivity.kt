@@ -1,15 +1,22 @@
 package com.weather.task7_3notebook.view
 
 import android.os.Bundle
-import android.view.MenuItem
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
+import com.weather.task7_3notebook.utils.textChangedFlow
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         // отключение темной темы
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         initListener()
+        initObserve()
     }
 
     private fun initListener() {
@@ -64,32 +72,23 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
+    private fun initObserve() {
+        lifecycleScope.launch {
+            flowTextSearchView()
+                .debounce(400)
+                .distinctUntilChanged()
+                .mapLatest {
+                    viewModel.search(it)
+                }
+                .collect()
+        }
+    }
+
+    private fun flowTextSearchView(): Flow<String> {
         val actionSearch = binding.toolbar.menu.findItem(R.id.actionSearch)
-
-        actionSearch.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(p0: MenuItem): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                return true
-            }
-        })
-
-        (actionSearch.actionView as SearchView).setOnQueryTextListener(object :
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    return true
-                }
-
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    showListContactFragment()
-                    // простой поиск по имени по нажатию кнопки
-                    viewModel.search(p0)
-                    return true
-                }
-            })
+        return (actionSearch.actionView as SearchView).textChangedFlow()
     }
 
     private fun showListContactFragment() {
