@@ -5,8 +5,6 @@ object CityContract {
 
     object Columns {
         const val ID = "id"
-        const val CITY = "city"
-        const val WEATHER = "weather"
 
         object City {
             const val NAME_CITY = "nameCity"

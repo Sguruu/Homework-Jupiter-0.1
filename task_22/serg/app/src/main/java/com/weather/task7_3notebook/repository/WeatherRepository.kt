@@ -2,6 +2,8 @@ package com.weather.task7_3notebook.repository
 
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.weather.task7_3notebook.R
+import com.weather.task7_3notebook.base.App
 import com.weather.task7_3notebook.base.Result
 import com.weather.task7_3notebook.base.network.Network
 import com.weather.task7_3notebook.model.ResponseErrorWeather
@@ -36,7 +38,7 @@ class WeatherRepository {
                 }
             } catch (e: IOException) {
                 // handle no internet connection
-                Result.Error(e, "Нет интернета")
+                Result.Error(e, App.res.getString(R.string.error_no_internet))
             }
         }
     }

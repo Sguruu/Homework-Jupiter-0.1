@@ -65,7 +65,7 @@ class AddCityFragment : Fragment() {
 
                     is StateStatusSaveCity.NoInternet -> {
                         clearEditText()
-                        toast(resources.getString(R.string.error_no_internet))
+                        toast(resources.getString(R.string.error_no_internet_save_city))
                     }
                 }
             }.collect()

@@ -42,7 +42,6 @@ class CityAdapter(
         fun bind(city: City) {
             with(binding) {
                 textViewCityName.text = city.nameCity
-                // textViewWeather.text = city.weather?.descriptionWeather
                 textViewWeather.text =
                     itemView.resources.getString(
                         R.string.forecast,

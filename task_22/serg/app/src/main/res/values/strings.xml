@@ -29,6 +29,7 @@
     <string name="incorrect_code_status">Некорректный статус кода</string>
     <string name="error_empty_edit_text">Поле не может быть пустое</string>
     <string name="error_empty_edit_text_toast">Все поля должны быть заполнены</string>
-    <string name="error_no_internet">Нет интернета\nГород сохранен без координат</string>
+    <string name="error_no_internet_save_city">Нет интернета\nГород сохранен без координат</string>
+    <string name="error_no_internet">Нет интернета</string>
 
 </resources>

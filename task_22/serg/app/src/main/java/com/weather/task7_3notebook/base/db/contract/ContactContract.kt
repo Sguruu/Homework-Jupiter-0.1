@@ -5,7 +5,6 @@ object ContactContract {
 
     object Columns {
         const val ID = "id"
-        const val CONTACT = "contact"
 
         object Contact {
             const val NAME = "name"

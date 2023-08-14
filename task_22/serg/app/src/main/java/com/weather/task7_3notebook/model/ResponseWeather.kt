@@ -14,7 +14,6 @@ data class ResponseWeather(
     val weatherCurrent: List<WeatherCurrent>,
     @Json(name = "country")
     val country: String? = "Russia"
-    // val country: String?
 )
 
 @JsonClass(generateAdapter = true)
