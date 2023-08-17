@@ -14,20 +14,23 @@ import com.weather.task7_3notebook.repository.CityRepository
 import com.weather.task7_3notebook.repository.ContactRepository
 import com.weather.task7_3notebook.repository.SearchRepository
 import com.weather.task7_3notebook.repository.WeatherRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.joinAll
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel : ViewModel() {
-
-    private val searchRepository = SearchRepository()
-    private val cityRepository = CityRepository()
-    private val weatherRepository = WeatherRepository()
-    private val baseRepository = BaseRepository()
-    private val contactRepository = ContactRepository()
+@HiltViewModel
+class MainViewModel @Inject constructor(
+    private val searchRepositoryImpl: SearchRepository,
+    private val cityRepositoryImpl: CityRepository,
+    private val weatherRepositoryImpl: WeatherRepository,
+    private val baseRepositoryImpl: BaseRepository,
+    private val contactRepositoryImpl: ContactRepository
+) : ViewModel() {
 
     private val _contactsFlow = MutableStateFlow<List<Contact>>(emptyList())
     private val _citiesFlow = MutableStateFlow<List<City>>(emptyList())
@@ -46,13 +49,13 @@ class MainViewModel : ViewModel() {
 
     init {
         viewModelScope.launch {
-            updateCityLiveData(cityRepository.getAllCity())
-            updateContactLiveData(contactRepository.getAllContact())
+            updateCityLiveData(cityRepositoryImpl.getAllCity())
+            updateContactLiveData(contactRepositoryImpl.getAllContact())
         }
     }
 
     fun updateWeatherDataCities(context: Context) {
-        if (baseRepository.checkIsInternet(context)) {
+        if (baseRepositoryImpl.checkIsInternet(context)) {
             viewModelScope.launch {
                 val newList: MutableList<City> = _citiesFlow.value.toMutableList()
                 val jobsArray = arrayListOf<Job>()
@@ -70,7 +73,7 @@ class MainViewModel : ViewModel() {
                     // дожидаюсь завершение всех jobs
                     jobsArray.joinAll()
                     updateCityLiveData(newList)
-                    cityRepository.updateCites(newList)
+                    cityRepositoryImpl.updateCites(newList)
                 }
             }
         }
@@ -78,7 +81,7 @@ class MainViewModel : ViewModel() {
 
     fun addContact(contact: Contact) {
         viewModelScope.launch {
-            contactRepository.addContact(contact)
+            contactRepositoryImpl.addContact(contact)
             val newList = _contactsFlow.value.plus(contact) ?: listOf(contact)
             updateContactLiveData(newList)
         }
@@ -90,13 +93,13 @@ class MainViewModel : ViewModel() {
                 contact != it
             }
             updateContactLiveData(newList)
-            contactRepository.deleteContact(contact)
+            contactRepositoryImpl.deleteContact(contact)
         }
     }
 
     fun addCity(city: City, context: Context) {
         viewModelScope.launch {
-            when (baseRepository.checkIsInternet(context)) {
+            when (baseRepositoryImpl.checkIsInternet(context)) {
                 true -> {
                     requestWeather(city.latitude, city.longitude) {
                         val newCity = city.copy(weather = it)
@@ -119,7 +122,7 @@ class MainViewModel : ViewModel() {
             val newList = _citiesFlow.value.filter {
                 city != it
             }
-            cityRepository.deleteCity(city)
+            cityRepositoryImpl.deleteCity(city)
             updateCityLiveData(newList)
         }
     }
@@ -127,7 +130,7 @@ class MainViewModel : ViewModel() {
     fun search(searchValue: String?) {
         viewModelScope.launch {
             _contactsFlow.value.let {
-                val filterList = searchRepository.getResultSearch(searchValue, it)
+                val filterList = searchRepositoryImpl.getResultSearch(searchValue, it)
                 updateFilterLiveData(filterList)
             }
         }
@@ -135,7 +138,7 @@ class MainViewModel : ViewModel() {
 
     private suspend fun saveCity(city: City) {
         val newList = _citiesFlow.value.plus(city)
-        cityRepository.insertCity(city)
+        cityRepositoryImpl.insertCity(city)
         updateCityLiveData(newList)
     }
 
@@ -144,7 +147,7 @@ class MainViewModel : ViewModel() {
         lon: String,
         callback: suspend (weather: Weather) -> Unit
     ) {
-        weatherRepository.requestWeather(lat, lon).apply {
+        weatherRepositoryImpl.requestWeather(lat, lon).apply {
             when (this) {
                 is Result.Success<ResponseWeather> -> {
                     callback.invoke(
