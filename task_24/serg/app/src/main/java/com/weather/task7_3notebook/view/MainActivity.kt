@@ -11,6 +11,7 @@ import com.weather.task7_3notebook.R
 import com.weather.task7_3notebook.databinding.ActivityMainBinding
 import com.weather.task7_3notebook.utils.textChangedFlow
 import com.weather.task7_3notebook.viewmodel.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
