@@ -5,11 +5,9 @@
     android:id="@+id/nav_graph.xml"
     app:startDestination="@id/fragmentWelcomeWords">
 
-    <action android:id="@+id/action_global_fragmentWelcomeWords"
-        app:destination="@id/fragmentWelcomeWords"/>
     <fragment
         android:id="@+id/fragmentWelcomeWords"
-        android:name="com.example.myapplication.FragmentWelcomeWords"
+        android:name="com.example.myapplication.view.FragmentWelcomeWords"
         android:label="FragmentWelcomeWords"
         tools:layout="@layout/fragment_welkom_words">
     </fragment>
@@ -18,7 +16,7 @@
         app:destination="@id/fragmentAdderFriends"/>
     <fragment
         android:id="@+id/fragmentAdderFriends"
-        android:name="com.example.myapplication.FragmentAdderFriends"
+        android:name="com.example.myapplication.view.FragmentAdderFriends"
         android:label="FragmentAdderFriends"
         tools:layout="@layout/fragment_adder_friends"/>
 
@@ -26,7 +24,7 @@
         app:destination="@id/fragmentShowerListFriends"/>
     <fragment
         android:id="@+id/fragmentShowerListFriends"
-        android:name="com.example.myapplication.FragmentShowerListFriends"
+        android:name="com.example.myapplication.view.FragmentShowerListFriends"
         android:label="FragmentShowerListFriends"
         tools:layout="@layout/shower_list" />
 

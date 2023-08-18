@@ -1,19 +1,22 @@
-package com.example.myapplication
+package com.example.myapplication.view
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SearchView
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
+import com.example.myapplication.MainViewModel
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), MainInterface {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private var friendList = ArrayList<Friend>()
     private val navController by lazy {
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navHostFragment.navController
     }
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +35,7 @@ class MainActivity : AppCompatActivity(), MainInterface {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-//                supportFragmentManager.beginTransaction()
-//                    .replace(binding.fragmentContainer.id, FragmentShowerListFriends.newInstance(
-//                        ArrayList(), friendList))
-//                    .commit()
+                viewModel.filteredFriendList = ArrayList()
                 navController.navigate(R.id.action_global_fragmentShowerListFriends)
                 return true
             }
@@ -44,12 +44,7 @@ class MainActivity : AppCompatActivity(), MainInterface {
         (searchViewOnMenu.actionView as SearchView).setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-//                    supportFragmentManager.beginTransaction()
-//                        .replace(binding.fragmentContainer.id,
-//                            FragmentShowerListFriends.newInstance(filterFriendList(p0),
-//                                friendList))
-//                        .commit()
-                    if (navController.currentDestination != navController.findDestination(R.id.fragmentShowerListFriends))
+                    viewModel.filteredFriendList = viewModel.filterFriendList(p0)
                         navController.navigate(R.id.action_global_fragmentShowerListFriends)
                     return true
                 }
@@ -83,40 +78,11 @@ class MainActivity : AppCompatActivity(), MainInterface {
     }
 
     private fun addFriendOnList() {
-//        supportFragmentManager.beginTransaction()
-//            .replace(binding.fragmentContainer.id, FragmentAdderFriends.newInstance(friendList))
-//            .commit()
         if (navController.currentDestination != navController.findDestination(R.id.fragmentAdderFriends))
             navController.navigate(R.id.action_global_fragmentAdderFriends)
     }
 
     private fun showFriendList() {
-//        supportFragmentManager.beginTransaction()
-//            .replace(binding.fragmentContainer.id,
-//                FragmentShowerListFriends.newInstance(ArrayList(),
-//                    friendList))
-//            .commit()
-        if (navController.currentDestination != navController.findDestination(R.id.fragmentShowerListFriends))
             navController.navigate(R.id.action_global_fragmentShowerListFriends)
-    }
-
-//    private fun filterFriendList(valueSearch: String?) : ArrayList<Friend> {
-//        val filterFriendList = ArrayList <Friend>()
-//        friendList.filter {
-//            it.name.contains(valueSearch ?: "", ignoreCase = true) ||
-//                it.surname.contains(valueSearch ?: "", ignoreCase = true) ||
-//                it.phoneNumber.contains(valueSearch ?: "", ignoreCase = true)
-//        }
-//            .let {
-//                it.forEach {friend ->
-//                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber)
-//                    filterFriendList.add(newFriend)
-//                }
-//            }
-//        return filterFriendList
-//    }
-
-    override fun dellFriend(friend: Friend) {
-        friendList.remove(friend)
     }
 }

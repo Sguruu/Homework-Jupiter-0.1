@@ -1,6 +1,5 @@
-package com.example.myapplication
+package com.example.myapplication.view
 
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,29 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import com.example.myapplication.MainViewModel
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAdderFriendsBinding
 
 class FragmentAdderFriends : Fragment() {
-
-    companion object{
-        private const val KEY_TEXT = "KEY_TEXT"
-        fun newInstance(friendList : ArrayList<Friend>) : Fragment{
-            val args = Bundle()
-            args.putParcelableArrayList(KEY_TEXT, friendList)
-
-            val fragment = FragmentAdderFriends()
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     private var _binding : FragmentAdderFriendsBinding? = null
     private val binding get() = _binding!!
     private var checkEditTextNameNoEmpty = false
     private var checkEditTextSurnameNoEmpty = false
     private var checkEditTextPhoneNumberNoEmpty = false
-    private lateinit var friendList : ArrayList<Friend>
-
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,12 +36,6 @@ class FragmentAdderFriends : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
-        friendList =
-        if (arguments!=null && Build.VERSION.SDK_INT >= 33){
-            arguments?.getParcelableArrayList(KEY_TEXT, Friend::class.java)!!
-        } else if (arguments!=null && Build.VERSION.SDK_INT < 33){
-            arguments?.getParcelableArrayList(KEY_TEXT)!!
-        } else ArrayList()
     }
 
     override fun onDestroyView() {
@@ -95,27 +78,19 @@ class FragmentAdderFriends : Fragment() {
 
         binding.adderButtom.setOnClickListener {
             startProgressBar()
-            addFriendOnList()
+            viewModel.addFriendOnList(
+                binding.editName.text.toString(),
+                binding.edinSurname.text.toString(),
+                binding.editPhoneNumber.text.toString()
+            )
             finishProgressBar()
         }
     }
 
     private fun startProgressBar() {
         binding.progressBar.visibility = View.VISIBLE
-        binding.editName.isEnabled = false
-        binding.edinSurname.isEnabled = false
-        binding.editPhoneNumber.isEnabled = false
         binding.adderButtom.isEnabled = false
-    }
-
-    private fun addFriendOnList() {
-        friendList.add(
-            Friend(
-                binding.editName.text.toString(),
-                binding.edinSurname.text.toString(),
-                binding.editPhoneNumber.text.toString()
-            )
-        )
+        switchEditTexts(false)
     }
 
     private fun renderButtonEnabled() {
@@ -126,12 +101,10 @@ class FragmentAdderFriends : Fragment() {
     private fun finishProgressBar() {
         Handler(Looper.getMainLooper()).postDelayed({
             binding.progressBar.visibility = View.GONE
-            binding.editName.isEnabled = true
             binding.editName.text = null
-            binding.edinSurname.isEnabled = true
             binding.edinSurname.text = null
-            binding.editPhoneNumber.isEnabled = true
             binding.editPhoneNumber.text = null
+            switchEditTexts(true)
 
             Toast.makeText(
                 context,
@@ -139,5 +112,12 @@ class FragmentAdderFriends : Fragment() {
                 Toast.LENGTH_SHORT
             ).show()
         }, 2000)
+    }
+
+    /** enter true to on edit texts, enter false to off it */
+    private fun switchEditTexts (onOrOff: Boolean){
+        binding.editName.isEnabled = onOrOff
+        binding.edinSurname.isEnabled = onOrOff
+        binding.editPhoneNumber.isEnabled = onOrOff
     }
 }

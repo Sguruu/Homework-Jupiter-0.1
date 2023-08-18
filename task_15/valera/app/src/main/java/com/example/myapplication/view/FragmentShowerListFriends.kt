@@ -1,37 +1,23 @@
-package com.example.myapplication
-import android.os.Build
+package com.example.myapplication.view
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.Friend
+import com.example.myapplication.MainViewModel
+import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentShowerListFriendsBinding
 
 class FragmentShowerListFriends : Fragment() {
 
-    companion object{
-        private const val KEY_filter_friendList = "KEY_TEXT1"
-        private const val KEY_friendList = "KEY_TEXT2"
-        fun newInstance(filterFriendList : ArrayList<Friend>, friendList : ArrayList<Friend>)
-        : Fragment{
-            val args = Bundle()
-            args.putParcelableArrayList(KEY_filter_friendList, filterFriendList)
-            args.putParcelableArrayList(KEY_friendList, friendList)
-
-            val fragment = FragmentShowerListFriends()
-            fragment.arguments = args
-            return fragment
-        }
-    }
-
     private var _binding : FragmentShowerListFriendsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var friendList : ArrayList<Friend>
-    private lateinit var filterFriendList : ArrayList<Friend>
     private var adapter: FriendAdapter? = null
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,19 +30,6 @@ class FragmentShowerListFriends : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-            if (arguments!=null && Build.VERSION.SDK_INT >= 33){
-                friendList = arguments?.getParcelableArrayList(KEY_friendList, Friend::class.java)!!
-                filterFriendList = arguments?.getParcelableArrayList(
-                    KEY_filter_friendList, Friend::class.java)!!
-            } else if (arguments!=null && Build.VERSION.SDK_INT < 33){
-                friendList = arguments?.getParcelableArrayList(KEY_friendList)!!
-                filterFriendList = arguments?.getParcelableArrayList(KEY_filter_friendList)!!
-            }
-            else {
-                friendList = ArrayList()
-                filterFriendList = ArrayList()
-            }
         initList()
     }
 
@@ -67,8 +40,8 @@ class FragmentShowerListFriends : Fragment() {
 
     private fun initList(){
         val useFriendList =
-        if (filterFriendList.isEmpty()) friendList
-        else filterFriendList
+        if (viewModel.filteredFriendList.isEmpty()) viewModel.friendList
+        else viewModel.filteredFriendList
 
         adapter = FriendAdapter(
             useFriendList)
@@ -84,7 +57,7 @@ class FragmentShowerListFriends : Fragment() {
     private fun dellFriend (position: Int, friend: Friend){
         val toastText = "${friend.name} ${friend.surname} ${getString(R.string.dell_message)}"
         adapter?.let {
-            (activity as MainInterface).dellFriend(friend)
+           viewModel.dellFriend(friend)
             it.dellFriend(friend)
             it.notifyItemRemoved(position)
             it.notifyDataSetChanged()
