@@ -1,0 +1,13 @@
+<resources>
+
+    <string name="app_name"> My application</string>
+    <string name="text_hello"> Авторизуйтесь</string>
+    <string name="login"> Введите логин</string>
+    <string name="password"> Введите пароль</string>
+    <string name="mail"> Введите email</string>
+    <string name="text_enter"> Войти </string>
+    <string name="accept"> Я принимаю соглашение </string>
+    <string name="good_enter"> Успешно авторизовались!</string>
+
+
+</resources>
