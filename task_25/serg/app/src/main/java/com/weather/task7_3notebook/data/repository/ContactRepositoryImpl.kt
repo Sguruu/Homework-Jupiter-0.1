@@ -14,7 +14,7 @@ class ContactRepositoryImpl @Inject constructor(
     private val dbContactWithCityDao: ContactWithCityDao
 ) : ContactRepository {
 
-    override  fun getAllContact(): Flow<List<ContactWithCityEntity>> {
+    override fun getAllContact(): Flow<List<ContactWithCityEntity>> {
         return dbContactWithCityDao.getAllContactWithCityDao()
     }
 

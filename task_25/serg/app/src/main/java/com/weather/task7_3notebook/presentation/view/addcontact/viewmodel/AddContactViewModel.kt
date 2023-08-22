@@ -23,7 +23,7 @@ class AddContactViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             cityInteractor.getAllCity().collect {
-                updateCityLiveData(it)
+                updateCityFlow(it)
             }
         }
     }
@@ -34,7 +34,7 @@ class AddContactViewModel @Inject constructor(
         }
     }
 
-    private fun updateCityLiveData(newValue: List<City>) {
+    private fun updateCityFlow(newValue: List<City>) {
         _citiesFlow.value = newValue
     }
 }

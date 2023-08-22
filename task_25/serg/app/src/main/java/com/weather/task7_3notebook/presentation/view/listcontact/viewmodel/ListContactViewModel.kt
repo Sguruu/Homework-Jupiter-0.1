@@ -38,12 +38,12 @@ class ListContactViewModel @Inject constructor(
         viewModelScope.launch {
             _contactsFlow.value.let {
                 val filterList = contactInteractor.getResultSearch(searchValue, it)
-                updateFilterLiveData(filterList)
+                updateFilterFlow(filterList)
             }
         }
     }
 
-    private suspend fun updateFilterLiveData(newValue: List<Contact>) {
+    private suspend fun updateFilterFlow(newValue: List<Contact>) {
         _filterContactsFlow.emit(newValue)
     }
 }

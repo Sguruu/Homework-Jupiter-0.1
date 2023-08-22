@@ -29,7 +29,7 @@ class ListCityViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             cityInteractor.getAllCity().collect {
-                updateCityLiveData(it)
+                updateCityFlow(it)
             }
         }
     }
@@ -59,7 +59,7 @@ class ListCityViewModel @Inject constructor(
                 city != it
             }
             cityInteractor.deleteCity(city)
-            updateCityLiveData(newList)
+            updateCityFlow(newList)
         }
     }
 
@@ -67,16 +67,16 @@ class ListCityViewModel @Inject constructor(
         viewModelScope.launch {
             _citiesFlow.value.let {
                 val filterList = cityInteractor.getResultSearch(searchValue, it)
-                updateFilterLiveData(filterList)
+                updateFilterFlow(filterList)
             }
         }
     }
 
-    private fun updateCityLiveData(newValue: List<City>) {
+    private fun updateCityFlow(newValue: List<City>) {
         _citiesFlow.value = newValue
     }
 
-    private suspend fun updateFilterLiveData(newValue: List<City>) {
+    private suspend fun updateFilterFlow(newValue: List<City>) {
         _filterCityFlow.emit(newValue)
     }
 }

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface CityDao {
     /**
-     * Получение всех городов
+     * Получение потока всех городов
      */
     @Query("SELECT * FROM ${CityContract.TABLE_NAME}")
     fun getAllCity(): Flow<List<CityEntity>>

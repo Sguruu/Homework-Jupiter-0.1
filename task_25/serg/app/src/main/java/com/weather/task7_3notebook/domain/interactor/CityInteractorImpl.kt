@@ -1,7 +1,6 @@
 package com.weather.task7_3notebook.domain.interactor
 
 import android.content.Context
-import android.util.Log
 import com.weather.task7_3notebook.data.mapper.toCity
 import com.weather.task7_3notebook.data.mapper.toWeather
 import com.weather.task7_3notebook.data.network.model.ResponseWeather
@@ -121,7 +120,6 @@ class CityInteractorImpl @Inject constructor(
      * Добавить города по умолчанию в БД
      */
     private suspend fun createDefaultListCities() {
-        Log.d("MyTest", "createDefaultListCities")
         cityRepository.insertCities(getDefaultListCities().map { it.toCityEntity() })
     }
 

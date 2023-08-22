@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface ContactWithCityDao {
     /**
-     * Получение всех контактов и связанными с ними городами
+     * Получение потока всех контактов и связанными с ними городами
      */
     @Query("SELECT * FROM ${ContactContract.TABLE_NAME}")
     fun getAllContactWithCityDao(): Flow<List<ContactWithCityEntity>>
