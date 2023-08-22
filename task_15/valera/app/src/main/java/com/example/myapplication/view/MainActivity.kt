@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                viewModel.filteredFriendList = ArrayList()
+                viewModel.resetFilterLiveData()
                 navController.navigate(R.id.action_global_fragmentShowerListFriends)
                 return true
             }
@@ -44,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         (searchViewOnMenu.actionView as SearchView).setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-                    viewModel.filteredFriendList = viewModel.filterFriendList(p0)
-                        navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                    viewModel.filterFriendList(p0)
+                    navController.navigate(R.id.action_global_fragmentShowerListFriends)
                     return true
                 }
 

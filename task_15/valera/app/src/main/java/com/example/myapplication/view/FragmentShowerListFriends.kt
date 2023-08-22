@@ -30,6 +30,7 @@ class FragmentShowerListFriends : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initObserve()
         initList()
     }
 
@@ -40,8 +41,10 @@ class FragmentShowerListFriends : Fragment() {
 
     private fun initList(){
         val useFriendList =
-        if (viewModel.filteredFriendList.isEmpty()) viewModel.friendList
-        else viewModel.filteredFriendList
+        if (viewModel.filterListLiveData.value == null ||
+            viewModel.filterListLiveData.value == ArrayList<Friend>())
+            viewModel.friendLiveData.value?: ArrayList()
+        else viewModel.filterListLiveData.value?: ArrayList()
 
         adapter = FriendAdapter(
             useFriendList)
@@ -54,13 +57,21 @@ class FragmentShowerListFriends : Fragment() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
+    private fun initObserve() {
+        viewModel.friendLiveData.observe(requireActivity()) {
+            adapter?.updateList(it)
+        }
+        viewModel.filterListLiveData.observe(requireActivity()) {
+            adapter?.updateList(it)
+        }
+    }
+
+
     private fun dellFriend (position: Int, friend: Friend){
         val toastText = "${friend.name} ${friend.surname} ${getString(R.string.dell_message)}"
         adapter?.let {
-           viewModel.dellFriend(friend)
-            it.dellFriend(friend)
             it.notifyItemRemoved(position)
-            it.notifyDataSetChanged()
+           viewModel.dellFriend(friend)
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         }
     }
