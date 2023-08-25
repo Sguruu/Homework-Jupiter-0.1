@@ -10,7 +10,7 @@ import com.example.myapplication.Friend
 import com.example.myapplication.R
 
 class FriendAdapter (
-    var friendList: ArrayList<Friend>,
+    private var friendList: ArrayList<Friend>,
     private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit
         ): RecyclerView.Adapter<FriendAdapter.Holder>(){
 
@@ -25,8 +25,7 @@ class FriendAdapter (
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val friend = friendList[position]
-        holder.bind(friend)
+        holder.bind(friendList[position])
     }
 
     fun updateList (newFriendList: ArrayList<Friend>){
