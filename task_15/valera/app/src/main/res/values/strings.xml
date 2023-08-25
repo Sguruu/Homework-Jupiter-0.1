@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Кореша</string>
+    <string name="welcome_words">
+    """Вас приветствует програмка для создания списка друзей
+
+    Со мной вы можете:
+    - Добавить друга
+    - Посмотреть список своих друзей
+    - Удалить друга
+
+    Я никого не создаю и никого не убиваю (хотя иногда очень хочется ^^)"""</string>
+    <string name="menu_searcher">Поиск</string>
+    <string name="menu_adder">Добавить нового друга</string>
+    <string name="menu_shower">Показать список друзей</string>
+    <string name="name">Введите имя</string>
+    <string name="surname">Введите фамилию</string>
+    <string name="phone_number">Введите номер телефона</string>
+    <string name="buttom_adder">Сохранить</string>
+    <string name="successfully">Новый друг успешно добавлен</string>
+    <string name="dell_message">удален(а) из списка Ваших друзей</string>
+</resources>
