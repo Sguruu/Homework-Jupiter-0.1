@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/fragmentWelcomeWords">
+
+    <fragment
+        android:id="@+id/fragmentWelcomeWords"
+        android:name="com.example.myapplication.view.FragmentWelcomeWords"
+        android:label="FragmentWelcomeWords"
+        tools:layout="@layout/fragment_welkom_words">
+    </fragment>
+
+    <action android:id="@+id/action_global_fragmentAdderFriends"
+        app:destination="@id/fragmentAdderFriends"/>
+    <fragment
+        android:id="@+id/fragmentAdderFriends"
+        android:name="com.example.myapplication.view.FragmentAdderFriends"
+        android:label="FragmentAdderFriends"
+        tools:layout="@layout/fragment_adder_friends"/>
+
+    <action android:id="@+id/action_global_fragmentShowerListFriends"
+        app:destination="@id/fragmentShowerListFriends"/>
+    <fragment
+        android:id="@+id/fragmentShowerListFriends"
+        android:name="com.example.myapplication.view.FragmentShowerListFriends"
+        android:label="FragmentShowerListFriends"
+        tools:layout="@layout/shower_list" />
+
+</navigation>
