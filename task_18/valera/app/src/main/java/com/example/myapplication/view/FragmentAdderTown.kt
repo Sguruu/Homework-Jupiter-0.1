@@ -1,6 +1,5 @@
 package com.example.myapplication.view
 
-import com.example.myapplication.R
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,27 +12,25 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.FriendViewModel
+import com.example.myapplication.R
 import com.example.myapplication.TownViewModel
-import com.example.myapplication.databinding.FragmentAdderFriendsBinding
-import com.example.myapplication.models.Town
+import com.example.myapplication.databinding.FragmentAdderTownBinding
 
-
-class FragmentAdderFriends : Fragment() {
-
-    private var _binding : FragmentAdderFriendsBinding? = null
+class FragmentAdderTown : Fragment() {
+    private var _binding : FragmentAdderTownBinding? = null
     private val binding get() = _binding!!
-    private var checkEditTextNameNoEmpty = false
-    private var checkEditTextSurnameNoEmpty = false
-    private var checkEditTextPhoneNumberNoEmpty = false
-    private val viewModel: FriendViewModel by activityViewModels()
-    private val townViewModel: TownViewModel by activityViewModels()
+
+    private var checkEditTextTownNameNoEmpty = false
+    private var checkEditTextLatitudeNoEmpty = false
+    private var checkEditTextLongitudeNoEmpty = false
+    private val viewModel: TownViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAdderFriendsBinding.inflate(inflater, container, false)
+        _binding = FragmentAdderTownBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -48,20 +45,20 @@ class FragmentAdderFriends : Fragment() {
     }
 
     private fun initListeners(){
-        binding.editName.addTextChangedListener(object : TextWatcher {
+        binding.editTownName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextNameNoEmpty = p0?.isNotEmpty() ?: false
+                checkEditTextTownNameNoEmpty = p0?.isNotEmpty() ?: false
                 renderButtonEnabled()
             }
 
             override fun afterTextChanged(p0: Editable?) {}
         })
 
-        binding.edinSurname.addTextChangedListener(object : TextWatcher {
+        binding.editLatitude.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextSurnameNoEmpty = p0?.isNotEmpty() ?: false
+                checkEditTextLatitudeNoEmpty = p0?.isNotEmpty() ?: false
                 renderButtonEnabled()
             }
 
@@ -69,10 +66,10 @@ class FragmentAdderFriends : Fragment() {
             }
         })
 
-        binding.editPhoneNumber.addTextChangedListener(object : TextWatcher {
+        binding.editLongitude.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                checkEditTextPhoneNumberNoEmpty = p0?.isNotEmpty() ?: false
+                checkEditTextLongitudeNoEmpty = p0?.isNotEmpty() ?: false
                 renderButtonEnabled()
             }
 
@@ -80,40 +77,39 @@ class FragmentAdderFriends : Fragment() {
             }
         })
 
-        binding.adderButtom.setOnClickListener {
+        binding.adderTownButton.setOnClickListener {
             startProgressBar()
-            viewModel.addFriendOnList(
-                binding.editName.text.toString(),
-                binding.edinSurname.text.toString(),
-                binding.editPhoneNumber.text.toString(),
-                Town("Самара", 10.5, 15.7)
+            viewModel.addTownOnList(
+                binding.editTownName.text.toString(),
+                binding.editLatitude.text.toString().toDouble(),
+                binding.editLongitude.text.toString().toDouble()
             )
             finishProgressBar()
         }
     }
 
     private fun startProgressBar() {
-        binding.progressBar.visibility = View.VISIBLE
-        binding.adderButtom.isEnabled = false
+        binding.progressBarOnAdderTown.visibility = View.VISIBLE
+        binding.adderTownButton.isEnabled = false
         switchEditTexts(false)
     }
 
     private fun renderButtonEnabled() {
-        binding.adderButtom.isEnabled =
-            checkEditTextNameNoEmpty && checkEditTextSurnameNoEmpty && checkEditTextPhoneNumberNoEmpty
+        binding.adderTownButton.isEnabled =
+            checkEditTextTownNameNoEmpty && checkEditTextLatitudeNoEmpty && checkEditTextLongitudeNoEmpty
     }
 
     private fun finishProgressBar() {
         Handler(Looper.getMainLooper()).postDelayed({
-            binding.progressBar.visibility = View.GONE
-            binding.editName.text = null
-            binding.edinSurname.text = null
-            binding.editPhoneNumber.text = null
+            binding.progressBarOnAdderTown.visibility = View.GONE
+            binding.editTownName.text = null
+            binding.editLatitude.text = null
+            binding.editLongitude.text = null
             switchEditTexts(true)
 
             Toast.makeText(
                 context,
-                resources.getString(R.string.successfully),
+                resources.getString(R.string.successfully_add_town),
                 Toast.LENGTH_SHORT
             ).show()
         }, 2000)
@@ -121,8 +117,8 @@ class FragmentAdderFriends : Fragment() {
 
     /** enter true to on edit texts, enter false to off it */
     private fun switchEditTexts (onOrOff: Boolean){
-        binding.editName.isEnabled = onOrOff
-        binding.edinSurname.isEnabled = onOrOff
-        binding.editPhoneNumber.isEnabled = onOrOff
+        binding.editTownName.isEnabled = onOrOff
+        binding.editLatitude.isEnabled = onOrOff
+        binding.editLongitude.isEnabled = onOrOff
     }
 }

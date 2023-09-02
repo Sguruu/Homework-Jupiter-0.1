@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.Friend
+import com.example.myapplication.models.Friend
 import com.example.myapplication.R
 
 class FriendAdapter (
@@ -38,12 +38,14 @@ class FriendAdapter (
         private val friendName: TextView = view.findViewById(R.id.friend_name)
         private val friendSurname: TextView = view.findViewById(R.id.friend_surname)
         private val friendPhoneNumber: TextView = view.findViewById(R.id.friend_phone_number)
+        private val friendTown: TextView = view.findViewById(R.id.friend_town)
         private val dellFriendButton: Button = view.findViewById(R.id.button_dell_friend)
 
         fun bind(friend: Friend){
             friendName.text = friend.name
             friendSurname.text = friend.surname
             friendPhoneNumber.text = friend.phoneNumber
+            friendTown.text = friend.town.name
             dellFriendButton.setOnClickListener {
                 onButtonDeleteClickListener.invoke(adapterPosition, friend)
             }

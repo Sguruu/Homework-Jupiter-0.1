@@ -28,4 +28,19 @@
         android:label="FragmentShowerListFriends"
         tools:layout="@layout/shower_list" />
 
+    <action android:id="@+id/action_global_fragmentAdderTown"
+        app:destination="@id/fragmentAdderTown"/>
+    <fragment
+        android:id="@+id/fragmentAdderTown"
+        android:name="com.example.myapplication.view.FragmentAdderTown"
+        android:label="FragmentAdderTown"
+        tools:layout="@layout/fragment_adder_town"/>
+    <action
+        android:id="@+id/action_global_fragmentShowerTowns"
+        app:destination="@id/fragmentShowerTowns"/>
+    <fragment
+        android:id="@+id/fragmentShowerTowns"
+        android:name="com.example.myapplication.view.FragmentShowerTowns"
+        android:label="FragmentShowerTowns"
+        tools:layout="@layout/town_shower_list"/>
 </navigation>

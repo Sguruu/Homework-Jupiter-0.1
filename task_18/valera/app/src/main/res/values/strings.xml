@@ -18,4 +18,12 @@
     <string name="buttom_adder">Сохранить</string>
     <string name="successfully">Новый друг успешно добавлен</string>
     <string name="dell_message">удален(а) из списка Ваших друзей</string>
+    <string name="town_name">Название города</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+    <string name="menu_adder_town">Добавить город</string>
+    <string name="menu_shower_towns">Показать список городов</string>
+    <string name="successfully_add_town">Новый город успешно добавлен</string>
+    <string name="dell_town_message">Город %1$s успешно удалён</string>
+    <string name="town_coordinates_completion">Координаты: %1$s / %2$s</string>
 </resources>

@@ -3,8 +3,10 @@ package com.example.myapplication
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.models.Friend
+import com.example.myapplication.models.Town
 
-class MainViewModel: ViewModel() {
+class FriendViewModel: ViewModel() {
     private val repository = MainRepository()
     private val _friendLiveData = MutableLiveData<ArrayList<Friend>>()
     private val _filterLiveData = SingleLiveEvent<ArrayList<Friend>>()
@@ -22,18 +24,18 @@ class MainViewModel: ViewModel() {
         }
     }
 
-    fun addFriendOnList(name: String, surname: String, phoneNumber: String) {
+    fun addFriendOnList(name: String, surname: String, phoneNumber: String, town: Town) {
         val list = ArrayList<Friend>()
         if (_friendLiveData.value?.isNotEmpty() == true){
-            val newList = _friendLiveData.value!!.plus(Friend(name, surname, phoneNumber))
+            val newList = _friendLiveData.value!!.plus(Friend(name, surname, phoneNumber, town))
             newList.let {
                 it.forEach {friend ->
-                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber)
+                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, town)
                     list.add(newFriend)
                 }
             }
         } else {
-            list.add(Friend(name, surname, phoneNumber))
+            list.add(Friend(name, surname, phoneNumber, town))
         }
         updateFriendLiveData(list)
     }

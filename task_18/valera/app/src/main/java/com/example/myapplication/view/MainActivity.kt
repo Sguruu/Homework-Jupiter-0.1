@@ -5,7 +5,7 @@ import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.example.myapplication.MainViewModel
+import com.example.myapplication.FriendViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMainBinding
 
@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navHostFragment.navController
     }
-    private val viewModel: MainViewModel by viewModels()
+    private val viewModel: FriendViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +70,14 @@ class MainActivity : AppCompatActivity() {
                     showFriendList()
                     true
                 }
+                R.id.adder_town -> {
+                    addTown()
+                    true
+                }
+                R.id.shower_towns -> {
+                    showTowns()
+                    true
+                }
                 else -> {
                     false
                 }
@@ -84,5 +92,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun showFriendList() {
             navController.navigate(R.id.action_global_fragmentShowerListFriends)
+    }
+
+    private fun addTown(){
+        if (navController.currentDestination != navController.findDestination(R.id.fragmentAdderTown)){
+                navController.navigate(R.id.action_global_fragmentAdderTown)
+            }
+    }
+
+    private fun showTowns(){
+        navController.navigate(R.id.action_global_fragmentShowerTowns)
     }
 }

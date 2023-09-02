@@ -6,6 +6,13 @@
     android:orientation="vertical"
     >
 
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:src="@drawable/friends"
+        />
+
     <EditText
         android:id="@+id/edit_name"
         android:layout_width="match_parent"
@@ -26,6 +33,13 @@
         android:layout_height="wrap_content"
         android:hint="@string/phone_number"
         android:inputType="phone"
+        />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
         />
 
     <Button

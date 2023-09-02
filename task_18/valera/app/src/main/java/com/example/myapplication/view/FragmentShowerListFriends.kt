@@ -7,8 +7,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.Friend
-import com.example.myapplication.MainViewModel
+import com.example.myapplication.models.Friend
+import com.example.myapplication.FriendViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentShowerListFriendsBinding
 
@@ -17,7 +17,7 @@ class FragmentShowerListFriends : Fragment() {
     private var _binding : FragmentShowerListFriendsBinding? = null
     private val binding get() = _binding!!
     private var adapter: FriendAdapter? = null
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: FriendViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
