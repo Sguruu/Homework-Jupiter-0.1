@@ -11,14 +11,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.weather.task7_3notebook.R
-import com.weather.task7_3notebook.databinding.FragmentAddPersonBinding
+import com.weather.task7_3notebook.databinding.FragmentAddContactBinding
 import com.weather.task7_3notebook.model.City
 import com.weather.task7_3notebook.model.Contact
 import com.weather.task7_3notebook.view.extensions.setSpinnerFocusable
 import com.weather.task7_3notebook.viewmodel.MainViewModel
 
 class AddContactFragment : Fragment() {
-    private var _binding: FragmentAddPersonBinding? = null
+    private var _binding: FragmentAddContactBinding? = null
     private val binding get() = _binding!!
     private lateinit var toast: Toast
     private val mainViewModel: MainViewModel by activityViewModels()
@@ -28,7 +28,7 @@ class AddContactFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddPersonBinding.inflate(inflater, container, false)
+        _binding = FragmentAddContactBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -59,7 +59,6 @@ class AddContactFragment : Fragment() {
             binding.editTextLastName.setText("")
             binding.editTextNumber.setText("")
 
-            binding.spinner.selectedItemPosition
             mainViewModel.addContact(
                 Contact(
                     name,

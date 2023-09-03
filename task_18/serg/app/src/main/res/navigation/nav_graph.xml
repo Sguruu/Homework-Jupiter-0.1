@@ -9,7 +9,7 @@
         android:id="@+id/addPersonFragment"
         android:name="com.weather.task7_3notebook.view.AddContactFragment"
         android:label="AddPersonFragment"
-        tools:layout="@layout/fragment_add_person"/>
+        tools:layout="@layout/fragment_add_contact"/>
     <fragment
         android:id="@+id/listContactFragment"
         android:name="com.weather.task7_3notebook.view.ListContactFragment"
