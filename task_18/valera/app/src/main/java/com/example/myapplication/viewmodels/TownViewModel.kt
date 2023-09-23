@@ -1,11 +1,11 @@
-package com.example.myapplication.viewModels
+package com.example.myapplication.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.myapplication.MainRepository
 import com.example.myapplication.models.Town
 import com.example.myapplication.models.Weather
+import com.example.myapplication.repository.MainRepository
 
 class TownViewModel : ViewModel() {
     private val repository = MainRepository()
@@ -27,10 +27,10 @@ class TownViewModel : ViewModel() {
 
     fun addTownOnList(name: String, latitude: Double, longitude: Double, weather: Weather) {
         val list = ArrayList<Town>()
-        if (_townLiveData.value?.isNotEmpty() == true){
+        if (_townLiveData.value?.isNotEmpty() == true) {
             val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude, weather))
             newList.let {
-                it.forEach {town ->
+                it.forEach { town ->
                     val newTown = Town(town.name, town.latitude, town.longitude, town.weather)
                     list.add(newTown)
                 }

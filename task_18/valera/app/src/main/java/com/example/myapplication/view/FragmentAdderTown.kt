@@ -13,13 +13,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
-import com.example.myapplication.viewModels.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderTownBinding
 import com.example.myapplication.models.Weather
-import com.example.myapplication.viewModels.InfoViewModel
+import com.example.myapplication.viewmodels.InfoViewModel
+import com.example.myapplication.viewmodels.TownViewModel
 
 class FragmentAdderTown : Fragment() {
-    private var _binding : FragmentAdderTownBinding? = null
+    private var _binding: FragmentAdderTownBinding? = null
     private val binding get() = _binding!!
 
     private var checkEditTextTownNameNoEmpty = false
@@ -39,7 +39,7 @@ class FragmentAdderTown : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weatherViewModel.infoLiveData.observe(requireActivity()){
+        weatherViewModel.infoLiveData.observe(requireActivity()) {
             Log.d("MyTest", "$it")
         }
         initListeners()
@@ -50,7 +50,7 @@ class FragmentAdderTown : Fragment() {
         _binding = null
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         binding.editTownName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -89,21 +89,24 @@ class FragmentAdderTown : Fragment() {
                 binding.editLatitude.text.toString(),
                 binding.editLongitude.text.toString()
             )
-            Thread{
-            Thread.sleep(10_000)
-                val weather = Weather (
-                    weatherViewModel.infoLiveData.value?.main?.temp?: 0.0,
-                    weatherViewModel.infoLiveData.value?.main?.humidity?: 0,
-                    weatherViewModel.infoLiveData.value?.main?.description?: "нет данных"
+            finishProgressBar()
+        }
+
+        weatherViewModel.infoLiveData.observe(viewLifecycleOwner) {
+            it?.let {
+                val weather = Weather(
+                    it.main.temp,
+                    it.main.humidity,
+                    it.main.description
                 )
+
                 viewModel.addTownOnList(
                     binding.editTownName.text.toString(),
                     binding.editLatitude.text.toString().toDouble(),
                     binding.editLongitude.text.toString().toDouble(),
                     weather
                 )
-            }.start()
-            finishProgressBar()
+            }
         }
     }
 
@@ -135,7 +138,7 @@ class FragmentAdderTown : Fragment() {
     }
 
     /** enter true to on edit texts, enter false to off it */
-    private fun switchEditTexts (onOrOff: Boolean){
+    private fun switchEditTexts(onOrOff: Boolean) {
         binding.editTownName.isEnabled = onOrOff
         binding.editLatitude.isEnabled = onOrOff
         binding.editLongitude.isEnabled = onOrOff

@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.viewModels.TownViewModel
+import com.example.myapplication.viewmodels.TownViewModel
 import com.example.myapplication.databinding.FragmentShowerTownsBinding
 import com.example.myapplication.models.Town
-import com.example.myapplication.viewModels.InfoViewModel
+import com.example.myapplication.viewmodels.InfoViewModel
 
 class FragmentShowerTowns : Fragment() {
 

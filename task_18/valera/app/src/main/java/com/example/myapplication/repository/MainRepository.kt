@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.repository
 
 import android.util.Log
 import com.example.myapplication.models.Friend

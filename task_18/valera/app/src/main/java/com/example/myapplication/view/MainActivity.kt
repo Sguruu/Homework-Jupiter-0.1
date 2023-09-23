@@ -5,9 +5,9 @@ import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.example.myapplication.viewModels.FriendViewModel
+import com.example.myapplication.viewmodels.FriendViewModel
 import com.example.myapplication.R
-import com.example.myapplication.viewModels.TownViewModel
+import com.example.myapplication.viewmodels.TownViewModel
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
