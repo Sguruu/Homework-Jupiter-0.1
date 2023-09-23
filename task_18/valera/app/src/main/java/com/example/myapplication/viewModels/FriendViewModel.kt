@@ -1,8 +1,10 @@
-package com.example.myapplication
+package com.example.myapplication.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.MainRepository
+import com.example.myapplication.SingleLiveEvent
 import com.example.myapplication.models.Friend
 import com.example.myapplication.models.Town
 

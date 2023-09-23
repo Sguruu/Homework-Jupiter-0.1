@@ -26,4 +26,6 @@
     <string name="successfully_add_town">Новый город успешно добавлен</string>
     <string name="dell_town_message">Город %1$s успешно удалён</string>
     <string name="town_coordinates_completion">Координаты: %1$s / %2$s</string>
+    <string name="temperature">Температура %1$s C</string>
+    <string name="humidity">Влажность %1$s</string>
 </resources>

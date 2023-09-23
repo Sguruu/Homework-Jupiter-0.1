@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.R
 import com.example.myapplication.models.Town
+import com.example.myapplication.viewModels.InfoViewModel
 
 
 class TownAdapter (
@@ -38,11 +41,18 @@ class TownAdapter (
         : RecyclerView.ViewHolder (view){
         private val townName: TextView = view.findViewById(R.id.town_name)
         private val coordinates: TextView = view.findViewById(R.id.coordinates)
+        private val temp: TextView = view.findViewById(R.id.temp)
+        private val humidity: TextView = view.findViewById(R.id.humidity)
+        private val description: TextView = view.findViewById(R.id.description)
         private val dellTownButton: Button = view.findViewById(R.id.button_dell_town)
 
         fun bind(town: Town){
             townName.text = town.name
-            coordinates.text = "Координаты: ${town.latitude} / ${town.longitude}"
+            coordinates.text = itemView.resources.getString(R.string.town_coordinates_completion, town.latitude.toString(), town.longitude.toString())
+            temp.text = itemView.resources.getString(R.string.temperature, town.weather?.tempValue?.toString())
+            humidity.text = itemView.resources.getString(R.string.humidity, town.weather?.humidityValue?.toString()) + "%"
+            description.text = town.weather?.descriptionValue
+
             dellTownButton.setOnClickListener {
                 onButtonDeleteClickListener.invoke(adapterPosition, town)
             }

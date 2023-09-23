@@ -1,12 +1,14 @@
-package com.example.myapplication
+package com.example.myapplication.viewModels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.MainRepository
 import com.example.myapplication.models.Town
+import com.example.myapplication.models.Weather
 
 class TownViewModel : ViewModel() {
-//    private val repository = MainRepository()
+    private val repository = MainRepository()
     private val _townLiveData = MutableLiveData<ArrayList<Town>>()
 //    private val _filterLiveData = SingleLiveEvent<ArrayList<Friend>>()
 
@@ -23,18 +25,18 @@ class TownViewModel : ViewModel() {
 //        }
 //    }
 
-    fun addTownOnList(name: String, latitude: Double, longitude: Double) {
+    fun addTownOnList(name: String, latitude: Double, longitude: Double, weather: Weather) {
         val list = ArrayList<Town>()
         if (_townLiveData.value?.isNotEmpty() == true){
-            val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude))
+            val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude, weather))
             newList.let {
                 it.forEach {town ->
-                    val newTown = Town(town.name, town.latitude, town.longitude)
+                    val newTown = Town(town.name, town.latitude, town.longitude, town.weather)
                     list.add(newTown)
                 }
             }
         } else {
-            list.add(Town(name, latitude, longitude))
+            list.add(Town(name, latitude, longitude, weather))
         }
         updateTownLiveData(list)
     }
@@ -53,6 +55,10 @@ class TownViewModel : ViewModel() {
     private fun updateTownLiveData(newValue: ArrayList<Town>) {
         _townLiveData.value = newValue
     }
+
+//     fun testInternetRequest(){
+//        repository.requestWeather("53.195878", "50.100202")
+//    }
 
 //    private fun updateFilterLiveData(newValue: ArrayList<Friend>) {
 //        _filterLiveData.value = newValue

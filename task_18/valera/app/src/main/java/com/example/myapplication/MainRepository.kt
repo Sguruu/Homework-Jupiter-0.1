@@ -1,9 +1,18 @@
 package com.example.myapplication
 
+import android.util.Log
 import com.example.myapplication.models.Friend
+import com.example.myapplication.models.Main
+import com.example.myapplication.models.ResponseRequestText
 import com.example.myapplication.models.Town
+import com.example.myapplication.network.Network
+import org.json.JSONException
+import org.json.JSONObject
+
 
 class MainRepository {
+
+    lateinit var thread1 :Thread
 
     fun filterFriendList(valueSearch: String?, friendList: ArrayList<Friend>) : ArrayList<Friend> {
         val filterFriendList = ArrayList <Friend>()
@@ -14,10 +23,48 @@ class MainRepository {
         }
             .let {
                 it.forEach {friend ->
-                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, town = Town("Самара", 10.5, 15.7))
+                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, town = Town("Самара", 53.195878, 50.100202))
                     filterFriendList.add(newFriend)
                 }
             }
         return filterFriendList
+    }
+
+    fun requestWeather (
+        latitude: String,
+        longitude: String,
+        callback: (responseRequestText: ResponseRequestText?) -> Unit){
+        try {
+
+//            thread1 = Thread{
+                val lat = latitude.replace('.', ',')
+                val lon = longitude.replace('.', ',')
+                val response = Network.getWeatherCall(lat, lon)
+                    .execute()
+                Log.d("MyTest", "Успех запроса = ${response.isSuccessful}")
+                val requestText = response.body?.string().orEmpty()
+                val responseRequestText = parseMovieResponse(requestText)
+                callback.invoke(responseRequestText)
+//            }
+//            thread1.start()
+        }
+        catch (e:IndexOutOfBoundsException){
+            Log.d("MyTest", "Ошибка запроса погоды")
+        }
+
+    }
+    private fun parseMovieResponse (responseBody: String): ResponseRequestText?{
+
+        return try {
+            val jsonObject = JSONObject(responseBody)
+            val weatherArray = jsonObject.getJSONArray("weather")
+            val description = weatherArray.getJSONObject(0).getString("description")
+            val temp = jsonObject.getJSONObject("main").getDouble("temp")
+            val humidity = jsonObject.getJSONObject("main").getInt("humidity")
+            ResponseRequestText(Main(temp, description, humidity))
+        } catch (e:JSONException){
+            Log.d("MyTest", "Ошибка ответа сервера")
+            null
+        }
     }
 }

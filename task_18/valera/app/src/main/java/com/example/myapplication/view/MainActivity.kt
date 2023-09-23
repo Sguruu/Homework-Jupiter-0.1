@@ -5,8 +5,9 @@ import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
-import com.example.myapplication.FriendViewModel
+import com.example.myapplication.viewModels.FriendViewModel
 import com.example.myapplication.R
+import com.example.myapplication.viewModels.TownViewModel
 import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,11 +18,13 @@ class MainActivity : AppCompatActivity() {
         navHostFragment.navController
     }
     private val viewModel: FriendViewModel by viewModels()
+    private val townViewModel: TownViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+//        townViewModel.testInternetRequest()
         initListener()
     }
 

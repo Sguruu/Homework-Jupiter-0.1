@@ -5,16 +5,18 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.FriendViewModel
 import com.example.myapplication.R
-import com.example.myapplication.TownViewModel
+import com.example.myapplication.viewModels.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderTownBinding
+import com.example.myapplication.models.Weather
+import com.example.myapplication.viewModels.InfoViewModel
 
 class FragmentAdderTown : Fragment() {
     private var _binding : FragmentAdderTownBinding? = null
@@ -24,6 +26,7 @@ class FragmentAdderTown : Fragment() {
     private var checkEditTextLatitudeNoEmpty = false
     private var checkEditTextLongitudeNoEmpty = false
     private val viewModel: TownViewModel by activityViewModels()
+    private val weatherViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +39,9 @@ class FragmentAdderTown : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        weatherViewModel.infoLiveData.observe(requireActivity()){
+            Log.d("MyTest", "$it")
+        }
         initListeners()
     }
 
@@ -79,11 +85,24 @@ class FragmentAdderTown : Fragment() {
 
         binding.adderTownButton.setOnClickListener {
             startProgressBar()
-            viewModel.addTownOnList(
-                binding.editTownName.text.toString(),
-                binding.editLatitude.text.toString().toDouble(),
-                binding.editLongitude.text.toString().toDouble()
+            weatherViewModel.requestWeather(
+                binding.editLatitude.text.toString(),
+                binding.editLongitude.text.toString()
             )
+            Thread{
+            Thread.sleep(10_000)
+                val weather = Weather (
+                    weatherViewModel.infoLiveData.value?.main?.temp?: 0.0,
+                    weatherViewModel.infoLiveData.value?.main?.humidity?: 0,
+                    weatherViewModel.infoLiveData.value?.main?.description?: "нет данных"
+                )
+                viewModel.addTownOnList(
+                    binding.editTownName.text.toString(),
+                    binding.editLatitude.text.toString().toDouble(),
+                    binding.editLongitude.text.toString().toDouble(),
+                    weather
+                )
+            }.start()
             finishProgressBar()
         }
     }
