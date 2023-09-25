@@ -1,11 +1,8 @@
 package com.example.myapplication.view
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +12,9 @@ import androidx.fragment.app.activityViewModels
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentAdderTownBinding
 import com.example.myapplication.models.Weather
-import com.example.myapplication.viewmodels.InfoViewModel
-import com.example.myapplication.viewmodels.TownViewModel
+import com.example.myapplication.view_models.InfoViewModel
+import com.example.myapplication.view_models.TownViewModel
+
 
 class FragmentAdderTown : Fragment() {
     private var _binding: FragmentAdderTownBinding? = null
@@ -25,6 +23,7 @@ class FragmentAdderTown : Fragment() {
     private var checkEditTextTownNameNoEmpty = false
     private var checkEditTextLatitudeNoEmpty = false
     private var checkEditTextLongitudeNoEmpty = false
+
     private val viewModel: TownViewModel by activityViewModels()
     private val weatherViewModel: InfoViewModel by activityViewModels()
 
@@ -39,10 +38,7 @@ class FragmentAdderTown : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        weatherViewModel.infoLiveData.observe(requireActivity()) {
-            Log.d("MyTest", "$it")
-        }
-        initListeners()
+        initListeners(savedInstanceState)
     }
 
     override fun onDestroyView() {
@@ -50,7 +46,8 @@ class FragmentAdderTown : Fragment() {
         _binding = null
     }
 
-    private fun initListeners() {
+    private fun initListeners(savedInstanceState: Bundle?) {
+        var savedInstanceStatevalue = savedInstanceState
         binding.editTownName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -84,28 +81,33 @@ class FragmentAdderTown : Fragment() {
         })
 
         binding.adderTownButton.setOnClickListener {
+            savedInstanceStatevalue = null
             startProgressBar()
             weatherViewModel.requestWeather(
                 binding.editLatitude.text.toString(),
                 binding.editLongitude.text.toString()
             )
-            finishProgressBar()
         }
 
         weatherViewModel.infoLiveData.observe(viewLifecycleOwner) {
-            it?.let {
-                val weather = Weather(
-                    it.main.temp,
-                    it.main.humidity,
-                    it.main.description
-                )
-
-                viewModel.addTownOnList(
-                    binding.editTownName.text.toString(),
-                    binding.editLatitude.text.toString().toDouble(),
-                    binding.editLongitude.text.toString().toDouble(),
-                    weather
-                )
+            if ( binding.editTownName.text.isNotEmpty()
+                && binding.editLatitude.text.isNotEmpty()
+                &&  binding.editLongitude.text.isNotEmpty()
+                && savedInstanceStatevalue == null){
+                it?.let {
+                    val weather = Weather(
+                        it.main.temp,
+                        it.main.humidity,
+                        it.main.description
+                    )
+                    viewModel.addTownOnList(
+                        binding.editTownName.text.toString(),
+                        binding.editLatitude.text.toString().toDouble(),
+                        binding.editLongitude.text.toString().toDouble(),
+                        weather
+                    )
+                }
+                finishProgressBar()
             }
         }
     }
@@ -122,7 +124,6 @@ class FragmentAdderTown : Fragment() {
     }
 
     private fun finishProgressBar() {
-        Handler(Looper.getMainLooper()).postDelayed({
             binding.progressBarOnAdderTown.visibility = View.GONE
             binding.editTownName.text = null
             binding.editLatitude.text = null
@@ -134,7 +135,6 @@ class FragmentAdderTown : Fragment() {
                 resources.getString(R.string.successfully_add_town),
                 Toast.LENGTH_SHORT
             ).show()
-        }, 2000)
     }
 
     /** enter true to on edit texts, enter false to off it */

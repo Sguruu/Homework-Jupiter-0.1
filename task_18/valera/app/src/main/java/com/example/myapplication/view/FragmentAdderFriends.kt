@@ -12,8 +12,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.example.myapplication.viewmodels.FriendViewModel
-import com.example.myapplication.viewmodels.TownViewModel
+import com.example.myapplication.view_models.FriendViewModel
+import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderFriendsBinding
 import com.example.myapplication.models.Town
 

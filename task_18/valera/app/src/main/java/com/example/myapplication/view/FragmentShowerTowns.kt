@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
-import com.example.myapplication.viewmodels.TownViewModel
+import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.FragmentShowerTownsBinding
 import com.example.myapplication.models.Town
-import com.example.myapplication.viewmodels.InfoViewModel
+import com.example.myapplication.view_models.InfoViewModel
 
 class FragmentShowerTowns : Fragment() {
 
@@ -44,7 +44,7 @@ class FragmentShowerTowns : Fragment() {
     }
 
     private fun initList(savedInstanceState: Bundle?){
-        var towns =
+        val towns =
 //            if (viewModel.filterListLiveData.value == null ||
 //                viewModel.filterListLiveData.value == ArrayList<Friend>())
             townViewModel.townLiveData.value?: ArrayList()
@@ -69,7 +69,7 @@ class FragmentShowerTowns : Fragment() {
         townViewModel.townLiveData.observe(requireActivity()) {
             adapter?.updateTowns(it)
         }
-        weatherViewModel.infoLiveData.observe(requireActivity()){
+        weatherViewModel.infoLiveData.observe(viewLifecycleOwner){
             Log.d("MyTest", "$it")
         }
 //        viewModel.filterListLiveData.observe(requireActivity()) {
