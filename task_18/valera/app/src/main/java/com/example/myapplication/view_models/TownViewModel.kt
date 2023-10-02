@@ -1,5 +1,10 @@
 package com.example.myapplication.view_models
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,9 +30,15 @@ class TownViewModel : ViewModel() {
 //        }
 //    }
 
-    fun addTownOnList(name: String, latitude: Double, longitude: Double, weather: Weather) {
+    fun  createDefaultList(){
         val list = ArrayList<Town>()
-        if (_townLiveData.value?.isNotEmpty() == true) {
+        list.add(Town(
+            "Самара", 53.2415, 50.2212, null))
+        updateTownLiveData(list)
+    }
+
+    fun addTownOnList(name: String, latitude: Double, longitude: Double, weather: Weather?) {
+        val list = ArrayList<Town>()
             val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude, weather))
             newList.let {
                 it.forEach { town ->
@@ -35,9 +46,6 @@ class TownViewModel : ViewModel() {
                     list.add(newTown)
                 }
             }
-        } else {
-            list.add(Town(name, latitude, longitude, weather))
-        }
         updateTownLiveData(list)
     }
 
@@ -63,4 +71,18 @@ class TownViewModel : ViewModel() {
 //    private fun updateFilterLiveData(newValue: ArrayList<Friend>) {
 //        _filterLiveData.value = newValue
 //    }
+
+    fun checkIsInternet(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            networkCapabilities != null && networkCapabilities
+                .hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            networkInfo != null && networkInfo.isConnected
+        }
+    }
 }

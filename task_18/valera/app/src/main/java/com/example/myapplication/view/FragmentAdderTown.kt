@@ -23,8 +23,7 @@ class FragmentAdderTown : Fragment() {
     private var checkEditTextTownNameNoEmpty = false
     private var checkEditTextLatitudeNoEmpty = false
     private var checkEditTextLongitudeNoEmpty = false
-
-    private val viewModel: TownViewModel by activityViewModels()
+    private val townViewModel: TownViewModel by activityViewModels()
     private val weatherViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -83,10 +82,28 @@ class FragmentAdderTown : Fragment() {
         binding.adderTownButton.setOnClickListener {
             savedInstanceStatevalue = null
             startProgressBar()
-            weatherViewModel.requestWeather(
-                binding.editLatitude.text.toString(),
-                binding.editLongitude.text.toString()
-            )
+            if (townViewModel.checkIsInternet(requireContext())){
+                weatherViewModel.requestWeather(
+                    binding.editLatitude.text.toString(),
+                    binding.editLongitude.text.toString()
+                )
+            }
+            else{
+                Toast.makeText(
+                    context,
+                    resources.getString(R.string.no_internet_message),
+                    Toast.LENGTH_SHORT
+                ).show()
+                    it?.let {
+                        townViewModel.addTownOnList(
+                            binding.editTownName.text.toString(),
+                            binding.editLatitude.text.toString().toDouble(),
+                            binding.editLongitude.text.toString().toDouble(),
+                            null
+                        )
+                    }
+                    finishProgressBar()
+            }
         }
 
         weatherViewModel.infoLiveData.observe(viewLifecycleOwner) {
@@ -100,7 +117,7 @@ class FragmentAdderTown : Fragment() {
                         it.main.humidity,
                         it.main.description
                     )
-                    viewModel.addTownOnList(
+                    townViewModel.addTownOnList(
                         binding.editTownName.text.toString(),
                         binding.editLatitude.text.toString().toDouble(),
                         binding.editLongitude.text.toString().toDouble(),

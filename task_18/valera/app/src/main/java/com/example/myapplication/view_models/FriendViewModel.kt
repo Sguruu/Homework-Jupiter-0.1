@@ -32,7 +32,7 @@ class FriendViewModel : ViewModel() {
             val newList = _friendLiveData.value!!.plus(Friend(name, surname, phoneNumber, town))
             newList.let {
                 it.forEach { friend ->
-                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, town)
+                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, friend.town)
                     list.add(newFriend)
                 }
             }

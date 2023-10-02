@@ -9,6 +9,7 @@ import com.example.myapplication.view_models.FriendViewModel
 import com.example.myapplication.R
 import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.ActivityMainBinding
+import com.example.myapplication.view_models.InfoViewModel
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -17,15 +18,15 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
         navHostFragment.navController
     }
-    private val viewModel: FriendViewModel by viewModels()
+    private val friendViewModel: FriendViewModel by viewModels()
     private val townViewModel: TownViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-//        townViewModel.testInternetRequest()
         initListener()
+        townViewModel.createDefaultList()
     }
 
     private fun initListener() {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                viewModel.resetFilterLiveData()
+                friendViewModel.resetFilterLiveData()
                 navController.navigate(R.id.action_global_fragmentShowerListFriends)
                 return true
             }
@@ -47,7 +48,7 @@ class MainActivity : AppCompatActivity() {
         (searchViewOnMenu.actionView as SearchView).setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-                    viewModel.filterFriendList(p0)
+                    friendViewModel.filterFriendList(p0)
                     navController.navigate(R.id.action_global_fragmentShowerListFriends)
                     return true
                 }

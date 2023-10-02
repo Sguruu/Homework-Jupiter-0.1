@@ -45,7 +45,18 @@ class FriendAdapter (
             friendName.text = friend.name
             friendSurname.text = friend.surname
             friendPhoneNumber.text = friend.phoneNumber
-            friendTown.text = friend.town.name
+            friendTown.text =
+            if (friend.town.weather != null){
+                itemView.resources.getString(
+                    R.string.town_with_weather,
+                    friend.town.name,
+                    friend.town.weather.tempValue.toString(),
+                    friend.town.weather.description,
+                    friend.town.weather.humidityValue.toString()) + "%"
+            }else{
+                itemView.resources.getString(R.string.town_without_weather, friend.town.name)
+            }
+
             dellFriendButton.setOnClickListener {
                 onButtonDeleteClickListener.invoke(adapterPosition, friend)
             }

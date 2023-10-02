@@ -46,10 +46,12 @@ class TownAdapter (
         fun bind(town: Town){
             townName.text = town.name
             coordinates.text = itemView.resources.getString(R.string.town_coordinates_completion, town.latitude.toString(), town.longitude.toString())
-            temp.text = itemView.resources.getString(R.string.temperature, town.weather?.tempValue?.toString())
-            humidity.text = itemView.resources.getString(R.string.humidity, town.weather?.humidityValue?.toString()) + "%"
-            description.text = town.weather?.descriptionValue
 
+            if (town.weather != null){
+                temp.text = itemView.resources.getString(R.string.temperature, town.weather.tempValue.toString())
+                humidity.text = itemView.resources.getString(R.string.humidity, town.weather.humidityValue.toString()) + "%"
+                description.text = town.weather.description
+            }
             dellTownButton.setOnClickListener {
                 onButtonDeleteClickListener.invoke(adapterPosition, town)
             }

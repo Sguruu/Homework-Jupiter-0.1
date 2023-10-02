@@ -6,16 +6,21 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
+import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.myapplication.view_models.FriendViewModel
 import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderFriendsBinding
 import com.example.myapplication.models.Town
+import com.example.myapplication.models.Weather
 
 
 class FragmentAdderFriends : Fragment() {
@@ -40,6 +45,8 @@ class FragmentAdderFriends : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initListeners()
+        initObserve()
+        binding.spinner.setSpinnerFocusable()
     }
 
     override fun onDestroyView() {
@@ -82,12 +89,23 @@ class FragmentAdderFriends : Fragment() {
 
         binding.adderButtom.setOnClickListener {
             startProgressBar()
-            viewModel.addFriendOnList(
-                binding.editName.text.toString(),
-                binding.edinSurname.text.toString(),
-                binding.editPhoneNumber.text.toString(),
-                Town("Самара", 10.5, 15.7)
-            )
+            if (binding.spinner.selectedItemPosition >= 0){
+                val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
+                viewModel.addFriendOnList(
+                    binding.editName.text.toString(),
+                    binding.edinSurname.text.toString(),
+                    binding.editPhoneNumber.text.toString(),
+                    town!!
+                )
+            } else{
+                viewModel.addFriendOnList(
+                    binding.editName.text.toString(),
+                    binding.edinSurname.text.toString(),
+                    binding.editPhoneNumber.text.toString(),
+                    Town("неизвестен,", 0.0, 0.0)
+                )
+            }
+
             finishProgressBar()
         }
     }
@@ -124,5 +142,42 @@ class FragmentAdderFriends : Fragment() {
         binding.editName.isEnabled = onOrOff
         binding.edinSurname.isEnabled = onOrOff
         binding.editPhoneNumber.isEnabled = onOrOff
+    }
+
+    fun AppCompatSpinner.setSpinnerFocusable() {
+        isFocusableInTouchMode = true
+        onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                if (windowToken != null) {
+                    performClick()
+
+                    viewTreeObserver?.addOnWindowFocusChangeListener(object :
+                        ViewTreeObserver.OnWindowFocusChangeListener {
+                        override fun onWindowFocusChanged(hasFocus: Boolean) {
+                            if (hasFocus) {
+                                clearFocus()
+                                viewTreeObserver?.removeOnWindowFocusChangeListener(this)
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    private fun initObserve(){
+        townViewModel.townLiveData.observe(viewLifecycleOwner) {
+            updateAdapterSpinner(it)
+        }
+    }
+
+    private fun updateAdapterSpinner(towns: ArrayList<Town>) {
+        val listTownName = towns.map { it.name }
+        binding.spinner.adapter =
+            ArrayAdapter(
+                requireActivity(),
+                android.R.layout.simple_spinner_dropdown_item,
+                listTownName
+            )
     }
 }

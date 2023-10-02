@@ -12,8 +12,6 @@ import org.json.JSONObject
 
 class MainRepository {
 
-    lateinit var thread1 :Thread
-
     fun filterFriendList(valueSearch: String?, friendList: ArrayList<Friend>) : ArrayList<Friend> {
         val filterFriendList = ArrayList <Friend>()
         friendList.filter {
@@ -23,7 +21,7 @@ class MainRepository {
         }
             .let {
                 it.forEach {friend ->
-                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, town = Town("Самара", 53.195878, 50.100202))
+                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, friend.town)
                     filterFriendList.add(newFriend)
                 }
             }
@@ -35,8 +33,6 @@ class MainRepository {
         longitude: String,
         callback: (responseRequestText: ResponseRequestText?) -> Unit){
         try {
-
-//            thread1 = Thread{
                 val lat = latitude.replace('.', ',')
                 val lon = longitude.replace('.', ',')
                 val response = Network.getWeatherCall(lat, lon)
@@ -45,8 +41,6 @@ class MainRepository {
                 val requestText = response.body?.string().orEmpty()
                 val responseRequestText = parseMovieResponse(requestText)
                 callback.invoke(responseRequestText)
-//            }
-//            thread1.start()
         }
         catch (e:IndexOutOfBoundsException){
             Log.d("MyTest", "Ошибка запроса погоды")
