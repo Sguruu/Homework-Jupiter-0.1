@@ -28,6 +28,20 @@ class MainRepository {
         return filterFriendList
     }
 
+    fun filterTowns(valueSearch: String?, towns: ArrayList<Town>) : ArrayList<Town> {
+        val filterTowns = ArrayList <Town>()
+        towns.filter {
+            it.name.contains(valueSearch ?: "", ignoreCase = true)
+        }
+            .let {
+                it.forEach {town ->
+                    val newTown = Town(town.name, town.latitude, town.longitude, town.weather)
+                    filterTowns.add(newTown)
+                }
+            }
+        return filterTowns
+    }
+
     fun requestWeather (
         latitude: String,
         longitude: String,

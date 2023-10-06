@@ -39,8 +39,18 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
-                friendViewModel.resetFilterLiveData()
-                navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                if (
+                    navController.currentDestination == navController.findDestination(
+                        R.id.fragmentAdderFriends)||
+                    navController.currentDestination == navController.findDestination(
+                        R.id.fragmentShowerListFriends)){
+                    friendViewModel.resetFilterLiveData()
+                    navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                }else{
+                    townViewModel.resetFilterLiveData()
+                    navController.navigate(R.id.action_global_fragmentShowerTowns)
+                }
+
                 return true
             }
         })
@@ -48,8 +58,18 @@ class MainActivity : AppCompatActivity() {
         (searchViewOnMenu.actionView as SearchView).setOnQueryTextListener(object :
                 SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(p0: String?): Boolean {
-                    friendViewModel.filterFriendList(p0)
-                    navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                    if (
+                        navController.currentDestination == navController.findDestination(
+                            R.id.fragmentAdderFriends)||
+                        navController.currentDestination == navController.findDestination(
+                            R.id.fragmentShowerListFriends)){
+                        friendViewModel.filterFriendList(p0)
+                        navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                    }else{
+                        townViewModel.filterTowns(p0)
+                        navController.navigate(R.id.action_global_fragmentShowerTowns)
+                    }
+
                     return true
                 }
 
@@ -63,7 +83,15 @@ class MainActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.searcher -> {
-                    showFriendList()
+                    if (
+                        navController.currentDestination == navController.findDestination(
+                            R.id.fragmentAdderFriends)||
+                        navController.currentDestination == navController.findDestination(
+                            R.id.fragmentShowerListFriends)){
+                        showFriendList()
+                    }else{
+                        showTowns()
+                    }
                     true
                 }
                 R.id.adder -> {

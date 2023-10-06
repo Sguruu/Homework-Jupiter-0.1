@@ -35,7 +35,7 @@ class FragmentShowerTowns : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initObserve()
-        initList(savedInstanceState)
+        initList()
     }
 
     override fun onDestroyView() {
@@ -43,16 +43,13 @@ class FragmentShowerTowns : Fragment() {
         _binding = null
     }
 
-    private fun initList(savedInstanceState: Bundle?){
+    private fun initList(){
         val towns =
-//            if (viewModel.filterListLiveData.value == null ||
-//                viewModel.filterListLiveData.value == ArrayList<Friend>())
+            if (townViewModel.filterListLiveData.value == null ||
+                townViewModel.filterListLiveData.value == ArrayList<Town>())
             townViewModel.townLiveData.value?: ArrayList()
-//            else viewModel.filterListLiveData.value?: ArrayList()
+            else townViewModel.filterListLiveData.value?: ArrayList()
 
-//        if (savedInstanceState == null){
-//            towns = weatherViewModel.setWeatherForTowns(towns)
-//        }
 
         adapter = TownAdapter(
             towns)
@@ -72,9 +69,9 @@ class FragmentShowerTowns : Fragment() {
         weatherViewModel.infoLiveData.observe(viewLifecycleOwner){
             Log.d("MyTest", "$it")
         }
-//        viewModel.filterListLiveData.observe(requireActivity()) {
-//            adapter?.updateList(it)
-//        }
+        townViewModel.filterListLiveData.observe(requireActivity()) {
+            adapter?.updateTowns(it)
+        }
     }
 
 
@@ -86,14 +83,4 @@ class FragmentShowerTowns : Fragment() {
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         }
     }
-
-//    fun setWeatherForTowns(towns: ArrayList<Town>): ArrayList<Town>{
-//        towns.forEach {
-//            weatherViewModel.requestWeather(it.latitude.toString(), it.longitude.toString())
-//            it.weather?.tempValue = weatherViewModel.infoLiveData.value?.main?.temp?: 0.0
-//            it.weather?.descriptionValue = weatherViewModel.infoLiveData.value?.main?.description?: "Нет данных"
-//            it.weather?.humidityValue = weatherViewModel.infoLiveData.value?.main?.humidity?: 0
-//        }
-//        return towns
-//    }
 }

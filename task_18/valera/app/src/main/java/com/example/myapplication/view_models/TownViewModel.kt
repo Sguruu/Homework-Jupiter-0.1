@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.SingleLiveEvent
 import com.example.myapplication.models.Town
 import com.example.myapplication.models.Weather
 import com.example.myapplication.repository.MainRepository
@@ -15,20 +16,20 @@ import com.example.myapplication.repository.MainRepository
 class TownViewModel : ViewModel() {
     private val repository = MainRepository()
     private val _townLiveData = MutableLiveData<ArrayList<Town>>()
-//    private val _filterLiveData = SingleLiveEvent<ArrayList<Friend>>()
+    private val _filterLiveData = SingleLiveEvent<ArrayList<Town>>()
 
     val townLiveData: LiveData<ArrayList<Town>>
         get() = _townLiveData
 
-//    val filterListLiveData: LiveData<ArrayList<Friend>>
-//        get() = _filterLiveData
+    val filterListLiveData: LiveData<ArrayList<Town>>
+        get() = _filterLiveData
 
-//    fun filterFriendList(valueSearch: String?) {
-//        _townLiveData.value?.let {
-//            val filterList = repository.filterFriendList(valueSearch, it)
-//            updateFilterLiveData(filterList)
-//        }
-//    }
+    fun filterTowns(valueSearch: String?) {
+        _townLiveData.value?.let {
+            val filterList = repository.filterTowns(valueSearch, it)
+            updateFilterLiveData(filterList)
+        }
+    }
 
     fun  createDefaultList(){
         val list = ArrayList<Town>()
@@ -50,27 +51,23 @@ class TownViewModel : ViewModel() {
     }
 
     fun dellTown(town: Town) {
-        val newtowns = _townLiveData.value?.filter {
+        val newTowns = _townLiveData.value?.filter {
             town != it
         } as ArrayList<Town>
-        updateTownLiveData(newtowns)
+        updateTownLiveData(newTowns)
     }
 
-//    fun resetFilterLiveData (){
-//        _filterLiveData.value = ArrayList()
-//    }
+    fun resetFilterLiveData (){
+        _filterLiveData.value = ArrayList()
+    }
 
     private fun updateTownLiveData(newValue: ArrayList<Town>) {
         _townLiveData.value = newValue
     }
 
-//     fun testInternetRequest(){
-//        repository.requestWeather("53.195878", "50.100202")
-//    }
-
-//    private fun updateFilterLiveData(newValue: ArrayList<Friend>) {
-//        _filterLiveData.value = newValue
-//    }
+    private fun updateFilterLiveData(newValue: ArrayList<Town>) {
+        _filterLiveData.value = newValue
+    }
 
     fun checkIsInternet(context: Context): Boolean {
         val connectivityManager =
