@@ -3,6 +3,7 @@ package com.example.myapplication.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,7 +25,7 @@ class FragmentAdderTown : Fragment() {
     private var checkEditTextLatitudeNoEmpty = false
     private var checkEditTextLongitudeNoEmpty = false
     private val townViewModel: TownViewModel by activityViewModels()
-    private val weatherViewModel: InfoViewModel by activityViewModels()
+    private val infoViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +47,7 @@ class FragmentAdderTown : Fragment() {
     }
 
     private fun initListeners(savedInstanceState: Bundle?) {
-        var savedInstanceStatevalue = savedInstanceState
+        var savedInstanceStateValue = savedInstanceState
         binding.editTownName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -80,20 +81,47 @@ class FragmentAdderTown : Fragment() {
         })
 
         binding.adderTownButton.setOnClickListener {
-            savedInstanceStatevalue = null
+            savedInstanceStateValue = null
             startProgressBar()
-            if (townViewModel.checkIsInternet(requireContext())){
-                weatherViewModel.requestWeather(
-                    binding.editLatitude.text.toString(),
-                    binding.editLongitude.text.toString()
-                )
+
+            if (infoViewModel.positionLiveData.value != null){
+                val index = infoViewModel.positionLiveData.value!!
+                if (townViewModel.checkIsInternet(requireContext())){
+                    infoViewModel.requestWeather(
+                        binding.editLatitude.text.toString(),
+                        binding.editLongitude.text.toString()
+                    )
+                }
+                else{
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.no_internet_message_for_change_town),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    it?.let {
+                        townViewModel.townLiveData.value!![index].name = binding.editTownName.text.toString()
+                        townViewModel.townLiveData.value!![index].latitude = binding.editLatitude.text.toString().toDouble()
+                        townViewModel.townLiveData.value!![index].longitude = binding.editLongitude.text.toString().toDouble()
+                    }
+                    infoViewModel.updatePositionLiveData(null)
+                    finishProgressBar()
+                }
             }
+
+
             else{
-                Toast.makeText(
-                    context,
-                    resources.getString(R.string.no_internet_message),
-                    Toast.LENGTH_SHORT
-                ).show()
+                if (townViewModel.checkIsInternet(requireContext())){
+                    infoViewModel.requestWeather(
+                        binding.editLatitude.text.toString(),
+                        binding.editLongitude.text.toString()
+                    )
+                }
+                else{
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.no_internet_message),
+                        Toast.LENGTH_SHORT
+                    ).show()
                     it?.let {
                         townViewModel.addTownOnList(
                             binding.editTownName.text.toString(),
@@ -103,14 +131,34 @@ class FragmentAdderTown : Fragment() {
                         )
                     }
                     finishProgressBar()
+                }
             }
+
         }
 
-        weatherViewModel.infoLiveData.observe(viewLifecycleOwner) {
+        infoViewModel.weatherLiveData.observe(viewLifecycleOwner) {
             if ( binding.editTownName.text.isNotEmpty()
                 && binding.editLatitude.text.isNotEmpty()
                 &&  binding.editLongitude.text.isNotEmpty()
-                && savedInstanceStatevalue == null){
+                && savedInstanceStateValue == null){
+
+            if (infoViewModel.positionLiveData.value != null){
+                val index = infoViewModel.positionLiveData.value!!
+                it?.let {
+                    val weather = Weather(
+                        it.main.temp,
+                        it.main.humidity,
+                        it.main.description
+                    )
+                    townViewModel.townLiveData.value!![index].name = binding.editTownName.text.toString()
+                    townViewModel.townLiveData.value!![index].latitude = binding.editLatitude.text.toString().toDouble()
+                    townViewModel.townLiveData.value!![index].longitude = binding.editLongitude.text.toString().toDouble()
+                    townViewModel.townLiveData.value!![index].weather= weather
+                }
+                infoViewModel.updatePositionLiveData(null)
+            }
+
+            else{
                 it?.let {
                     val weather = Weather(
                         it.main.temp,
@@ -124,11 +172,22 @@ class FragmentAdderTown : Fragment() {
                         weather
                     )
                 }
+            }
                 finishProgressBar()
             }
         }
-    }
 
+        infoViewModel.positionLiveData.observe(viewLifecycleOwner){
+            val position = infoViewModel.positionLiveData.value
+            if (position != null &&
+                townViewModel.townLiveData.value != null){
+                val town = townViewModel.townLiveData.value!![position]
+                binding.editTownName.setText(town.name)
+                binding.editLatitude.setText(town.latitude.toString())
+                binding.editLongitude.setText(town.longitude.toString())
+            }
+        }
+    }
     private fun startProgressBar() {
         binding.progressBarOnAdderTown.visibility = View.VISIBLE
         binding.adderTownButton.isEnabled = false

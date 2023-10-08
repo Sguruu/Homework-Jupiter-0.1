@@ -6,18 +6,22 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.models.Friend
 import com.example.myapplication.view_models.FriendViewModel
 import com.example.myapplication.R
 import com.example.myapplication.databinding.FragmentShowerListFriendsBinding
+import com.example.myapplication.view_models.InfoViewModel
 
 class FragmentShowerListFriends : Fragment() {
 
     private var _binding : FragmentShowerListFriendsBinding? = null
     private val binding get() = _binding!!
     private var adapter: FriendAdapter? = null
-    private val viewModel: FriendViewModel by activityViewModels()
+    private val friendViewModel: FriendViewModel by activityViewModels()
+    private val infoViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,27 +45,27 @@ class FragmentShowerListFriends : Fragment() {
 
     private fun initList(){
         val useFriendList =
-        if (viewModel.filterListLiveData.value == null ||
-            viewModel.filterListLiveData.value == ArrayList<Friend>())
-            viewModel.friendLiveData.value?: ArrayList()
-        else viewModel.filterListLiveData.value?: ArrayList()
+        if (friendViewModel.filterListLiveData.value == null ||
+            friendViewModel.filterListLiveData.value == ArrayList<Friend>())
+            friendViewModel.friendLiveData.value?: ArrayList()
+        else friendViewModel.filterListLiveData.value?: ArrayList()
 
         adapter = FriendAdapter(
-            useFriendList)
-         { position, friend ->
-            adapter?.let {
-                dellFriend(position, friend)
-            }
-        }
+            useFriendList,
+         { position, friend -> adapter?.let { dellFriend(position, friend) } },
+        {position ->
+            infoViewModel.updatePositionLiveData(position)
+            findNavController().navigate(R.id.action_global_fragmentAdderFriends)
+        })
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 
     private fun initObserve() {
-        viewModel.friendLiveData.observe(requireActivity()) {
+        friendViewModel.friendLiveData.observe(requireActivity()) {
             adapter?.updateList(it)
         }
-        viewModel.filterListLiveData.observe(requireActivity()) {
+        friendViewModel.filterListLiveData.observe(requireActivity()) {
             adapter?.updateList(it)
         }
     }
@@ -71,7 +75,7 @@ class FragmentShowerListFriends : Fragment() {
         val toastText = "${friend.name} ${friend.surname} ${getString(R.string.dell_message)}"
         adapter?.let {
             it.notifyItemRemoved(position)
-           viewModel.dellFriend(friend)
+            friendViewModel.dellFriend(friend)
             Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         }
     }

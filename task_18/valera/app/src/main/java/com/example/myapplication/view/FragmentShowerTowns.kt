@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.view_models.TownViewModel
@@ -21,7 +22,7 @@ class FragmentShowerTowns : Fragment() {
     private val binding get() = _binding!!
     private var adapter: TownAdapter? = null
     private val townViewModel: TownViewModel by activityViewModels()
-    private val weatherViewModel: InfoViewModel by activityViewModels()
+    private val infoViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,12 +53,13 @@ class FragmentShowerTowns : Fragment() {
 
 
         adapter = TownAdapter(
-            towns)
-        { position, town ->
-            adapter?.let {
-                dellTown(position, town)
+            towns,
+        { position, town -> adapter?.let { dellTown(position, town) } },
+            {position ->
+                infoViewModel.updatePositionLiveData(position)
+                findNavController().navigate(R.id.action_global_fragmentAdderTown)
             }
-        }
+        )
         binding.townRecyclerView.adapter = adapter
         binding.townRecyclerView.layoutManager = LinearLayoutManager(context)
     }
@@ -65,9 +67,6 @@ class FragmentShowerTowns : Fragment() {
     private fun initObserve() {
         townViewModel.townLiveData.observe(requireActivity()) {
             adapter?.updateTowns(it)
-        }
-        weatherViewModel.infoLiveData.observe(viewLifecycleOwner){
-            Log.d("MyTest", "$it")
         }
         townViewModel.filterListLiveData.observe(requireActivity()) {
             adapter?.updateTowns(it)

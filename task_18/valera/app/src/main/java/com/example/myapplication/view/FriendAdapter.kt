@@ -11,13 +11,14 @@ import com.example.myapplication.R
 
 class FriendAdapter (
     private var friendList: ArrayList<Friend>,
-    private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit
+    private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit,
+    private val dataChange: ((position: Int) -> Unit)? = null
         ): RecyclerView.Adapter<FriendAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflate = LayoutInflater.from(parent.context)
         val view = inflate.inflate(R.layout.shower_list, parent, false)
-        return Holder(view, onButtonDeleteClickListener)
+        return Holder(view, onButtonDeleteClickListener, dataChange)
     }
 
     override fun getItemCount(): Int {
@@ -33,13 +34,20 @@ class FriendAdapter (
     }
 
     class Holder (view: View,
-                  private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit)
+                  private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit,
+                  dataChange: ((position: Int) -> Unit)? = null)
         : RecyclerView.ViewHolder (view){
         private val friendName: TextView = view.findViewById(R.id.friend_name)
         private val friendSurname: TextView = view.findViewById(R.id.friend_surname)
         private val friendPhoneNumber: TextView = view.findViewById(R.id.friend_phone_number)
         private val friendTown: TextView = view.findViewById(R.id.friend_town)
         private val dellFriendButton: Button = view.findViewById(R.id.button_dell_friend)
+
+        init {
+            view.setOnClickListener {
+                dataChange?.invoke(adapterPosition)
+            }
+        }
 
         fun bind(friend: Friend){
             friendName.text = friend.name
@@ -50,9 +58,9 @@ class FriendAdapter (
                 itemView.resources.getString(
                     R.string.town_with_weather,
                     friend.town.name,
-                    friend.town.weather.tempValue.toString(),
-                    friend.town.weather.description,
-                    friend.town.weather.humidityValue.toString()) + "%"
+                    friend.town.weather!!.tempValue.toString(),
+                    friend.town.weather!!.description,
+                    friend.town.weather!!.humidityValue.toString()) + "%"
             }else{
                 itemView.resources.getString(R.string.town_without_weather, friend.town.name)
             }

@@ -1,7 +1,7 @@
 package com.example.myapplication.models
 
 data class Friend(
-    val name: String,
-    val surname: String,
-    val phoneNumber: String,
-    val town: Town)
+    var name: String,
+    var surname: String,
+    var phoneNumber: String,
+    var town: Town)

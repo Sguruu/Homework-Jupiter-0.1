@@ -19,8 +19,8 @@ object Network {
             .addPathSegment("data")
             .addPathSegment("2.5")
             .addPathSegment("weather")
-            .addQueryParameter("lat", latitude)
             .addQueryParameter("lon", longitude)
+            .addQueryParameter("lat", latitude)
             .addQueryParameter("appid", API_KEY)
             .addQueryParameter("lang", LANGUAGE)
             .addQueryParameter("units", UNITS)
@@ -33,10 +33,6 @@ object Network {
             .url(url)
             .build()
 
-//        Thread{
-            val response = client.newCall(request)
-                .execute()
-//        }.start()
         return client.newCall(request)
     }
 }

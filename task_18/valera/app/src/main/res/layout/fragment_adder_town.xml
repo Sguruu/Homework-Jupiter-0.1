@@ -25,14 +25,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/latitude"
-        android:inputType="number|numberDecimal" />
+        android:inputType="number|numberDecimal|numberSigned" />
 
     <EditText
         android:id="@+id/edit_longitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/longitude"
-        android:inputType="number|numberDecimal" />
+        android:inputType="number|numberDecimal|numberSigned" />
 
 <Button
     android:id="@+id/adder_town_button"

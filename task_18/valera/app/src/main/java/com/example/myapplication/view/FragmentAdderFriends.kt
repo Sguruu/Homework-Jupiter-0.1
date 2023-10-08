@@ -19,8 +19,10 @@ import androidx.fragment.app.activityViewModels
 import com.example.myapplication.view_models.FriendViewModel
 import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderFriendsBinding
+import com.example.myapplication.models.Friend
 import com.example.myapplication.models.Town
 import com.example.myapplication.models.Weather
+import com.example.myapplication.view_models.InfoViewModel
 
 
 class FragmentAdderFriends : Fragment() {
@@ -30,8 +32,9 @@ class FragmentAdderFriends : Fragment() {
     private var checkEditTextNameNoEmpty = false
     private var checkEditTextSurnameNoEmpty = false
     private var checkEditTextPhoneNumberNoEmpty = false
-    private val viewModel: FriendViewModel by activityViewModels()
+    private val friendViewModel: FriendViewModel by activityViewModels()
     private val townViewModel: TownViewModel by activityViewModels()
+    private val infoViewModel: InfoViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,23 +92,41 @@ class FragmentAdderFriends : Fragment() {
 
         binding.adderButtom.setOnClickListener {
             startProgressBar()
-            if (binding.spinner.selectedItemPosition >= 0){
-                val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
-                viewModel.addFriendOnList(
-                    binding.editName.text.toString(),
-                    binding.edinSurname.text.toString(),
-                    binding.editPhoneNumber.text.toString(),
-                    town!!
-                )
-            } else{
-                viewModel.addFriendOnList(
-                    binding.editName.text.toString(),
-                    binding.edinSurname.text.toString(),
-                    binding.editPhoneNumber.text.toString(),
-                    Town("неизвестен,", 0.0, 0.0)
-                )
+            if (infoViewModel.positionLiveData.value != null){
+                val index = infoViewModel.positionLiveData.value!!
+                if (binding.spinner.selectedItemPosition >= 0){
+                    val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
+                    friendViewModel.friendLiveData.value!![index].name = binding.editName.text.toString()
+                    friendViewModel.friendLiveData.value!![index].surname = binding.edinSurname.text.toString()
+                    friendViewModel.friendLiveData.value!![index].phoneNumber = binding.editPhoneNumber.text.toString()
+                    friendViewModel.friendLiveData.value!![index].town = town!!
+                } else{
+                    friendViewModel.friendLiveData.value!![index].name = binding.editName.text.toString()
+                    friendViewModel.friendLiveData.value!![index].surname = binding.edinSurname.text.toString()
+                    friendViewModel.friendLiveData.value!![index].phoneNumber = binding.editPhoneNumber.text.toString()
+                    friendViewModel.friendLiveData.value!![index].town = Town("неизвестен,", 0.0, 0.0)
+                }
+                infoViewModel.updatePositionLiveData(null)
             }
 
+            else{
+                if (binding.spinner.selectedItemPosition >= 0){
+                    val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
+                    friendViewModel.addFriendOnList(
+                        binding.editName.text.toString(),
+                        binding.edinSurname.text.toString(),
+                        binding.editPhoneNumber.text.toString(),
+                        town!!
+                    )
+                } else{
+                    friendViewModel.addFriendOnList(
+                        binding.editName.text.toString(),
+                        binding.edinSurname.text.toString(),
+                        binding.editPhoneNumber.text.toString(),
+                        Town("неизвестен,", 0.0, 0.0)
+                    )
+                }
+            }
             finishProgressBar()
         }
     }
@@ -168,6 +189,19 @@ class FragmentAdderFriends : Fragment() {
     private fun initObserve(){
         townViewModel.townLiveData.observe(viewLifecycleOwner) {
             updateAdapterSpinner(it)
+        }
+
+        infoViewModel.positionLiveData.observe(viewLifecycleOwner){
+
+            val position = infoViewModel.positionLiveData.value
+
+            if (position != null &&
+                friendViewModel.friendLiveData.value != null){
+                val friend = friendViewModel.friendLiveData.value!![position]
+                binding.editName.setText(friend.name)
+                binding.edinSurname.setText(friend.surname)
+                binding.editPhoneNumber.setText(friend.phoneNumber)
+            }
         }
     }
 
