@@ -6,7 +6,6 @@ import android.os.Handler
 import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,15 +18,13 @@ import androidx.fragment.app.activityViewModels
 import com.example.myapplication.view_models.FriendViewModel
 import com.example.myapplication.view_models.TownViewModel
 import com.example.myapplication.databinding.FragmentAdderFriendsBinding
-import com.example.myapplication.models.Friend
 import com.example.myapplication.models.Town
-import com.example.myapplication.models.Weather
 import com.example.myapplication.view_models.InfoViewModel
 
 
 class FragmentAdderFriends : Fragment() {
 
-    private var _binding : FragmentAdderFriendsBinding? = null
+    private var _binding: FragmentAdderFriendsBinding? = null
     private val binding get() = _binding!!
     private var checkEditTextNameNoEmpty = false
     private var checkEditTextSurnameNoEmpty = false
@@ -57,7 +54,7 @@ class FragmentAdderFriends : Fragment() {
         _binding = null
     }
 
-    private fun initListeners(){
+    private fun initListeners() {
         binding.editName.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -92,38 +89,45 @@ class FragmentAdderFriends : Fragment() {
 
         binding.adderButtom.setOnClickListener {
             startProgressBar()
-            if (infoViewModel.positionLiveData.value != null){
+            if (infoViewModel.positionLiveData.value != null) {
                 val index = infoViewModel.positionLiveData.value!!
-                if (binding.spinner.selectedItemPosition >= 0){
-                    val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
-                    friendViewModel.friendLiveData.value!![index].name = binding.editName.text.toString()
-                    friendViewModel.friendLiveData.value!![index].surname = binding.edinSurname.text.toString()
-                    friendViewModel.friendLiveData.value!![index].phoneNumber = binding.editPhoneNumber.text.toString()
+                if (binding.spinner.selectedItemPosition >= 0) {
+                    val town =
+                        townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
+                    friendViewModel.friendLiveData.value!![index].name =
+                        binding.editName.text.toString()
+                    friendViewModel.friendLiveData.value!![index].surname =
+                        binding.edinSurname.text.toString()
+                    friendViewModel.friendLiveData.value!![index].phoneNumber =
+                        binding.editPhoneNumber.text.toString()
                     friendViewModel.friendLiveData.value!![index].town = town!!
-                } else{
-                    friendViewModel.friendLiveData.value!![index].name = binding.editName.text.toString()
-                    friendViewModel.friendLiveData.value!![index].surname = binding.edinSurname.text.toString()
-                    friendViewModel.friendLiveData.value!![index].phoneNumber = binding.editPhoneNumber.text.toString()
-                    friendViewModel.friendLiveData.value!![index].town = Town("неизвестен,", 0.0, 0.0)
+                } else {
+                    friendViewModel.friendLiveData.value!![index].name =
+                        binding.editName.text.toString()
+                    friendViewModel.friendLiveData.value!![index].surname =
+                        binding.edinSurname.text.toString()
+                    friendViewModel.friendLiveData.value!![index].phoneNumber =
+                        binding.editPhoneNumber.text.toString()
+                    friendViewModel.friendLiveData.value!![index].town =
+                        Town(R.string.default_town_name.toString(), 0.0, 0.0)
                 }
                 infoViewModel.updatePositionLiveData(null)
-            }
-
-            else{
-                if (binding.spinner.selectedItemPosition >= 0){
-                    val town = townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
+            } else {
+                if (binding.spinner.selectedItemPosition >= 0) {
+                    val town =
+                        townViewModel.townLiveData.value?.get(binding.spinner.selectedItemPosition)
                     friendViewModel.addFriendOnList(
                         binding.editName.text.toString(),
                         binding.edinSurname.text.toString(),
                         binding.editPhoneNumber.text.toString(),
                         town!!
                     )
-                } else{
+                } else {
                     friendViewModel.addFriendOnList(
                         binding.editName.text.toString(),
                         binding.edinSurname.text.toString(),
                         binding.editPhoneNumber.text.toString(),
-                        Town("неизвестен,", 0.0, 0.0)
+                        Town(R.string.default_town_name.toString(), 0.0, 0.0)
                     )
                 }
             }
@@ -159,13 +163,13 @@ class FragmentAdderFriends : Fragment() {
     }
 
     /** enter true to on edit texts, enter false to off it */
-    private fun switchEditTexts (onOrOff: Boolean){
+    private fun switchEditTexts(onOrOff: Boolean) {
         binding.editName.isEnabled = onOrOff
         binding.edinSurname.isEnabled = onOrOff
         binding.editPhoneNumber.isEnabled = onOrOff
     }
 
-    fun AppCompatSpinner.setSpinnerFocusable() {
+    private fun AppCompatSpinner.setSpinnerFocusable() {
         isFocusableInTouchMode = true
         onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
@@ -186,17 +190,18 @@ class FragmentAdderFriends : Fragment() {
         }
     }
 
-    private fun initObserve(){
+    private fun initObserve() {
         townViewModel.townLiveData.observe(viewLifecycleOwner) {
             updateAdapterSpinner(it)
         }
 
-        infoViewModel.positionLiveData.observe(viewLifecycleOwner){
+        infoViewModel.positionLiveData.observe(viewLifecycleOwner) {
 
             val position = infoViewModel.positionLiveData.value
 
             if (position != null &&
-                friendViewModel.friendLiveData.value != null){
+                friendViewModel.friendLiveData.value != null
+            ) {
                 val friend = friendViewModel.friendLiveData.value!![position]
                 binding.editName.setText(friend.name)
                 binding.edinSurname.setText(friend.surname)

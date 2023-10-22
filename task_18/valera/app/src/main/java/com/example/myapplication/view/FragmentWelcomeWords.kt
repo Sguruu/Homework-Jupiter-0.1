@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.myapplication.databinding.FragmentWelkomWordsBinding
 
 class FragmentWelcomeWords : Fragment() {
-    private var _binding : FragmentWelkomWordsBinding? = null
+    private var _binding: FragmentWelkomWordsBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(

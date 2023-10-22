@@ -32,7 +32,8 @@ class FriendViewModel : ViewModel() {
             val newList = _friendLiveData.value!!.plus(Friend(name, surname, phoneNumber, town))
             newList.let {
                 it.forEach { friend ->
-                    val newFriend = Friend(friend.name, friend.surname, friend.phoneNumber, friend.town)
+                    val newFriend =
+                        Friend(friend.name, friend.surname, friend.phoneNumber, friend.town)
                     list.add(newFriend)
                 }
             }
@@ -42,7 +43,7 @@ class FriendViewModel : ViewModel() {
         updateFriendLiveData(list)
     }
 
-    fun dellFriend(friend: Friend) {
+    fun deleteFriend(friend: Friend) {
         val newList = _friendLiveData.value?.filter {
             friend != it
         } as ArrayList<Friend>

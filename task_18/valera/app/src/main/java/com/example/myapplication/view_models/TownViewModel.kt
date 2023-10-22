@@ -4,7 +4,6 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -31,22 +30,25 @@ class TownViewModel : ViewModel() {
         }
     }
 
-    fun  createDefaultList(){
+    fun createDefaultList() {
         val list = ArrayList<Town>()
-        list.add(Town(
-            "Самара", 53.2415, 50.2212, null))
+        list.add(
+            Town(
+                "Самара", 53.2415, 50.2212, null
+            )
+        )
         updateTownLiveData(list)
     }
 
     fun addTownOnList(name: String, latitude: Double, longitude: Double, weather: Weather?) {
         val list = ArrayList<Town>()
-            val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude, weather))
-            newList.let {
-                it.forEach { town ->
-                    val newTown = Town(town.name, town.latitude, town.longitude, town.weather)
-                    list.add(newTown)
-                }
+        val newList = _townLiveData.value!!.plus(Town(name, latitude, longitude, weather))
+        newList.let {
+            it.forEach { town ->
+                val newTown = Town(town.name, town.latitude, town.longitude, town.weather)
+                list.add(newTown)
             }
+        }
         updateTownLiveData(list)
     }
 
@@ -57,7 +59,7 @@ class TownViewModel : ViewModel() {
         updateTownLiveData(newTowns)
     }
 
-    fun resetFilterLiveData (){
+    fun resetFilterLiveData() {
         _filterLiveData.value = ArrayList()
     }
 

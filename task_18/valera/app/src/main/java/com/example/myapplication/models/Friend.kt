@@ -4,4 +4,5 @@ data class Friend(
     var name: String,
     var surname: String,
     var phoneNumber: String,
-    var town: Town)
+    var town: Town
+)

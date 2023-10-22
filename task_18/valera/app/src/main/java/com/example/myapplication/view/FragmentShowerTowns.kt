@@ -1,7 +1,6 @@
 package com.example.myapplication.view
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.example.myapplication.view_models.InfoViewModel
 
 class FragmentShowerTowns : Fragment() {
 
-    private var _binding : FragmentShowerTownsBinding? = null
+    private var _binding: FragmentShowerTownsBinding? = null
     private val binding get() = _binding!!
     private var adapter: TownAdapter? = null
     private val townViewModel: TownViewModel by activityViewModels()
@@ -44,18 +43,19 @@ class FragmentShowerTowns : Fragment() {
         _binding = null
     }
 
-    private fun initList(){
+    private fun initList() {
         val towns =
             if (townViewModel.filterListLiveData.value == null ||
-                townViewModel.filterListLiveData.value == ArrayList<Town>())
-            townViewModel.townLiveData.value?: ArrayList()
-            else townViewModel.filterListLiveData.value?: ArrayList()
+                townViewModel.filterListLiveData.value == ArrayList<Town>()
+            )
+                townViewModel.townLiveData.value ?: ArrayList()
+            else townViewModel.filterListLiveData.value ?: ArrayList()
 
 
         adapter = TownAdapter(
             towns,
-        { position, town -> adapter?.let { dellTown(position, town) } },
-            {position ->
+            { position, town -> adapter?.let { deleteTown(position, town) } },
+            { position ->
                 infoViewModel.updatePositionLiveData(position)
                 findNavController().navigate(R.id.action_global_fragmentAdderTown)
             }
@@ -74,7 +74,7 @@ class FragmentShowerTowns : Fragment() {
     }
 
 
-    private fun dellTown (position: Int, town: Town){
+    private fun deleteTown(position: Int, town: Town) {
         val toastText = getString(R.string.dell_town_message, town.name)
         adapter?.let {
             it.notifyItemRemoved(position)

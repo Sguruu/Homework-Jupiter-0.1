@@ -36,4 +36,6 @@
     <string name="no_internet_message_for_change_town">Отсутствует интернет-подключение, погода в городе не обнавлена</string>
     <string name="town_without_weather">Город %1$s сохранён без погоды</string>
     <string name="town_with_weather">В городе %1$s %2$s С, %3$s, влажность %4$s</string>
+    <string name="default_town_name">Неизвестен</string>
+    <string name="error_server_response">Ошибка ответа сервера</string>
 </resources>

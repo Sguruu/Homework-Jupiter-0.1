@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.models.Friend
 import com.example.myapplication.R
 
-class FriendAdapter (
+class FriendAdapter(
     private var friendList: ArrayList<Friend>,
     private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit,
     private val dataChange: ((position: Int) -> Unit)? = null
-        ): RecyclerView.Adapter<FriendAdapter.Holder>(){
+) : RecyclerView.Adapter<FriendAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val inflate = LayoutInflater.from(parent.context)
@@ -29,14 +29,15 @@ class FriendAdapter (
         holder.bind(friendList[position])
     }
 
-    fun updateList (newFriendList: ArrayList<Friend>){
+    fun updateList(newFriendList: ArrayList<Friend>) {
         friendList = newFriendList
     }
 
-    class Holder (view: View,
-                  private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit,
-                  dataChange: ((position: Int) -> Unit)? = null)
-        : RecyclerView.ViewHolder (view){
+    class Holder(
+        view: View,
+        private val onButtonDeleteClickListener: (position: Int, friend: Friend) -> Unit,
+        dataChange: ((position: Int) -> Unit)? = null
+    ) : RecyclerView.ViewHolder(view) {
         private val friendName: TextView = view.findViewById(R.id.friend_name)
         private val friendSurname: TextView = view.findViewById(R.id.friend_surname)
         private val friendPhoneNumber: TextView = view.findViewById(R.id.friend_phone_number)
@@ -49,21 +50,22 @@ class FriendAdapter (
             }
         }
 
-        fun bind(friend: Friend){
+        fun bind(friend: Friend) {
             friendName.text = friend.name
             friendSurname.text = friend.surname
             friendPhoneNumber.text = friend.phoneNumber
             friendTown.text =
-            if (friend.town.weather != null){
-                itemView.resources.getString(
-                    R.string.town_with_weather,
-                    friend.town.name,
-                    friend.town.weather!!.tempValue.toString(),
-                    friend.town.weather!!.description,
-                    friend.town.weather!!.humidityValue.toString()) + "%"
-            }else{
-                itemView.resources.getString(R.string.town_without_weather, friend.town.name)
-            }
+                if (friend.town.weather != null) {
+                    itemView.resources.getString(
+                        R.string.town_with_weather,
+                        friend.town.name,
+                        friend.town.weather!!.tempValue.toString(),
+                        friend.town.weather!!.description,
+                        friend.town.weather!!.humidityValue.toString()
+                    ) + "%"
+                } else {
+                    itemView.resources.getString(R.string.town_without_weather, friend.town.name)
+                }
 
             dellFriendButton.setOnClickListener {
                 onButtonDeleteClickListener.invoke(adapterPosition, friend)

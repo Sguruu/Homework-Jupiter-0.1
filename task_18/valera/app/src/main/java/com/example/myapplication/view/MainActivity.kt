@@ -1,4 +1,5 @@
 package com.example.myapplication.view
+
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.SearchView
@@ -20,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     }
     private val friendViewModel: FriendViewModel by viewModels()
     private val townViewModel: TownViewModel by viewModels()
+    private val infoViewModel: InfoViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,12 +43,15 @@ class MainActivity : AppCompatActivity() {
             override fun onMenuItemActionCollapse(p0: MenuItem): Boolean {
                 if (
                     navController.currentDestination == navController.findDestination(
-                        R.id.fragmentAdderFriends)||
+                        R.id.fragmentAdderFriends
+                    ) ||
                     navController.currentDestination == navController.findDestination(
-                        R.id.fragmentShowerListFriends)){
+                        R.id.fragmentShowerListFriends
+                    )
+                ) {
                     friendViewModel.resetFilterLiveData()
                     navController.navigate(R.id.action_global_fragmentShowerListFriends)
-                }else{
+                } else {
                     townViewModel.resetFilterLiveData()
                     navController.navigate(R.id.action_global_fragmentShowerTowns)
                 }
@@ -56,27 +61,30 @@ class MainActivity : AppCompatActivity() {
         })
 
         (searchViewOnMenu.actionView as SearchView).setOnQueryTextListener(object :
-                SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(p0: String?): Boolean {
-                    if (
-                        navController.currentDestination == navController.findDestination(
-                            R.id.fragmentAdderFriends)||
-                        navController.currentDestination == navController.findDestination(
-                            R.id.fragmentShowerListFriends)){
-                        friendViewModel.filterFriendList(p0)
-                        navController.navigate(R.id.action_global_fragmentShowerListFriends)
-                    }else{
-                        townViewModel.filterTowns(p0)
-                        navController.navigate(R.id.action_global_fragmentShowerTowns)
-                    }
-
-                    return true
+            SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(p0: String?): Boolean {
+                if (
+                    navController.currentDestination == navController.findDestination(
+                        R.id.fragmentAdderFriends
+                    ) ||
+                    navController.currentDestination == navController.findDestination(
+                        R.id.fragmentShowerListFriends
+                    )
+                ) {
+                    friendViewModel.filterFriendList(p0)
+                    navController.navigate(R.id.action_global_fragmentShowerListFriends)
+                } else {
+                    townViewModel.filterTowns(p0)
+                    navController.navigate(R.id.action_global_fragmentShowerTowns)
                 }
 
-                override fun onQueryTextChange(p0: String?): Boolean {
-                    return true
-                }
-            })
+                return true
+            }
+
+            override fun onQueryTextChange(p0: String?): Boolean {
+                return true
+            }
+        })
     }
 
     private fun initToolbar() {
@@ -85,31 +93,41 @@ class MainActivity : AppCompatActivity() {
                 R.id.searcher -> {
                     if (
                         navController.currentDestination == navController.findDestination(
-                            R.id.fragmentAdderFriends)||
+                            R.id.fragmentAdderFriends
+                        ) ||
                         navController.currentDestination == navController.findDestination(
-                            R.id.fragmentShowerListFriends)){
+                            R.id.fragmentShowerListFriends
+                        )
+                    ) {
                         showFriendList()
-                    }else{
+                    } else {
                         showTowns()
                     }
                     true
                 }
+
                 R.id.adder -> {
+                    infoViewModel.updatePositionLiveData(null)
                     addFriendOnList()
                     true
                 }
+
                 R.id.shower -> {
                     showFriendList()
                     true
                 }
+
                 R.id.adder_town -> {
+                    infoViewModel.updatePositionLiveData(null)
                     addTown()
                     true
                 }
+
                 R.id.shower_towns -> {
                     showTowns()
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -123,16 +141,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showFriendList() {
-            navController.navigate(R.id.action_global_fragmentShowerListFriends)
+        navController.navigate(R.id.action_global_fragmentShowerListFriends)
     }
 
-    private fun addTown(){
-        if (navController.currentDestination != navController.findDestination(R.id.fragmentAdderTown)){
-                navController.navigate(R.id.action_global_fragmentAdderTown)
-            }
+    private fun addTown() {
+        if (navController.currentDestination != navController.findDestination(R.id.fragmentAdderTown)) {
+            navController.navigate(R.id.action_global_fragmentAdderTown)
+        }
     }
 
-    private fun showTowns(){
+    private fun showTowns() {
         navController.navigate(R.id.action_global_fragmentShowerTowns)
     }
 }

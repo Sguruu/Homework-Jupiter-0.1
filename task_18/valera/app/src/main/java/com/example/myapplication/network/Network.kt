@@ -12,7 +12,7 @@ private const val UNITS = "metric"
 
 object Network {
     private val client = OkHttpClient()
-    fun getWeatherCall (latitude: String, longitude: String): Call {
+    fun getWeatherCall(latitude: String, longitude: String): Call {
         val url = HttpUrl.Builder()
             .scheme("https")
             .host("api.openweathermap.org")

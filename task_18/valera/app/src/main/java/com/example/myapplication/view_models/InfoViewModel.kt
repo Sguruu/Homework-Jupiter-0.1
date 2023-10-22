@@ -3,6 +3,7 @@ package com.example.myapplication.view_models
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.models.Main
 import com.example.myapplication.models.ResponseRequestText
 import com.example.myapplication.repository.MainRepository
 
@@ -28,7 +29,11 @@ class InfoViewModel : ViewModel() {
         Thread {
             repository.requestWeather(latitude, longitude) {
                 it?.let {
-                    updateWeatherLiveData(it)
+                    if (repository.checkRequestIsSuccessful) {
+                        updateWeatherLiveData(it)
+                    } else {
+                        updateWeatherLiveData(ResponseRequestText(null))
+                    }
                 }
             }
         }.start()
