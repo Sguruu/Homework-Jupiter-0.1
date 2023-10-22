@@ -58,7 +58,12 @@ class MainRepository {
             checkRequestIsSuccessful = response.isSuccessful
             val requestText = response.body?.string().orEmpty()
             val responseRequestText = parseMovieResponse(requestText)
-            callback.invoke(responseRequestText)
+            if (responseRequestText != null){
+                callback.invoke(responseRequestText)
+            } else {
+                val withoutResponseRequestText =  ResponseRequestText(null)
+                callback.invoke(withoutResponseRequestText)
+            }
         } catch (e: IndexOutOfBoundsException) {
             Log.d("MyTest", "Ошибка запроса погоды")
         }
@@ -66,7 +71,6 @@ class MainRepository {
     }
 
     private fun parseMovieResponse(responseBody: String): ResponseRequestText? {
-
         return try {
             val jsonObject = JSONObject(responseBody)
             val weatherArray = jsonObject.getJSONArray("weather")

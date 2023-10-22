@@ -3,6 +3,7 @@ package com.example.myapplication.view
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.example.myapplication.databinding.FragmentAdderTownBinding
 import com.example.myapplication.models.Weather
 import com.example.myapplication.view_models.InfoViewModel
 import com.example.myapplication.view_models.TownViewModel
+import kotlin.math.log
 
 
 class FragmentAdderTown : Fragment() {
