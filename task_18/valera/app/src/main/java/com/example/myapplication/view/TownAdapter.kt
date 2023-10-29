@@ -68,7 +68,7 @@ class TownAdapter(
                 humidity.text = itemView.resources.getString(
                     R.string.humidity,
                     town.weather!!.humidityValue.toString()
-                ) + "%"
+                )
                 description.text = town.weather!!.description
             }
             dellTownButton.setOnClickListener {
