@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/searcher"
+        android:title="@string/menu_searcher"
+        android:icon="@drawable/icon_searcher"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always|collapseActionView"
+        />
+    <item
+        android:id="@+id/adder"
+        android:title="@string/menu_adder"
+        />
+    <item
+        android:id="@+id/adder_town"
+        android:title="@string/menu_adder_town"
+        />
+    <item
+        android:id="@+id/shower"
+        android:title="@string/menu_shower"
+        />
+    <item
+        android:id="@+id/shower_towns"
+        android:title="@string/menu_shower_towns"
+        />
+</menu>
