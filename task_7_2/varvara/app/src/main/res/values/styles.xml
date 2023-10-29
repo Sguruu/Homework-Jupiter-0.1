@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ToolbarStyle">
+        <item name="android:elevation">3dp</item>
+        <item name="android:background">@color/purple_200</item>
+        <item name="titleTextColor"> @color/white</item>
+        <item name="android:theme">@style/ToolbarTheme</item>
+
+
+    </style>
+
+    <style name="ToolbarTheme">
+        <item name="toolbarNavigationButtonStyle">@style/ToolbarNavigationStyle</item>
+        <item name="android:textColorSecondary">@color/white</item>
+
+    </style>
+
+    <style name="ToolbarNavigationStyle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="tint">@color/white</item>
+
+    </style>
+
+</resources>
+

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">07_2_02</string>
+    <string name="text">ToolBar</string>
+    <string name="arrowBack">Нажата кнопка назад</string>
+    <string name="Action_1">Action 1</string>
+    <string name="Action_2">Action 2</string>
+    <string name="Action_3">Action 3</string>
+    <string name="Action11">Нажата кнопка Action 1</string>
+    <string name="Action33">Нажата кнопка Action 3</string>
+    <string name="Search">Нажата кнопка Поиск</string>
+    <string name="light">Нажата кнопка light</string>
+</resources>
