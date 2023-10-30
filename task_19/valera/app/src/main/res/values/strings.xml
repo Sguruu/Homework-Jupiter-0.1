@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Кореша</string>
+    <string name="welcome_words">
+    """Вас приветствует програмка для создания списка друзей
+
+    Со мной вы можете:
+    - Добавить друга
+    - Добавить город друга
+    - Посмотреть список своих друзей
+    - Посмотреть список городов своих друзей с погодой
+    - Удалить друга
+    - Удалить город
+    - Редактировать всё, что ты надобавлял
+
+    Я никого не создаю и никого не убиваю (Это делаешь ты своими же руками)"""</string>
+    <string name="menu_searcher">Поиск</string>
+    <string name="menu_adder">Добавить друга</string>
+    <string name="menu_shower">Показать список друзей</string>
+    <string name="name">Введите имя</string>
+    <string name="surname">Введите фамилию</string>
+    <string name="phone_number">Введите номер телефона</string>
+    <string name="buttom_adder">Сохранить</string>
+    <string name="successfully">Новый друг успешно добавлен</string>
+    <string name="dell_message">удален(а) из списка Ваших друзей</string>
+    <string name="town_name">Название города</string>
+    <string name="latitude">Широта</string>
+    <string name="longitude">Долгота</string>
+    <string name="menu_adder_town">Добавить город</string>
+    <string name="menu_shower_towns">Показать список городов</string>
+    <string name="successfully_add_town">Новый город успешно добавлен</string>
+    <string name="dell_town_message">Город %1$s успешно удалён</string>
+    <string name="town_coordinates_completion">Координаты: %1$s / %2$s</string>
+    <string name="temperature">Температура %1$s C</string>
+    <string name="humidity">Влажность %1$s \uFF05</string>
+    <string name="no_internet_message">Отсутствует интернет-подключение, город сохранён без погоды</string>
+    <string name="no_internet_message_for_change_town">Отсутствует интернет-подключение, погода в городе не обнавлена</string>
+    <string name="town_without_weather">Город %1$s сохранён без погоды</string>
+    <string name="town_with_weather">В городе %1$s %2$s С, %3$s, влажность %4$s</string>
+    <string name="default_town_name">Неизвестен</string>
+    <string name="error_server_response">Введены некорректные данные</string>
+</resources>
